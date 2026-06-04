@@ -1,24 +1,30 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
+  /*Colors*/
+  --text-secondary: #828282;
+  --text-primary: #000;
+  --text-white : #fff;
+  --hover-on-white-text: #f4f4f4;
+  --hover-on-black-text: var(--text-secondary);
+  --link : #2C27C3;
+  --bg-white: #ffffff;
+  --bg-gray: #c7c7c7 ;
+  --accent: #ff3300;
+  --border: #000;
+  --accent-bg: rgba(170, 59, 255, 0.1); /*to be decided*/
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /*fonts*/
+  --font-primary : "Montserrat", Tahoma, Verdana, sans-serif;
+  --font-footer : "Inter", Tahoma, Verdana, sans-serif;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
+/*font sizes*/
+  --text-h1 : 48px;  /*Use for titles*/
+  --text-h2 :32px; /*Use for subtitles*/
+  --text-body1 :24px;
+  --text-body2 : 16px;
+ 
+  color-scheme: light; /*add dark later*/
   background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -44,33 +50,25 @@
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
   }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
 }
 
 body {
   margin: 0;
+  background-color: var(--bg);
+  font-family: var(--font-primary);
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
   box-sizing: border-box;
 }
 
 h1,
 h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+  font-family: var(--font-primary);
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 h1 {
@@ -95,17 +93,7 @@ p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+a{
+  color: var(--link);
+  text-decoration: none;
 }

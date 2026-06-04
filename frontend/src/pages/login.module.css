@@ -1,0 +1,68 @@
+.bodyContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.formParent {
+    margin-left: 10px;
+    text-align: center;
+}
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items:stretch;
+    justify-content:center;
+    text-align: left;
+}
+
+.title {
+    margin-bottom: 0px ;
+}
+
+.description {
+    font-size: var(--text-body2);
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    margin-top: 0px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0px;
+}
+
+input{
+    font-family: var(--text-primary);
+    font-size: var(--text-body2);
+    padding: 10px;
+}
+input:focus{
+    outline: none;
+    border-color: black;
+    box-shadow: var(--shadow);
+}
+
+.register {
+    margin-top: 25px;
+}
+
+.graphicContainer {
+    margin-right: 20px;
+}
+
+.graphic {
+    margin-left: 20px;
+    max-width: 400px;
+    min-width: 200px;
+    width: 100%;
+    height: auto;
+}
