@@ -3,7 +3,7 @@
   --text-secondary: #828282;
   --text-primary: #000;
   --text-white : #fff;
-  --hover-on-white-text: #f4f4f4;
+  --hover-on-white-text: #d1cdcd;
   --hover-on-black-text: var(--text-secondary);
   --link : #2C27C3;
   --bg-white: #ffffff;
@@ -20,7 +20,8 @@
 
 /*font sizes*/
   --text-h1 : 48px;  /*Use for titles*/
-  --text-h2 :32px; /*Use for subtitles*/
+  --text-h2 :32px; /*Use for subtitles*/ 
+  --text-button : 40px;
   --text-body1 :24px;
   --text-body2 : 16px;
  

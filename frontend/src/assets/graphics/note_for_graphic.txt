@@ -1,0 +1,3 @@
+2D graphics are taken from "undraw"
+#6c63ff This is the purple accent of the svgs but
+we change it to our accent color that is #ff3300

@@ -1,3 +1,11 @@
+/*stylesheet for login.jsx, register.jsx and related pages*/
+
+.app { /*the root element*/
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .bodyContainer {
     display: flex;
     align-items: center;
@@ -5,6 +13,9 @@
     padding: 20px 40px;
     max-width: 1200px;
     margin: 0 auto;
+    flex: 1;
+    gap: clamp(1rem, 75px, 5rem);
+    margin-bottom: 6rem;
 }
 
 .formParent {
@@ -34,20 +45,39 @@ form {
     flex-direction: column;
 }
 
+.formFieldContainer { /*container of all input fields but not submit button, to create margin from button */
+    margin-bottom: 40px;
+}
+
+.blockFormFields {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+    column-gap: 20px;
+}
+
 .inputGroup {
     display: flex;
     flex-direction: column;
     margin: 15px 0px;
 }
 
-input{
+input, select{
     font-family: var(--text-primary);
     font-size: var(--text-body2);
     padding: 10px;
 }
 input:focus{
     outline: none;
-    border-color: black;
+    border-width: 3px;
+    border-color: rgb(0, 0, 0);
+    box-shadow: var(--shadow);
+}
+
+select:focus{
+    outline: none;
+    border-width: 3px;
+    border-color: rgb(0, 0, 0);
     box-shadow: var(--shadow);
 }
 
@@ -65,4 +95,8 @@ input:focus{
     min-width: 200px;
     width: 100%;
     height: auto;
+}
+
+.footer {
+    margin-top: auto;
 }

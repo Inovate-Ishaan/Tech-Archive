@@ -12,10 +12,10 @@
 }
 
 .primaryBlack{
-    font-size: var(--text-h1);
+    font-size: var(--text-button);
     color: var(--text-white);
     background-color: black;
-    padding: 14px 150px;
+    padding: 20px 150px;
 }
 
 .secondaryBlack{
