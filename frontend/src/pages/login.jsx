@@ -1,12 +1,13 @@
 import Header from "../components/header/header";
 import Footer from "../components/footer/footer";
-import styles from "./login.module.css";
+import styles from "./authForm.module.css";
 import Button from "../components/buttons/button";
 import welcomeGraphic from "../assets/graphics/welcome_aboard.svg";
 
 export default function LoginPage() {
   return (
     <>
+    <div className={styles.app}>
       <Header />
 
       <div className={styles.bodyContainer}>
@@ -19,11 +20,11 @@ export default function LoginPage() {
             <form>
               <div className={styles.inputGroup}>
                 <label>Email address</label>
-                <input></input>
+                <input placeholder="pawanteja@email.com" type="email"></input>
               </div>
               <div className={styles.inputGroup}>
                 <label>Password</label>
-                <input></input>
+                <input placeholder="****************" type="password"></input>
               </div>
 
               <Button variant="primaryBlack">Login</Button>
@@ -38,7 +39,8 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <Footer />
+      <Footer className={styles.footer}/>
+      </div>
     </>
   );
 }
