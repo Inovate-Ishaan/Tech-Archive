@@ -1,0 +1,36 @@
+.btn {
+    font-family: var(--font-primary);
+    border-radius: 8px;
+    border: solid 2px black;
+    padding: 12px 24px;
+    text-align: center;
+}
+
+.btn:hover{
+    color: var(--hover-on-white-text);
+    box-shadow: var(--shadow);
+}
+
+.primaryBlack{
+    font-size: var(--text-h1);
+    color: var(--text-white);
+    background-color: black;
+    padding: 14px 150px;
+}
+
+.secondaryBlack{
+    font-size: var(--text-body2);
+    color: var(--text-white);
+    background-color: black;
+}
+
+.secondaryWhite{
+    font-size: var(--text-body2);
+    color: var(--text-primary);
+    background-color: var(--bg);
+}
+
+.secondaryWhite:hover{
+    color: var(--hover-on-black-text);
+}
+
