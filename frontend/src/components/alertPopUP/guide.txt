@@ -1,0 +1,24 @@
+Include this to the parent component
+
+
+const [alert, setAlert] = useState(null);
+
+function showAlert(type, msg) {
+    setAlert({
+        type,
+        msg,
+    })
+
+    setTimeout(() => {
+    setAlert(null)
+    }, 3000);
+};
+
+const closeAlert = () => {
+setAlert(null);
+};
+
+
+and this in the return of the component
+
+{alert && (<Alert type={alert.type} msg={alert.msg} handleCloseClick={closeAlert}/>)}

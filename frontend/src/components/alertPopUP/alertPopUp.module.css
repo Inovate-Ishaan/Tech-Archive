@@ -1,0 +1,45 @@
+.alert {
+    padding: 10px 5px 10px 20px ;
+    background-color: rgb(255, 255, 255);
+    position : fixed;
+    top : 20px;
+    right : 20px;
+    z-index: 1000;
+    box-shadow: var(--shadow-box);
+    border-radius: 8px 1px 1px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    column-gap: 15px;
+}
+
+.msg {
+    font-weight: 400;
+    font-size: var(--text-body1);
+    text-shadow: var(--shadow-text);
+}
+
+.success {
+    color: var(--text-primary);
+    border-right: 6px solid var(--success);
+}
+
+.error {
+    color: var(--text-primary);
+    border-right: 6px solid var(--error);
+}
+
+.closeIcon {
+    margin-right : 0 ;
+}
+
+.closeIcon:hover{
+    transform: scale(1.1, 1.1);
+    color: var(--bg-gray);
+}
+
+button {
+    border : none;
+    background-color: inherit;
+}

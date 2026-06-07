@@ -8,7 +8,7 @@
 
 .btn:hover{
     color: var(--hover-on-white-text);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-box);
 }
 
 .primaryBlack{
@@ -34,3 +34,11 @@
     color: var(--hover-on-black-text);
 }
 
+.active {
+    cursor: pointer;
+}
+
+.disabled {
+    cursor: not-allowed ;
+    /* color: #969696; */
+}

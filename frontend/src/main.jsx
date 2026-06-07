@@ -8,8 +8,8 @@ import CreatePasswordPage from './pages/createPassword'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <CreatePasswordPage />
-    <RegisterPage />
     <LoginPage />
-  </StrictMode>
+    <RegisterPage />
+    <CreatePasswordPage />
+    </StrictMode>
 )

@@ -11,9 +11,11 @@
   --accent: #ff3300;
   --border: #000;
   --accent-bg: rgba(170, 59, 255, 0.1); /*to be decided*/
-  --shadow:
+  --success: #41da00;
+  --error: rgb(252, 40, 40);
+  --shadow-box:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
+  --shadow-text: 0 0 5px #ebebeb9b;
   /*fonts*/
   --font-primary : "Montserrat", Tahoma, Verdana, sans-serif;
   --font-footer : "Inter", Tahoma, Verdana, sans-serif;
@@ -97,4 +99,5 @@ p {
 a{
   color: var(--link);
   text-decoration: none;
+  cursor: pointer;
 }
