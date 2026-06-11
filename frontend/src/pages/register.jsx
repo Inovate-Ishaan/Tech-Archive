@@ -6,6 +6,8 @@ import Button from "../components/buttons/button";
 import signHereGraphic from "../assets/graphics/sign_here.svg";
 import Alert from "../components/alertPopUP/alertPopUp";
 import validator from "validator";
+import { useNavigate } from "react-router-dom";
+import { register as apiRegister, signin } from "../utils/api";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -17,10 +19,9 @@ export default function RegisterPage() {
   });
 
   const { firstName, lastName, department, instituteID, email } = formData;
-
   //ensures form is not submitted empty
   const formNotEmpty =
-    firstName.trim() && lastName.trim() && department.trim() && instituteID.trim() && email.trim();
+    firstName.trim() && lastName.trim() && department.trim() && instituteID.trim() && email.trim() && formData.password && formData.password.trim();
 
   //validation library ==> validator.js
   function validateInputs() {
@@ -36,9 +37,19 @@ export default function RegisterPage() {
       return false;
     }
 
+    if (!email.toLowerCase().endsWith("@iitbhilai.ac.in")) {
+      showAlert("error", "Use your institute email (@iitbhilai.ac.in)");
+      return false;
+    }
+
     //fields that cannot contain spaces (ID only for now)
     if (/\s/.test(instituteID)) {
       showAlert("error", "ID cannot have spaces");
+      return false;
+    }
+
+    if (typeof formData.password !== 'string' || formData.password.length < 6) {
+      showAlert('error', 'Password must be at least 6 characters');
       return false;
     }
 
@@ -109,9 +120,28 @@ export default function RegisterPage() {
     e.preventDefault();
     const proceed = validateInputs();
     if (proceed) {
-      showAlert("success", "Show OTP popup")
+      // call register API
+      setLoading(true);
+      const username = `${firstName} ${lastName}`;
+      apiRegister({ email, password: formData.password, username, instituteId: instituteID })
+        .then(() => signin(email, formData.password))
+        .then((data) => {
+          if (data.token) {
+            localStorage.setItem('auth_token', data.token);
+            showAlert('success', 'Account created and signed in');
+            navigate('/');
+          }
+        })
+        .catch((err) => {
+          const msg = err && err.error ? err.error : 'Registration failed';
+          showAlert('error', msg);
+        })
+        .finally(() => setLoading(false));
     };
   }
+
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   return (
     <>
@@ -133,25 +163,25 @@ export default function RegisterPage() {
                 <div className={styles.formFieldContainer}>
                   <div className={styles.blockFormFields}>
                     <div className={styles.inputGroup}>
-                      <label>First name</label>
+                      <label >First name</label>
                       <input
-                        placeholder="Pawan"
+                        placeholder="firstname"
                         value={formData.firstName}
                         onChange={handleFirstNameChange}
                       ></input>
                     </div>
 
                     <div className={styles.inputGroup}>
-                      <label>Last name</label>
+                      <label >Last name</label>
                       <input
-                        placeholder="Teja"
+                        placeholder="lastname"
                         value={formData.lastName}
                         onChange={handleLastNameChange}
                       ></input>
                     </div>
 
                     <div className={styles.inputGroup}>
-                      <label>Department</label>
+                      <label >Department</label>
                       <select
                         value={formData.department}
                         onChange={handleDeptChange}
@@ -174,12 +204,21 @@ export default function RegisterPage() {
                         onChange={handleIDChange}
                       ></input>
                     </div>
+                    <div className={styles.inputGroup}>
+                      <label>Password</label>
+                      <input
+                        placeholder="Choose a password"
+                        type="password"
+                        value={formData.password || ''}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      ></input>
+                    </div>
                   </div>
 
                   <div className={styles.inputGroup}>
                     <label>Email address</label>
                     <input
-                      placeholder="pawanteja@email.com"
+                      placeholder="example@iitbhilai.ac.in"
                       value={formData.email}
                       onChange={handleEmailChange}
                     ></input>
@@ -187,15 +226,15 @@ export default function RegisterPage() {
                 </div>
                 <Button
                   variant="primaryBlack"
-                  status={formNotEmpty ? "active" : "disabled"}
+                  status={formNotEmpty && !loading ? "active" : "disabled"}
                   onClick={handleSubmit}
                 >
-                  Verify email
+                  {loading ? 'Creating...' : 'Create account'}
                 </Button>
               </form>
             </div>
             <p className={styles.register}>
-              Already have an account? <a>Login</a>
+              Already have an account? <a href="/login">Login</a>
             </p>
 
           </div>

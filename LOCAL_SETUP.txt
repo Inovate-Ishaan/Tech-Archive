@@ -1,0 +1,131 @@
+Local setup and run instructions
+===============================
+
+This document explains how to run the Tech-Archive app locally for development, including the backend auth flow, OTP email flow, Prisma/Postgres setup, and the React frontend.
+
+What was verified locally
+- Backend root works at http://localhost:4000/
+- Seeded login works with: seed@iitbhilai.ac.in / password123
+- OTP request flow works and returns an Ethereal preview URL when no real SMTP provider is configured
+- Frontend dev server works at http://localhost:5173/
+- Frontend production build works with `npm run build`
+
+Prerequisites
+- Node.js 18+ and npm
+- PostgreSQL
+- A terminal with access to `psql` and `sudo` (for local setup on Ubuntu/Debian)
+
+1) Install PostgreSQL (Ubuntu/Debian)
+-------------------------------------
+sudo apt update
+sudo apt install -y postgresql postgresql-contrib
+
+2) Create the database and role
+------------------------------
+# Example: replace <username> and <password> with your own values
+sudo -u postgres createuser -P <username>
+sudo -u postgres createdb -O <username> tech_archive_dev
+sudo -u postgres psql -c "ALTER ROLE \"<username>\" CREATEDB;"
+
+If your user already exists, you can skip the createuser step and just run:
+
+sudo -u postgres psql -c "ALTER ROLE \"<username>\" CREATEDB;"
+
+3) Create backend/.env
+----------------------
+Create backend/.env with values like this:
+
+DATABASE_URL="postgresql://<username>:<password>@localhost:5432/tech_archive_dev?schema=public"
+JWT_SECRET="change_this_secret"
+
+# Optional email providers (leave blank for Ethereal dev preview)
+BREVO_API_KEY=""
+EMAIL_FROM="no-reply@techarchive.local"
+SMTP_HOST=""
+SMTP_PORT="587"
+SMTP_USER=""
+SMTP_PASS=""
+SMTP_SECURE="false"
+
+Notes:
+- If `BREVO_API_KEY` is set, the OTP endpoint will try Brevo first.
+- If not, the backend uses `nodemailer` and falls back to an Ethereal test account for local preview URLs.
+- For real production delivery, configure SMTP or a transactional email provider and verify your sender domain.
+
+4) Backend setup
+----------------
+cd backend
+npm install
+npx prisma generate
+npx prisma migrate dev --name init
+node prisma/seed.js
+npm start
+
+Expected result:
+- backend runs on http://localhost:4000/
+
+Seeded test account created by `prisma/seed.js`:
+- Email: seed@iitbhilai.ac.in
+- Password: password123
+
+5) Frontend setup
+-----------------
+In a second terminal:
+
+cd frontend
+npm install
+VITE_API_URL=http://localhost:4000 npm run dev
+
+Expected result:
+- frontend runs on http://localhost:5173/
+
+6) Quick local validation commands
+----------------------------------
+# Backend health
+curl http://localhost:4000/
+
+# Seeded signin check
+curl -X POST http://localhost:4000/api/auth/signin \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"seed@iitbhilai.ac.in","password":"password123"}'
+
+# OTP request check (returns previewUrl when using Ethereal)
+curl -X POST http://localhost:4000/api/auth/request-otp \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"seed@iitbhilai.ac.in"}'
+
+# Frontend page check
+curl -I http://localhost:5173/
+
+7) What the workflow does
+-------------------------
+1. Frontend calls `/api/auth/register` or `/api/auth/signin`.
+2. The backend checks the institute email domain (`@iitbhilai.ac.in`).
+3. Passwords are hashed with bcrypt and JWTs are issued on successful sign-in.
+4. OTP requests create a DB record in `Otp`, then send email through Brevo or Ethereal fallback.
+5. OTP verification checks the code, marks it used, and returns a JWT for the user.
+6. The demo CRUD endpoints under `/api/demo/projects` show how Prisma works in practice.
+
+8) Troubleshooting
+-----------------
+- If `prisma migrate dev` fails with a shadow DB permission problem, grant CREATEDB to the role you use for the database connection.
+- If the backend port is already in use, stop the old process and restart with `npm start`.
+- If you change `DATABASE_URL`, run `npx prisma generate` again.
+
+9) Demo Prisma CRUD example
+---------------------------
+# List projects
+curl http://localhost:4000/api/demo/projects | jq .
+
+# Create a project for an existing user
+curl -X POST http://localhost:4000/api/demo/projects \
+  -H 'Content-Type: application/json' \
+  -d '{"email":"seed@iitbhilai.ac.in","title":"My Demo Project","description":"Demo"}' | jq .
+
+# Update a project by id
+curl -X PUT http://localhost:4000/api/demo/projects/<PROJECT_ID> \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Updated","description":"Updated desc"}' | jq .
+
+# Delete a project by id
+curl -X DELETE http://localhost:4000/api/demo/projects/<PROJECT_ID> | jq .

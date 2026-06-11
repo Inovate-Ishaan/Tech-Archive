@@ -6,6 +6,8 @@ import welcomeGraphic from "../assets/graphics/welcome_aboard.svg";
 import Alert from "../components/alertPopUP/alertPopUp";
 import { useState } from "react";
 import validator from "validator";
+import { useNavigate, Link } from "react-router-dom";
+import { signin } from "../utils/api";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -40,6 +42,10 @@ export default function LoginPage() {
       showAlert("error", "Password cannot have spaces");
       return false;
     }
+    if (!email.toLowerCase().endsWith("@iitbhilai.ac.in")) {
+      showAlert("error", "Use your institute email (@iitbhilai.ac.in)");
+      return false;
+    }
 
     return true;
   }
@@ -49,9 +55,30 @@ export default function LoginPage() {
     const validForm = validateForm();
     console.log(validForm);
     if (validForm) {
-      showAlert("success", "User logged in successfully");
+      // call backend
+      setLoading(true);
+      signin(email, password)
+        .then((data) => {
+          const { token } = data;
+          if (token) {
+            localStorage.setItem("auth_token", token);
+            showAlert("success", "Logged in successfully");
+            // redirect to home
+            navigate("/");
+          } else {
+            showAlert("error", "No token received");
+          }
+        })
+        .catch((err) => {
+          const msg = err && err.error ? err.error : "Signin failed";
+          showAlert("error", msg);
+        })
+        .finally(() => setLoading(false));
     }
   }
+
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   return (
     <>
@@ -75,14 +102,12 @@ export default function LoginPage() {
               </label>
               <form>
                 <div className={styles.inputGroup}>
-                  <label>Email address</label>
+                  <label >Email address</label>
                   <input
-                    placeholder="pawanteja@email.com"
+                    placeholder="example@iitbhilai.ac.in"
                     type="email"
-                    value={formData.email}
-                    onChange={(e) => {
-                      setFormData({ ...formData, email: e.target.value });
-                    }}
+                    value={email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   ></input>
                 </div>
                 <div className={styles.inputGroup}>
@@ -90,24 +115,22 @@ export default function LoginPage() {
                   <input
                     placeholder="****************"
                     type="password"
-                    value={formData.password}
-                    onChange={(e) => {
-                      setFormData({ ...formData, password: e.target.value });
-                    }}
+                    value={password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   ></input>
                 </div>
 
                 <Button
                   variant="primaryBlack"
-                  status={formNotEmpty ? "active" : "disabled"}
+                  status={formNotEmpty && !loading ? "active" : "disabled"}
                   onClick={handleSubmit}
                 >
-                  Login
+                  {loading ? "Signing in..." : "Login"}
                 </Button>
               </form>
             </div>
             <p className={styles.register}>
-              Don't have an account? <a>Register</a>
+              Don't have an account? <Link to="/register">Register</Link>
             </p>
           </div>
           <div className={styles.graphicContainer}>

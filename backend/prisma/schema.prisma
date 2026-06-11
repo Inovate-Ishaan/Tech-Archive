@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User stores the institute email, password hash, and profile metadata.
+model User {
+  id          String    @id @default(uuid())
+  username    String
+  email       String    @unique
+  password    String
+  instituteId String    @unique
+  projects    Project[]
+  otps        Otp[]
+  createdAt   DateTime  @default(now())
+}
+
+// Project is a small demo relation showing Prisma CRUD in the backend.
+
+model Project {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  email     String
+  code      String
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
