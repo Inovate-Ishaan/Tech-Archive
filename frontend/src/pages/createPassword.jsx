@@ -3,8 +3,10 @@ import Footer from "../components/footer/footer";
 import styles from "./authForm.module.css";
 import Button from "../components/buttons/button";
 import Alert from "../components/alertPopUP/alertPopUp";
+import PasswordField from "../components/passwordField/passwordField";
 import passwordGraphic from "../assets/graphics/enter_password.svg";
 import { useState } from "react";
+import BtnLoader from "../components/loaders/btnLoader";
 
 export default function CreatePasswordPage() {
 
@@ -56,6 +58,8 @@ export default function CreatePasswordPage() {
 
       //validatePasswords
       if (validatePasswords()) {
+        //display the loader
+          setSubmitted(true);
           //send data to backend
           showAlert("success", "Sending data to Backend")
         }
@@ -80,6 +84,9 @@ export default function CreatePasswordPage() {
     setAlert(null);
   };
 
+  //btn loader
+  const[submitted, setSubmitted] = useState(false);
+
   return (
     <>
       <div className={styles.app}>
@@ -96,26 +103,17 @@ export default function CreatePasswordPage() {
                 Become a member of the University's Tech Community
               </label>
 
+              <fieldset disabled={submitted} className={submitted ? "fieldsetDisabled" : ""}>
               <form>
                 <div className={styles.formFieldContainer}>
                   <div className={styles.inputGroup}>
                     <label>Create Password</label>
-                    <input
-                      placeholder="****************"
-                      type="password"
-                      value={formData.password}
-                      onChange={handlePassChange}
-                    ></input>
+                    <PasswordField value={formData.password} onChange={handlePassChange}/>
                   </div>
 
                   <div className={styles.inputGroup}>
                     <label>Confirm Password</label>
-                    <input
-                      placeholder="****************"
-                      type="password"
-                      value={formData.confirmPassword}
-                      onChange={handleConfirmPassChange}
-                    ></input>
+                    <PasswordField value={formData.confirmPassword} onChange={handleConfirmPassChange}/>
                   </div>
                 </div>
 
@@ -124,10 +122,11 @@ export default function CreatePasswordPage() {
                   status={formData.password && formData.confirmPassword ? "active" : "disabled"}
                   onClick={handleCreatePassClick}
                   >
-                    Create Account
+                    {submitted ? <BtnLoader /> : "Create Account"}
                 </Button>
 
               </form>
+              </fieldset>
             </div>
             <p className={styles.register}>
               Already have an account? <a>Login</a>

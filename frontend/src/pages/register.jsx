@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import Header from "../components/header/header";
 import Footer from "../components/footer/footer";
 import styles from "./authForm.module.css";
 import Button from "../components/buttons/button";
 import signHereGraphic from "../assets/graphics/sign_here.svg";
 import Alert from "../components/alertPopUP/alertPopUp";
+import BtnLoader from "../components/loaders/btnLoader";
+import OTPModal from "../components/OTPfield/OTPModal";
 import validator from "validator";
 
 export default function RegisterPage() {
@@ -109,9 +111,17 @@ export default function RegisterPage() {
     e.preventDefault();
     const proceed = validateInputs();
     if (proceed) {
-      showAlert("success", "Show OTP popup")
+      showAlert("success", "Sending an OTP to you email...");
+      setIsSendingOTP(true); //display the loader in the bttn
+      setTimeout(() => {setShowOTPModal(true); setIsSendingOTP(false)}, 3000);
     };
   }
+
+  //display of loader inside the button
+  const [isSendingOTP, setIsSendingOTP] = useState(false);
+
+  //OTP modal
+  const [showOTPModal, setShowOTPModal] = useState(false);
 
   return (
     <>
@@ -119,6 +129,8 @@ export default function RegisterPage() {
         <Header />
 
         {alert && <Alert type={alert.type} msg={alert.msg} handleCloseClick={closeAlert}/>}
+
+        {showOTPModal && <OTPModal />}
 
         <div className={styles.bodyContainer}>
           <div className={styles.formParent}>
@@ -129,6 +141,7 @@ export default function RegisterPage() {
                 Become a member of the University's Tech Community
               </label>
 
+              <fieldset disabled={isSendingOTP} className={isSendingOTP ? "fieldsetDisabled" : ""}>
               <form>
                 <div className={styles.formFieldContainer}>
                   <div className={styles.blockFormFields}>
@@ -190,9 +203,10 @@ export default function RegisterPage() {
                   status={formNotEmpty ? "active" : "disabled"}
                   onClick={handleSubmit}
                 >
-                  Verify email
+                  {isSendingOTP ? <BtnLoader /> : "Verify email"} 
                 </Button>
               </form>
+              </fieldset>
             </div>
             <p className={styles.register}>
               Already have an account? <a>Login</a>
