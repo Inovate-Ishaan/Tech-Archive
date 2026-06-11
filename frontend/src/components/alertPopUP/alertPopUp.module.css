@@ -30,6 +30,11 @@
     border-right: 6px solid var(--error);
 }
 
+.info {
+    color: var(--text-primary);
+    border-right: 6px solid var(--accent);
+}
+
 .closeIcon {
     margin-right : 0 ;
 }

@@ -4,8 +4,10 @@ import styles from "./authForm.module.css";
 import Button from "../components/buttons/button";
 import welcomeGraphic from "../assets/graphics/welcome_aboard.svg";
 import Alert from "../components/alertPopUP/alertPopUp";
-import { useState } from "react";
+import PasswordField from "../components/passwordField/passwordField";
+import { useState, useSyncExternalStore } from "react";
 import validator from "validator";
+import BtnLoader from "../components/loaders/btnLoader";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -47,11 +49,14 @@ export default function LoginPage() {
   function handleSubmit(e) {
     e.preventDefault();
     const validForm = validateForm();
-    console.log(validForm);
     if (validForm) {
+      setSubmiting(true);
       showAlert("success", "User logged in successfully");
     }
   }
+
+  //managed button loader
+  const [submiting, setSubmiting] = useState(false);
 
   return (
     <>
@@ -73,6 +78,7 @@ export default function LoginPage() {
               <label className={styles.description}>
                 Good to see you again...
               </label>
+              <fieldset disabled={submiting} className={submiting ? "fieldsetDisabled" : ""}>
               <form>
                 <div className={styles.inputGroup}>
                   <label>Email address</label>
@@ -85,16 +91,15 @@ export default function LoginPage() {
                     }}
                   ></input>
                 </div>
+                
+                {/*Password */}
                 <div className={styles.inputGroup}>
-                  <label>Password</label>
-                  <input
-                    placeholder="****************"
-                    type="password"
+                  <PasswordField
                     value={formData.password}
                     onChange={(e) => {
                       setFormData({ ...formData, password: e.target.value });
                     }}
-                  ></input>
+                  />
                 </div>
 
                 <Button
@@ -102,9 +107,10 @@ export default function LoginPage() {
                   status={formNotEmpty ? "active" : "disabled"}
                   onClick={handleSubmit}
                 >
-                  Login
+                  {submiting? <BtnLoader /> : "Login"}
                 </Button>
               </form>
+              </fieldset>
             </div>
             <p className={styles.register}>
               Don't have an account? <a>Register</a>

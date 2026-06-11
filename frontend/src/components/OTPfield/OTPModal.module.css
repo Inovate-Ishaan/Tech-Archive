@@ -1,0 +1,62 @@
+.parentContainer {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /*Blur the bg*/
+    background-color: rgba(255, 255, 255, 0.3); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    position: absolute;
+
+}
+
+.body {
+    background-color: var(--bg-white);
+    box-shadow: var(--shadow-box);
+    width: 70%;
+    max-width: 750px;
+    height: auto;
+    min-height: 50%;
+    border-radius: 8px;
+    padding: 10px 10px 60px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1000;
+}
+
+.description {
+    color: var(--text-secondary);
+}
+
+.inputContainer {
+    margin-top: 30px;
+} 
+
+.OTPinput{
+    margin : 4px; 
+    font-family: var(--text-primary);
+    font-size: var(--text-h2);
+    padding: 10px;
+    max-width: 40px;
+    height: 50px ;
+    background-color: var(--bg-gray);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid black;
+    box-shadow: var(--shadow-box-bottom);
+}
+.OTPinput:focus{
+    outline: none;
+    border-width: 3px;
+    border-color: rgb(0, 0, 0);
+    box-shadow: var(--shadow);
+}
+
+#submitBtn {
+    max-width: 264px;
+    margin-top: 60px;
+}
