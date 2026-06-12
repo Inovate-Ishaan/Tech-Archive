@@ -9,27 +9,16 @@ datasource db {
 
 // User stores the institute email, password hash, and profile metadata.
 model User {
-  id          String    @id @default(uuid())
-  username    String
-  email       String    @unique
-  password    String
-  instituteId String    @unique
-  projects    Project[]
-  otps        Otp[]
-  createdAt   DateTime  @default(now())
-}
-
-// Project is a small demo relation showing Prisma CRUD in the backend.
-
-model Project {
   id          String   @id @default(uuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  title       String
-  description String
+  username    String
+  email       String   @unique
+  password    String
+  instituteId String   @unique
+  otps        Otp[]
   createdAt   DateTime @default(now())
 }
 
+// Stores OTP for verification
 model Otp {
   id        String   @id @default(uuid())
   email     String

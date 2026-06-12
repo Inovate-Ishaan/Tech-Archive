@@ -6,8 +6,9 @@ import Button from "../components/buttons/button";
 import signHereGraphic from "../assets/graphics/sign_here.svg";
 import Alert from "../components/alertPopUP/alertPopUp";
 import validator from "validator";
-import { useNavigate } from "react-router-dom";
-import { register as apiRegister, signin } from "../utils/api";
+import BtnLoader from "../components/loaders/btnLoader";
+import { register as apiRegister } from "../utils/api";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -16,22 +17,19 @@ export default function RegisterPage() {
     department: "ECE",
     instituteID: "",
     email: "",
+    password: "",
   });
 
-  const { firstName, lastName, department, instituteID, email } = formData;
-  //ensures form is not submitted empty
+  const { firstName, lastName, department, instituteID, email, password } = formData;
   const formNotEmpty =
-    firstName.trim() && lastName.trim() && department.trim() && instituteID.trim() && email.trim() && formData.password && formData.password.trim();
+    firstName.trim() && lastName.trim() && department.trim() && instituteID.trim() && email.trim() && password.trim();
 
-  //validation library ==> validator.js
   function validateInputs() {
-    //validate length of firstname and lastname
     if ((firstName.trim().length < 3) || (lastName.trim().length < 3)) {
       showAlert("error", "Name too short!");
       return false;
     }
 
-    //validate email format
     if (!validator.isEmail(email)) {
       showAlert("error", "Invalid email!");
       return false;
@@ -42,106 +40,43 @@ export default function RegisterPage() {
       return false;
     }
 
-    //fields that cannot contain spaces (ID only for now)
     if (/\s/.test(instituteID)) {
       showAlert("error", "ID cannot have spaces");
       return false;
     }
 
-    if (typeof formData.password !== 'string' || formData.password.length < 6) {
+    if (typeof password !== 'string' || password.length < 6) {
       showAlert('error', 'Password must be at least 6 characters');
       return false;
     }
 
     return true;
   }
-  ///////////////////////////////////////////////////
 
-  //onChange function definitions for each field
-
-  function handleFirstNameChange(e) {
-    setFormData({
-      ...formData,
-      firstName: e.target.value,
-    });
-  }
-
-  function handleLastNameChange(e) {
-    setFormData({
-      ...formData,
-      lastName: e.target.value,
-    });
-  }
-
-  function handleDeptChange(e) {
-    setFormData({
-      ...formData,
-      department: e.target.value,
-    });
-  }
-
-  function handleIDChange(e) {
-    setFormData({
-      ...formData,
-      instituteID: e.target.value,
-    });
-  }
-
-  function handleEmailChange(e) {
-    setFormData({
-      ...formData,
-      email: e.target.value,
-    });
-  }
-
-  ///////////////////////////////////////////
-
-  //Alert
   const [alert, setAlert] = useState(null);
-
   function showAlert(type, msg) {
-    setAlert({
-      type,
-      msg,
-    });
-
-    setTimeout(() => {
-      setAlert(null);
-    }, 3000);
+    setAlert({ type, msg });
+    setTimeout(() => setAlert(null), 3000);
   }
-
-  const closeAlert = () => {
-    setAlert(null);
-  };
-  //////////////////////////////////////////
-
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    const proceed = validateInputs();
-    if (proceed) {
-      // call register API
-      setLoading(true);
-      const username = `${firstName} ${lastName}`;
-      apiRegister({ email, password: formData.password, username, instituteId: instituteID })
-        .then(() => signin(email, formData.password))
-        .then((data) => {
-          if (data.token) {
-            localStorage.setItem('auth_token', data.token);
-            showAlert('success', 'Account created and signed in');
-            navigate('/');
-          }
-        })
-        .catch((err) => {
-          const msg = err && err.error ? err.error : 'Registration failed';
-          showAlert('error', msg);
-        })
-        .finally(() => setLoading(false));
-    };
-  }
+  const closeAlert = () => setAlert(null);
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!validateInputs()) return;
+    setLoading(true);
+    try {
+      const username = `${firstName} ${lastName}`;
+      await apiRegister({ email, password, username, instituteId: instituteID });
+      navigate("/login");
+    } catch (err) {
+      const msg = err && err.error ? err.error : 'Registration failed';
+      showAlert('error', msg);
+      setLoading(false);
+    }
+  }
 
   return (
     <>
@@ -159,6 +94,7 @@ export default function RegisterPage() {
                 Become a member of the University's Tech Community
               </label>
 
+              <fieldset disabled={loading} className={loading ? "fieldsetDisabled" : ""}>
               <form>
                 <div className={styles.formFieldContainer}>
                   <div className={styles.blockFormFields}>
@@ -167,7 +103,7 @@ export default function RegisterPage() {
                       <input
                         placeholder="firstname"
                         value={formData.firstName}
-                        onChange={handleFirstNameChange}
+                        onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                       ></input>
                     </div>
 
@@ -176,7 +112,7 @@ export default function RegisterPage() {
                       <input
                         placeholder="lastname"
                         value={formData.lastName}
-                        onChange={handleLastNameChange}
+                        onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                       ></input>
                     </div>
 
@@ -184,7 +120,7 @@ export default function RegisterPage() {
                       <label >Department</label>
                       <select
                         value={formData.department}
-                        onChange={handleDeptChange}
+                        onChange={(e) => setFormData({ ...formData, department: e.target.value })}
                       >
                         <option>ECE</option>
                         <option>CSE</option>
@@ -201,18 +137,18 @@ export default function RegisterPage() {
                       <input
                         placeholder="B25EC049"
                         value={formData.instituteID}
-                        onChange={handleIDChange}
+                        onChange={(e) => setFormData({ ...formData, instituteID: e.target.value })}
                       ></input>
                     </div>
-                    <div className={styles.inputGroup}>
-                      <label>Password</label>
-                      <input
-                        placeholder="Choose a password"
-                        type="password"
-                        value={formData.password || ''}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      ></input>
-                    </div>
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label>Password</label>
+                    <input
+                      placeholder="Choose a password"
+                      type="password"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    ></input>
                   </div>
 
                   <div className={styles.inputGroup}>
@@ -220,7 +156,7 @@ export default function RegisterPage() {
                     <input
                       placeholder="example@iitbhilai.ac.in"
                       value={formData.email}
-                      onChange={handleEmailChange}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     ></input>
                   </div>
                 </div>
@@ -229,12 +165,13 @@ export default function RegisterPage() {
                   status={formNotEmpty && !loading ? "active" : "disabled"}
                   onClick={handleSubmit}
                 >
-                  {loading ? 'Creating...' : 'Create account'}
+                  {loading ? <BtnLoader /> : 'Create account'}
                 </Button>
               </form>
+              </fieldset>
             </div>
             <p className={styles.register}>
-              Already have an account? <a href="/login">Login</a>
+              Already have an account? <Link to="/login">Login</Link>
             </p>
 
           </div>
@@ -242,8 +179,6 @@ export default function RegisterPage() {
             <img src={signHereGraphic} className={styles.graphic} />
           </div>
         </div>
-
-        <Footer className={styles.footer} />
       </div>
     </>
   );

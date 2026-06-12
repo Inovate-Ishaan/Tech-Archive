@@ -6,13 +6,10 @@ export async function signin(email, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
   });
-
   const data = await res.json();
   if (!res.ok) throw data;
   return data;
 }
-
-export default { signin };
 
 export async function register({ email, password, username, instituteId }) {
   const res = await fetch(`${API_BASE}/api/auth/register`, {
@@ -20,7 +17,28 @@ export async function register({ email, password, username, instituteId }) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password, username, instituteId }),
   });
+  const data = await res.json();
+  if (!res.ok) throw data;
+  return data;
+}
 
+export async function requestOtp(email) {
+  const res = await fetch(`${API_BASE}/api/auth/request-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+  return data;
+}
+
+export async function verifyOtp(email, code) {
+  const res = await fetch(`${API_BASE}/api/auth/verify-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, code }),
+  });
   const data = await res.json();
   if (!res.ok) throw data;
   return data;

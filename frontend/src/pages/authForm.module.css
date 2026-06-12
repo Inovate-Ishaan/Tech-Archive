@@ -1,6 +1,6 @@
 /*stylesheet for login.jsx, register.jsx and related pages*/
 
-.app { /*the root element*/
+.app {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -45,7 +45,7 @@ form {
     flex-direction: column;
 }
 
-.formFieldContainer { /*container of all input fields but not submit button, to create margin from button */
+.formFieldContainer {
     margin-bottom: 40px;
 }
 
@@ -63,16 +63,16 @@ form {
 }
 
 input, select{
-    font-family: var(--text-primary);
+    font-family: var(--font-primary);
     font-size: var(--text-body2);
     padding: 10px;
 }
 input:focus{
-    outline: none;
-    border-width: 3px;
-    border-color: rgb(0, 0, 0);
+    outline: 2px solid black;
     box-shadow: var(--shadow);
 }
+
+
 
 select:focus{
     outline: none;
@@ -80,6 +80,7 @@ select:focus{
     border-color: rgb(0, 0, 0);
     box-shadow: var(--shadow);
 }
+
 
 .register {
     margin-top: 25px;

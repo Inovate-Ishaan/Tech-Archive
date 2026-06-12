@@ -1,8 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
-
-// Seed script used to create a quick demo user and project in the local database.
-// This helps developers test the login, OTP, and CRUD flow without manual setup.
 const prisma = new PrismaClient();
 
 async function main() {
@@ -21,17 +18,6 @@ async function main() {
       username,
       password: hashed,
       instituteId,
-    },
-  });
-
-  await prisma.project.upsert({
-    where: { id: '00000000-0000-0000-0000-000000000001' },
-    update: {},
-    create: {
-      id: '00000000-0000-0000-0000-000000000001',
-      userId: user.id,
-      title: 'Seed Project',
-      description: 'A sample seeded project',
     },
   });
 

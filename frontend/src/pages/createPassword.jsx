@@ -5,12 +5,13 @@ import Button from "../components/buttons/button";
 import Alert from "../components/alertPopUP/alertPopUp";
 import passwordGraphic from "../assets/graphics/enter_password.svg";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function CreatePasswordPage() {
 
   const [formData, setFormData] = useState({
-    password : null,
-    confirmPassword : null,
+    password : "",
+    confirmPassword : "",
   });
 
   function handlePassChange(e) {
@@ -29,7 +30,7 @@ export default function CreatePasswordPage() {
 
   function validatePasswords() {
     // length >= 8 and both passwords matching only for now, not checking the strength
-    if (formData.password != formData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       //show error
       showAlert("error", "Passwords must match")
       return false;
@@ -130,7 +131,7 @@ export default function CreatePasswordPage() {
               </form>
             </div>
             <p className={styles.register}>
-              Already have an account? <a>Login</a>
+              Already have an account? <Link to="/login">Login</Link>
             </p>
           </div>
           <div className={styles.graphicContainer}>

@@ -4,10 +4,13 @@ import styles from "./authForm.module.css";
 import Button from "../components/buttons/button";
 import welcomeGraphic from "../assets/graphics/welcome_aboard.svg";
 import Alert from "../components/alertPopUP/alertPopUp";
+import PasswordField from "../components/passwordField/passwordField";
 import { useState } from "react";
 import validator from "validator";
+import BtnLoader from "../components/loaders/btnLoader";
+import OTPModal from "../components/OTPfield/OTPModal";
+import { signin, requestOtp } from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
-import { signin } from "../utils/api";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -16,23 +19,15 @@ export default function LoginPage() {
   });
 
   const { email, password } = formData;
-
   const formNotEmpty = email.trim() && password.trim();
+  const navigate = useNavigate();
 
-  //Alert
   const [alert, setAlert] = useState(null);
-
   function showAlert(type, msg) {
     setAlert({ type, msg });
-    setTimeout(() => {
-      setAlert(null);
-    }, 3000);
+    setTimeout(() => setAlert(null), 3000);
   }
-
-  const closeAlert = () => {
-    setAlert(null);
-  };
-  //////////////////////////////////////////
+  const closeAlert = () => setAlert(null);
 
   function validateForm() {
     if (!validator.isEmail(email)) {
@@ -46,39 +41,45 @@ export default function LoginPage() {
       showAlert("error", "Use your institute email (@iitbhilai.ac.in)");
       return false;
     }
-
     return true;
   }
 
-  function handleSubmit(e) {
+  const [submitting, setSubmitting] = useState(false);
+  const [showOTP, setShowOTP] = useState(false);
+  const [verified, setVerified] = useState(false);
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    const validForm = validateForm();
-    console.log(validForm);
-    if (validForm) {
-      // call backend
-      setLoading(true);
-      signin(email, password)
-        .then((data) => {
-          const { token } = data;
-          if (token) {
-            localStorage.setItem("auth_token", token);
-            showAlert("success", "Logged in successfully");
-            // redirect to home
-            navigate("/");
-          } else {
-            showAlert("error", "No token received");
-          }
-        })
-        .catch((err) => {
-          const msg = err && err.error ? err.error : "Signin failed";
-          showAlert("error", msg);
-        })
-        .finally(() => setLoading(false));
+    if (!validateForm()) return;
+    setSubmitting(true);
+    try {
+      await signin(email, password);
+    } catch (err) {
+      console.error('[Signin]', err);
+      const msg = err && err.error ? err.error : (err?.message || 'Signin failed');
+      showAlert('error', msg);
+      setSubmitting(false);
+      return;
+    }
+    try {
+      const otpData = await requestOtp(email);
+      if (otpData.devCode) {
+        console.log("[DEV] OTP code:", otpData.devCode);
+      }
+      setShowOTP(true);
+    } catch (err) {
+      console.error('[OTP send]', err);
+      showAlert('error', 'Password correct but failed to send OTP. Try again.');
+      setSubmitting(false);
     }
   }
 
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  function handleVerified() {
+    setVerified(true);
+    setTimeout(() => {
+      navigate("/login");
+    }, 1500);
+  }
 
   return (
     <>
@@ -86,13 +87,24 @@ export default function LoginPage() {
         <Header />
 
         {alert && (
-          <Alert
-            type={alert.type}
-            msg={alert.msg}
-            handleCloseClick={closeAlert}
+          <Alert type={alert.type} msg={alert.msg} handleCloseClick={closeAlert} />
+        )}
+
+        {showOTP && !verified && (
+          <OTPModal
+            email={email}
+            onVerified={handleVerified}
           />
         )}
 
+        {verified && (
+          <div style={{ padding: "40px", textAlign: "center" }}>
+            <h1>Logged In!</h1>
+            <p>Redirecting...</p>
+          </div>
+        )}
+
+        {!showOTP && (
         <div className={styles.bodyContainer}>
           <div className={styles.formParent}>
             <div className={styles.formContainer}>
@@ -100,34 +112,34 @@ export default function LoginPage() {
               <label className={styles.description}>
                 Good to see you again...
               </label>
+              <fieldset disabled={submitting} className={submitting ? "fieldsetDisabled" : ""}>
               <form>
                 <div className={styles.inputGroup}>
-                  <label >Email address</label>
+                  <label>Email address</label>
                   <input
-                    placeholder="example@iitbhilai.ac.in"
+                    placeholder="pawanteja@email.com"
                     type="email"
-                    value={email}
+                    value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   ></input>
                 </div>
+
                 <div className={styles.inputGroup}>
-                  <label>Password</label>
-                  <input
-                    placeholder="****************"
-                    type="password"
-                    value={password}
+                  <PasswordField
+                    value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  ></input>
+                  />
                 </div>
 
                 <Button
                   variant="primaryBlack"
-                  status={formNotEmpty && !loading ? "active" : "disabled"}
+                  status={formNotEmpty && !submitting ? "active" : "disabled"}
                   onClick={handleSubmit}
                 >
-                  {loading ? "Signing in..." : "Login"}
+                  {submitting ? <BtnLoader /> : "Login"}
                 </Button>
               </form>
+              </fieldset>
             </div>
             <p className={styles.register}>
               Don't have an account? <Link to="/register">Register</Link>
@@ -137,6 +149,7 @@ export default function LoginPage() {
             <img src={welcomeGraphic} className={styles.graphic} />
           </div>
         </div>
+        )}
 
         <Footer className={styles.footer} />
       </div>

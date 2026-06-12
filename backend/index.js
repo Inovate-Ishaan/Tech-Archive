@@ -7,83 +7,49 @@ const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const nodemailer = require('nodemailer');
 
-// Main backend entry point for auth, OTP email flow, JWT handling, and Prisma demo CRUD.
-
-// Creates the SMTP transport used for email delivery.
-// - If SMTP env vars are set, use your real SMTP provider.
-// - Otherwise fall back to Ethereal test credentials for local development.
-async function createTransport() {
-  if (process.env.SMTP_HOST && process.env.SMTP_USER) {
-    return nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT || 587),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
-  }
-// Fallback to Ethereal for development/testing
-  const testAccount = await nodemailer.createTestAccount();
-  return nodemailer.createTransport({
-    host: testAccount.smtp.host,
-    port: testAccount.smtp.port,
-    secure: testAccount.smtp.secure,
-    auth: {
-      user: testAccount.user,
-      pass: testAccount.pass,
-    },
-  });
-}
-
-// Unified email sender used by the OTP flow.
-// Priority order:
-// 1) Brevo API when BREVO_API_KEY is configured.
-// 2) Nodemailer SMTP/Ethereal fallback for local/dev testing.
 async function sendEmail({ to, subject, text, html }) {
-  if (process.env.BREVO_API_KEY) {
-    try {
-      const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
-        method: 'POST',
-        headers: {
-          'api-key': process.env.BREVO_API_KEY,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sender: { email: process.env.EMAIL_FROM || 'no-reply@techarchive.local' },
-          to: [{ email: to }],
-          subject,
-          htmlContent: html,
-          textContent: text,
-        }),
-      });
-
-      const data = await resp.json();
-      if (!resp.ok || data?.code === 'unauthorized') {
-        throw new Error(data?.message || 'Brevo delivery failed');
-      }
-
-      return { provider: 'brevo', resp: data };
-    } catch (err) {
-      console.warn('Brevo delivery failed, falling back to nodemailer:', err.message || err);
-    }
+  if (!process.env.BREVO_API_KEY) {
+    const testAccount = await nodemailer.createTestAccount();
+    const transporter = nodemailer.createTransport({
+      host: testAccount.smtp.host,
+      port: testAccount.smtp.port,
+      secure: testAccount.smtp.secure,
+      auth: { user: testAccount.user, pass: testAccount.pass },
+    });
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_FROM || 'no-reply@techarchive.local',
+      to, subject, text, html,
+    });
+    return { provider: 'ethereal', previewUrl: nodemailer.getTestMessageUrl(info) };
   }
 
-  // Fallback path: local SMTP (if configured) or Ethereal test account.
-  const transporter = await createTransport();
-  const info = await transporter.sendMail({
-    from: process.env.EMAIL_FROM || 'no-reply@techarchive.local',
-    to,
-    subject,
-    text,
-    html,
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
 
-  let previewUrl = null;
-  if (nodemailer.getTestMessageUrl) previewUrl = nodemailer.getTestMessageUrl(info);
+  try {
+    const resp = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        'api-key': process.env.BREVO_API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        sender: { email: process.env.EMAIL_FROM || 'no-reply@techarchive.local' },
+        to: [{ email: to }],
+        subject,
+        htmlContent: html,
+        textContent: text,
+      }),
+    });
 
-  return { provider: 'nodemailer', info, previewUrl };
+    const data = await resp.json();
+    if (!resp.ok) {
+      throw new Error(data?.message || 'Brevo delivery failed');
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 const app = express();
@@ -93,6 +59,17 @@ const prisma = new PrismaClient();
 
 app.use(cors());
 app.use(express.json());
+
+async function cleanExpiredOtps() {
+  const { count } = await prisma.otp.deleteMany({
+    where: { OR: [{ expiresAt: { lte: new Date() } }, { used: true }] },
+  });
+  if (count > 0) console.log(`Cleaned ${count} OTP(s)`);
+}
+
+// Periodic cleanup every 5 minutes
+setInterval(cleanExpiredOtps, 5 * 60 * 1000);
+cleanExpiredOtps();
 
 app.get('/', (req, res) => {
   res.json({ ok: true, msg: 'Auth backend running with Prisma' });
@@ -109,24 +86,21 @@ app.post('/api/auth/request-otp', async (req, res) => {
       return res.status(400).json({ error: 'Email must be an @iitbhilai.ac.in address' });
     }
 
-    // 2) Create an OTP and keep it in the database for later verification.
+    // 2) Remove old unused OTPs for this email, then create a new one.
+    await prisma.otp.deleteMany({ where: { email, used: false, expiresAt: { lte: new Date() } } });
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
     const user = await prisma.user.findUnique({ where: { email } });
     await prisma.otp.create({ data: { email, code, expiresAt, userId: user ? user.id : null } });
+    console.log(`\n[DEV] OTP for ${email}: ${code}\n`);
 
-    // 3) Send the OTP via Brevo or the SMTP/Ethereal fallback.
+    // 3) Send the OTP via Brevo API or Ethereal (dev).
     const subject = 'Your Tech Archive OTP';
     const text = `Your one-time sign-in code is: ${code}. It expires in 10 minutes.`;
     const html = `<p>Your one-time sign-in code is: <strong>${code}</strong>.</p><p>It expires in 10 minutes.</p>`;
-    const sendResult = await sendEmail({ to: email, subject, text, html });
+    const result = await sendEmail({ to: email, subject, text, html });
 
-    // 4) Return a preview URL for dev testing when using Ethereal, otherwise return provider metadata.
-    if (sendResult.provider === 'nodemailer') {
-      return res.json({ ok: true, previewUrl: sendResult.previewUrl });
-    }
-
-    return res.json({ ok: true, provider: sendResult.provider, response: sendResult.resp });
+    return res.json({ ok: true, devCode: code, previewUrl: result?.previewUrl });
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error(err);
@@ -152,7 +126,7 @@ app.post('/api/auth/verify-otp', async (req, res) => {
     if (!user) return res.status(404).json({ error: 'User not found' });
 
     const payload = { id: user.id, email: user.email };
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
     return res.json({ token, user: { id: user.id, email: user.email, username: user.username } });
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -202,7 +176,7 @@ app.post('/api/auth/signin', async (req, res) => {
     if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
 
     const payload = { id: user.id, email: user.email };
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
 
     return res.json({ token, user: { id: user.id, email: user.email, username: user.username } });
   } catch (err) {
@@ -210,67 +184,10 @@ app.post('/api/auth/signin', async (req, res) => {
     console.error(err);
     return res.status(500).json({ error: 'Server error' });
   }
-});
-
-// Demo CRUD endpoints for `Project` (example of Prisma usage)
-// List projects
-app.get('/api/demo/projects', async (req, res) => {
-  try {
-    const projects = await prisma.project.findMany({ include: { user: true } });
-    return res.json({ projects });
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(err);
-    return res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// Create project for a user identified by email
-app.post('/api/demo/projects', async (req, res) => {
-  try {
-    const { email, title, description } = req.body || {};
-    if (!email || !title) return res.status(400).json({ error: 'email and title required' });
-
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return res.status(404).json({ error: 'User not found' });
-
-    const project = await prisma.project.create({ data: { userId: user.id, title, description: description || '' } });
-    return res.json({ project });
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(err);
-    return res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// Update project by id
-app.put('/api/demo/projects/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, description } = req.body || {};
-    const project = await prisma.project.update({ where: { id }, data: { title, description } });
-    return res.json({ project });
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(err);
-    return res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// Delete project by id
-app.delete('/api/demo/projects/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await prisma.project.delete({ where: { id } });
-    return res.json({ ok: true });
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(err);
-    return res.status(500).json({ error: 'Server error' });
-  }
-});
+})
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Auth server listening on port ${PORT}`);
 });
+
