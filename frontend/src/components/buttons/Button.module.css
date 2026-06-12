@@ -4,6 +4,10 @@
     border: solid 2px black;
     padding: 12px 24px;
     text-align: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn:hover{
