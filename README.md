@@ -1,18 +1,41 @@
 # Tech-Archive
 
-Full-stack auth app for IIT Bhilai with email OTP verification and JWT-based sessions.
 
 ## Prerequisites
 
 - Node.js 18+
-- PostgreSQL running on `localhost:5432`
+- PostgreSQL running on `localhost:5432` (or a cloud DB — see below)
 - npm
+
+## Local PostgreSQL Setup
+
+```bash
+# Ubuntu/Debian
+sudo apt install postgresql postgresql-contrib
+sudo systemctl start postgresql
+
+# Create database
+sudo -u postgres createdb tech_archive_dev
+
+# Create user (optional, or use postgres superuser)
+sudo -u postgres psql -c "CREATE USER your_user WITH PASSWORD 'your_password';"
+sudo -u postgres psql -c "GRANT ALL ON DATABASE tech_archive_dev TO your_user;"
+```
+
+Then set `DATABASE_URL` in `backend/.env` to:
+```
+DATABASE_URL="postgresql://your_user:your_password@localhost:5432/tech_archive_dev?schema=public"
+```
+
+### Cloud DB (alternative)
+
+You can use any remote Postgres provider (Neon, Supabase, Railway, Aiven). Get the connection string and set it as `DATABASE_URL` in `.env`. The setup commands remain the same.
 
 ## Setup
 
 ### 1. Clone and install dependencies
 
-```bash
+
 git clone https://github.com/Inovate-Ishaan/Tech-Archive.git
 cd Tech-Archive
 
@@ -39,7 +62,7 @@ Edit `backend/.env`:
 
 Open two terminals:
 
-```bash
+
 # Terminal 1 — Backend (port 4000)
 cd backend
 node index.js
@@ -47,18 +70,3 @@ node index.js
 # Terminal 2 — Frontend (port 5173)
 cd frontend
 VITE_API_URL=http://localhost:4000 npx vite --host
-```
-
-### 4. Use
-
-- **Register** at `http://localhost:5173/register` — account created, OTP sent
-- **Verify OTP** — enter the 6-digit code (check browser console or terminal for dev code)
-- **Login** at `http://localhost:5173/login` — email + password, no OTP (direct sign-in)
-- **Seed user**: `seed@iitbhilai.ac.in` / `password123`
-
-### Email in development
-
-Without `BREVO_API_KEY`, the app uses Ethereal (fake SMTP). The OTP code is printed in:
-- Backend terminal: `[DEV] OTP for ...: XXXXXX`
-- Browser console (F12): `[DEV] OTP code: XXXXXX`
-- Ethereal preview URL returned in the request-otp API response
