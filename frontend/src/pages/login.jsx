@@ -8,8 +8,7 @@ import PasswordField from "../components/passwordField/passwordField";
 import { useState } from "react";
 import validator from "validator";
 import BtnLoader from "../components/loaders/btnLoader";
-import OTPModal from "../components/OTPfield/OTPModal";
-import { signin, requestOtp } from "../utils/api";
+import { signin } from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function LoginPage() {
@@ -45,40 +44,24 @@ export default function LoginPage() {
   }
 
   const [submitting, setSubmitting] = useState(false);
-  const [showOTP, setShowOTP] = useState(false);
-  const [verified, setVerified] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
     if (!validateForm()) return;
     setSubmitting(true);
     try {
-      await signin(email, password);
-    } catch (err) {
-      console.error('[Signin]', err);
-      const msg = err && err.error ? err.error : (err?.message || 'Signin failed');
-      showAlert('error', msg);
-      setSubmitting(false);
-      return;
-    }
-    try {
-      const otpData = await requestOtp(email);
-      if (otpData.devCode) {
-        console.log("[DEV] OTP code:", otpData.devCode);
+      const data = await signin(email, password);
+      if (data.token) {
+        localStorage.setItem("auth_token", data.token);
+        showAlert("success", "Logged in successfully");
+        setTimeout(() => navigate("/"), 1000);
       }
-      setShowOTP(true);
     } catch (err) {
-      console.error('[OTP send]', err);
-      showAlert('error', 'Password correct but failed to send OTP. Try again.');
+      const msg = err && err.error ? err.error : "Signin failed";
+      showAlert("error", msg);
+    } finally {
       setSubmitting(false);
     }
-  }
-
-  function handleVerified() {
-    setVerified(true);
-    setTimeout(() => {
-      navigate("/login");
-    }, 1500);
   }
 
   return (
@@ -90,21 +73,6 @@ export default function LoginPage() {
           <Alert type={alert.type} msg={alert.msg} handleCloseClick={closeAlert} />
         )}
 
-        {showOTP && !verified && (
-          <OTPModal
-            email={email}
-            onVerified={handleVerified}
-          />
-        )}
-
-        {verified && (
-          <div style={{ padding: "40px", textAlign: "center" }}>
-            <h1>Logged In!</h1>
-            <p>Redirecting...</p>
-          </div>
-        )}
-
-        {!showOTP && (
         <div className={styles.bodyContainer}>
           <div className={styles.formParent}>
             <div className={styles.formContainer}>
@@ -149,7 +117,6 @@ export default function LoginPage() {
             <img src={welcomeGraphic} className={styles.graphic} />
           </div>
         </div>
-        )}
 
         <Footer className={styles.footer} />
       </div>

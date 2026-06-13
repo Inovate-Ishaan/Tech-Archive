@@ -7,7 +7,8 @@ import signHereGraphic from "../assets/graphics/sign_here.svg";
 import Alert from "../components/alertPopUP/alertPopUp";
 import validator from "validator";
 import BtnLoader from "../components/loaders/btnLoader";
-import { register as apiRegister } from "../utils/api";
+import OTPModal from "../components/OTPfield/OTPModal";
+import { register as apiRegister, requestOtp } from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function RegisterPage() {
@@ -62,6 +63,8 @@ export default function RegisterPage() {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showOTP, setShowOTP] = useState(false);
+  const [verified, setVerified] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -70,12 +73,29 @@ export default function RegisterPage() {
     try {
       const username = `${firstName} ${lastName}`;
       await apiRegister({ email, password, username, instituteId: instituteID });
-      navigate("/login");
     } catch (err) {
       const msg = err && err.error ? err.error : 'Registration failed';
       showAlert('error', msg);
       setLoading(false);
+      return;
     }
+    try {
+      const otpData = await requestOtp(email);
+      if (otpData.devCode) {
+        console.log("[DEV] OTP code:", otpData.devCode);
+      }
+      setShowOTP(true);
+    } catch (err) {
+      showAlert('error', 'Account created but failed to send OTP. Try logging in.');
+      setLoading(false);
+    }
+  }
+
+  function handleVerified() {
+    setVerified(true);
+    setTimeout(() => {
+      navigate("/login");
+    }, 1500);
   }
 
   return (
@@ -85,6 +105,21 @@ export default function RegisterPage() {
 
         {alert && <Alert type={alert.type} msg={alert.msg} handleCloseClick={closeAlert}/>}
 
+        {showOTP && !verified && (
+          <OTPModal
+            email={email}
+            onVerified={handleVerified}
+          />
+        )}
+
+        {verified && (
+          <div style={{ padding: "40px", textAlign: "center" }}>
+            <h1>Account Verified!</h1>
+            <p>Redirecting to login...</p>
+          </div>
+        )}
+
+        {!showOTP && (
         <div className={styles.bodyContainer}>
           <div className={styles.formParent}>
             <div className={styles.formContainer}>
@@ -179,6 +214,7 @@ export default function RegisterPage() {
             <img src={signHereGraphic} className={styles.graphic} />
           </div>
         </div>
+        )}
       </div>
     </>
   );

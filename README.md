@@ -7,17 +7,16 @@
 - PostgreSQL running on `localhost:5432` (or a cloud DB — see below)
 - npm
 
-## Local PostgreSQL Setup
+Local Setup Guide
 
-```bash
-# Ubuntu/Debian
+# Ububntu
 sudo apt install postgresql postgresql-contrib
 sudo systemctl start postgresql
 
 # Create database
 sudo -u postgres createdb tech_archive_dev
 
-# Create user (optional, or use postgres superuser)
+# Create user
 sudo -u postgres psql -c "CREATE USER your_user WITH PASSWORD 'your_password';"
 sudo -u postgres psql -c "GRANT ALL ON DATABASE tech_archive_dev TO your_user;"
 ```
@@ -27,14 +26,10 @@ Then set `DATABASE_URL` in `backend/.env` to:
 DATABASE_URL="postgresql://your_user:your_password@localhost:5432/tech_archive_dev?schema=public"
 ```
 
-### Cloud DB (alternative)
+# Setup
 
-You can use any remote Postgres provider (Neon, Supabase, Railway, Aiven). Get the connection string and set it as `DATABASE_URL` in `.env`. The setup commands remain the same.
-
-## Setup
 
 ### 1. Clone and install dependencies
-
 
 git clone https://github.com/Inovate-Ishaan/Tech-Archive.git
 cd Tech-Archive
@@ -53,10 +48,13 @@ npm install
 
 ### 2. Configure environment
 
+## copy the BREVO_API_KEY and EMAIL_FROM given below and setup your own JWT_SECRET & DATABASE_URL
+
 Edit `backend/.env`:
 - `DATABASE_URL` — your PostgreSQL connection string
 - `JWT_SECRET` — a random secret for signing tokens
-- `BREVO_API_KEY` — uncomment and set for real email delivery (optional for dev)
+- `BREVO_API_KEY`="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"
+- `EMAIL_FROM`="pawanteja626@gmail.com"
 
 ### 3. Run
 
