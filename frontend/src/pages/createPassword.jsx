@@ -4,78 +4,122 @@ import styles from "./authForm.module.css";
 import Button from "../components/buttons/button";
 import Alert from "../components/alertPopUP/alertPopUp";
 import passwordGraphic from "../assets/graphics/enter_password.svg";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { setPassword } from "../utils/api";
 
 export default function CreatePasswordPage() {
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    password : "",
-    confirmPassword : "",
+    password: "",
+    confirmPassword: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [email, setEmail] = useState("");
+
+  // Get email from sessionStorage (set after OTP verification)
+  useEffect(() => {
+    const storedEmail = sessionStorage.getItem("registrationEmail");
+    if (storedEmail) {
+      setEmail(storedEmail);
+    } else {
+      // No email in session, redirect to register
+      navigate("/register");
+    }
+  }, [navigate]);
 
   function handlePassChange(e) {
     setFormData({
       ...formData,
-      password : e.target.value,
-    })
-  };
+      password: e.target.value,
+    });
+  }
 
   function handleConfirmPassChange(e) {
     setFormData({
       ...formData,
-      confirmPassword : e.target.value,
-    })
-  };
+      confirmPassword: e.target.value,
+    });
+  }
 
   function validatePasswords() {
-    // length >= 8 and both passwords matching only for now, not checking the strength
     if (formData.password !== formData.confirmPassword) {
-      //show error
-      showAlert("error", "Passwords must match")
-      return false;
-
-    } 
-
-    else if (formData.password.length < 8){
-      //error
-      showAlert("error","Passwords must be of atleast 8 characters")
+      showAlert("error", "Passwords must match");
       return false;
     }
 
-    //tabs spaces and newlines
-    else if (/\s/.test(formData.password)) {
-      showAlert("error", "Spaces not allowed in password")
+    if (formData.password.length < 8) {
+      showAlert("error", "Passwords must be of at least 8 characters");
+      return false;
+    }
+
+    if (/\s/.test(formData.password)) {
+      showAlert("error", "Spaces not allowed in password");
+      return false;
+    }
+
+    if (!/[A-Z]/.test(formData.password)) {
+      showAlert("error", "Password must contain at least one uppercase letter");
+      return false;
+    }
+
+    if (!/[a-z]/.test(formData.password)) {
+      showAlert("error", "Password must contain at least one lowercase letter");
+      return false;
+    }
+
+    if (!/[0-9]/.test(formData.password)) {
+      showAlert("error", "Password must contain at least one number");
+      return false;
+    }
+
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+      showAlert("error", "Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>)");
       return false;
     }
 
     return true;
   }
 
-  function handleCreatePassClick(e) {
-      e.preventDefault();
+  const [loading, setLoading] = useState(false);
 
-      //validatePasswords
-      if (validatePasswords()) {
-          //send data to backend
-          showAlert("success", "Sending data to Backend")
-        }
-  };
+  async function handleCreatePassClick(e) {
+    e.preventDefault();
 
+    if (!validatePasswords()) return;
+    setLoading(true);
 
-  //managing the popup
+    try {
+      await setPassword(email, formData.password);
+      showAlert("success", "Password set successfully! Redirecting to login...");
+      sessionStorage.removeItem("registrationEmail");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    } catch (err) {
+      const msg = err && err.error ? err.error : "Failed to set password";
+      showAlert("error", msg);
+      setLoading(false);
+    }
+  }
+
+  // managing the popup
   const [alert, setAlert] = useState(null);
 
   function showAlert(type, msg) {
-      setAlert({
-          type,
-          msg,
-      })
+    setAlert({
+      type,
+      msg,
+    });
 
-      setTimeout(() => {
-        setAlert(null)
-      }, 3000);
-  };
+    setTimeout(() => {
+      setAlert(null);
+    }, 3000);
+  }
 
   const closeAlert = () => {
     setAlert(null);
@@ -101,22 +145,40 @@ export default function CreatePasswordPage() {
                 <div className={styles.formFieldContainer}>
                   <div className={styles.inputGroup}>
                     <label>Create Password</label>
-                    <input
-                      placeholder="****************"
-                      type="password"
-                      value={formData.password}
-                      onChange={handlePassChange}
-                    ></input>
+                    <div className={styles.passwordWrapper}>
+                      <input
+                        placeholder="****************"
+                        type={showPassword ? "text" : "password"}
+                        value={formData.password}
+                        onChange={handlePassChange}
+                      ></input>
+                      <button
+                        type="button"
+                        className={styles.togglePassword}
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? "Hide" : "Show"}
+                      </button>
+                    </div>
                   </div>
 
                   <div className={styles.inputGroup}>
                     <label>Confirm Password</label>
-                    <input
-                      placeholder="****************"
-                      type="password"
-                      value={formData.confirmPassword}
-                      onChange={handleConfirmPassChange}
-                    ></input>
+                    <div className={styles.passwordWrapper}>
+                      <input
+                        placeholder="****************"
+                        type={showConfirmPassword ? "text" : "password"}
+                        value={formData.confirmPassword}
+                        onChange={handleConfirmPassChange}
+                      ></input>
+                      <button
+                        type="button"
+                        className={styles.togglePassword}
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
+                        {showConfirmPassword ? "Hide" : "Show"}
+                      </button>
+                    </div>
                   </div>
                 </div>
 

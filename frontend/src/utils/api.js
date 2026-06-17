@@ -43,3 +43,14 @@ export async function verifyOtp(email, code) {
   if (!res.ok) throw data;
   return data;
 }
+
+export async function setPassword(email, password) {
+  const res = await fetch(`${API_BASE}/api/auth/set-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+  return data;
+}
