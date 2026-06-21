@@ -6,6 +6,7 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const nodemailer = require('nodemailer');
+const rateLimit = require('express-rate-limit');
 
 async function sendEmail({ to, subject, text, html }) {
   if (!process.env.BREVO_API_KEY) {
@@ -60,6 +61,34 @@ const prisma = new PrismaClient();
 app.use(cors());
 app.use(express.json());
 
+// Rate limiters
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // limit each IP to 10 requests per windowMs
+  message: { error: 'Too many requests, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const otpLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 3, // limit each IP to 3 OTP requests per hour
+  message: { error: 'Too many OTP requests, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const strictLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // strict limit for sensitive operations
+  message: { error: 'Too many requests, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use(cors());
+app.use(express.json());
+
 async function cleanExpiredOtps() {
   const { count } = await prisma.otp.deleteMany({
     where: { OR: [{ expiresAt: { lte: new Date() } }, { used: true }] },
@@ -76,7 +105,7 @@ app.get('/', (req, res) => {
 });
 
 // Request OTP: validate email, store a one-time code, and send it to the user.
-app.post('/api/auth/request-otp', async (req, res) => {
+app.post('/api/auth/request-otp', otpLimiter, async (req, res) => {
   try {
     // 1) Basic input validation.
     const { email } = req.body || {};
@@ -86,8 +115,11 @@ app.post('/api/auth/request-otp', async (req, res) => {
       return res.status(400).json({ error: 'Email must be an @iitbhilai.ac.in address' });
     }
 
-    // 2) Remove old unused OTPs for this email, then create a new one.
-    await prisma.otp.deleteMany({ where: { email, used: false, expiresAt: { lte: new Date() } } });
+    // 2) Invalidate all previous unused OTPs for this email, then create a new one.
+    await prisma.otp.updateMany({
+      where: { email, used: false },
+      data: { used: true },
+    });
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
     const user = await prisma.user.findUnique({ where: { email } });
@@ -135,23 +167,27 @@ app.post('/api/auth/verify-otp', async (req, res) => {
   }
 });
 
-// Register endpoint
-app.post('/api/auth/register', async (req, res) => {
+// Register endpoint - creates user without password (password set later via /set-password)
+app.post('/api/auth/register', strictLimiter, async (req, res) => {
   try {
-    const { email, password, username, instituteId } = req.body || {};
-    if (!email || !password || !username || !instituteId) {
+    const { email, username, instituteId } = req.body || {};
+    if (!email || !username || !instituteId) {
       return res.status(400).json({ error: 'Missing fields' });
     }
 
     if (!validator.isEmail(email)) return res.status(400).json({ error: 'Invalid email' });
     if (!email.toLowerCase().endsWith('@iitbhilai.ac.in')) return res.status(400).json({ error: 'Email must be an @iitbhilai.ac.in address' });
-    if (typeof password !== 'string' || password.length < 6) return res.status(400).json({ error: 'Password too short' });
+    if (typeof username !== 'string' || username.length < 3 || username.length > 30) {
+      return res.status(400).json({ error: 'Username must be 3-30 characters' });
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      return res.status(400).json({ error: 'Username can only contain letters, numbers, and underscores' });
+    }
 
-    const existing = await prisma.user.findFirst({ where: { OR: [{ email }, { instituteId }] } });
+    const existing = await prisma.user.findFirst({ where: { OR: [{ email }, { username }, { instituteId }] } });
     if (existing) return res.status(409).json({ error: 'User already exists' });
 
-    const hashed = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({ data: { email, username, password: hashed, instituteId } });
+    const user = await prisma.user.create({ data: { email, username, instituteId } });
 
     return res.json({ user: { id: user.id, email: user.email, username: user.username } });
   } catch (err) {
@@ -161,8 +197,36 @@ app.post('/api/auth/register', async (req, res) => {
   }
 });
 
+// Set password after OTP verification
+app.post('/api/auth/set-password', strictLimiter, async (req, res) => {
+  try {
+    const { email, password } = req.body || {};
+    if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+    if (!validator.isEmail(email)) return res.status(400).json({ error: 'Invalid email' });
+    if (!email.toLowerCase().endsWith('@iitbhilai.ac.in')) return res.status(400).json({ error: 'Email must be an @iitbhilai.ac.in address' });
+    if (typeof password !== 'string' || password.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters' });
+    // Password complexity: at least one uppercase, one lowercase, one number, one special char
+    if (!/[A-Z]/.test(password)) return res.status(400).json({ error: 'Password must contain at least one uppercase letter' });
+    if (!/[a-z]/.test(password)) return res.status(400).json({ error: 'Password must contain at least one lowercase letter' });
+    if (!/[0-9]/.test(password)) return res.status(400).json({ error: 'Password must contain at least one number' });
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) return res.status(400).json({ error: 'Password must contain at least one special character' });
+
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const hashed = await bcrypt.hash(password, 10);
+    await prisma.user.update({ where: { email }, data: { password: hashed } });
+
+    return res.json({ ok: true });
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error(err);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Signin endpoint with DB verification
-app.post('/api/auth/signin', async (req, res) => {
+app.post('/api/auth/signin', authLimiter, async (req, res) => {
   try {
     const { email, password } = req.body || {};
     if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
@@ -171,6 +235,10 @@ app.post('/api/auth/signin', async (req, res) => {
 
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+
+    if (!user.password) {
+      return res.status(400).json({ error: 'Please complete registration by verifying OTP and setting password first' });
+    }
 
     const ok = await bcrypt.compare(password, user.password);
     if (!ok) return res.status(401).json({ error: 'Invalid credentials' });

@@ -62,6 +62,32 @@ form {
     margin: 15px 0px;
 }
 
+.passwordWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.passwordWrapper input {
+    flex: 1;
+    padding-right: 80px;
+}
+
+.togglePassword {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: var(--text-body2);
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 5px;
+}
+
+.togglePassword:hover {
+    color: var(--text-primary);
+}
+
 input, select{
     font-family: var(--font-primary);
     font-size: var(--text-body2);

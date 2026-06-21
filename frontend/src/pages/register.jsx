@@ -18,12 +18,12 @@ export default function RegisterPage() {
     department: "ECE",
     instituteID: "",
     email: "",
-    password: "",
+    username: "",
   });
 
-  const { firstName, lastName, department, instituteID, email, password } = formData;
+  const { firstName, lastName, department, instituteID, email, username } = formData;
   const formNotEmpty =
-    firstName.trim() && lastName.trim() && department.trim() && instituteID.trim() && email.trim() && password.trim();
+    firstName.trim() && lastName.trim() && department.trim() && instituteID.trim() && email.trim() && username.trim();
 
   function validateInputs() {
     if ((firstName.trim().length < 3) || (lastName.trim().length < 3)) {
@@ -46,8 +46,18 @@ export default function RegisterPage() {
       return false;
     }
 
-    if (typeof password !== 'string' || password.length < 6) {
-      showAlert('error', 'Password must be at least 6 characters');
+    if (!username.trim()) {
+      showAlert('error', 'Username is required');
+      return false;
+    }
+
+    if (username.length < 3 || username.length > 30) {
+      showAlert('error', 'Username must be 3-30 characters');
+      return false;
+    }
+
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+      showAlert('error', 'Username can only contain letters, numbers, and underscores');
       return false;
     }
 
@@ -71,8 +81,7 @@ export default function RegisterPage() {
     if (!validateInputs()) return;
     setLoading(true);
     try {
-      const username = `${firstName} ${lastName}`;
-      await apiRegister({ email, password, username, instituteId: instituteID });
+      await apiRegister({ email, username, instituteId: instituteID });
     } catch (err) {
       const msg = err && err.error ? err.error : 'Registration failed';
       showAlert('error', msg);
@@ -86,15 +95,16 @@ export default function RegisterPage() {
       }
       setShowOTP(true);
     } catch (err) {
-      showAlert('error', 'Account created but failed to send OTP. Try logging in.');
+      showAlert('error', 'Account created but failed to send OTP. Try again.');
       setLoading(false);
     }
   }
 
   function handleVerified() {
+    sessionStorage.setItem("registrationEmail", email);
     setVerified(true);
     setTimeout(() => {
-      navigate("/login");
+      navigate("/create-password");
     }, 1500);
   }
 
@@ -177,12 +187,11 @@ export default function RegisterPage() {
                     </div>
                   </div>
                   <div className={styles.inputGroup}>
-                    <label>Password</label>
+                    <label>Username</label>
                     <input
-                      placeholder="Choose a password"
-                      type="password"
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      placeholder="Choose a username"
+                      value={formData.username}
+                      onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                     ></input>
                   </div>
 
