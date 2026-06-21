@@ -5,6 +5,7 @@ import './index.css'
 import LoginPage from './pages/login'
 import RegisterPage from './pages/register'
 import CreatePasswordPage from './pages/createPassword'
+import FeedPage from './pages/feed'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/create-password" element={<CreatePasswordPage />} />
+        <Route path="/feed" element={<FeedPage /> } />
       </Routes>
     </BrowserRouter>
   </StrictMode>

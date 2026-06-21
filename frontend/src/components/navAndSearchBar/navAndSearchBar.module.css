@@ -1,0 +1,67 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px 20px 10px;
+}
+
+.searchBar {
+    position: relative;
+    margin: 12px;
+    flex: 1;
+    width: clamp(250px, 50vw, 650px);
+}
+
+.searchBar input {
+    width: 100%;
+    background-color: #f9f9f9;
+    position: relative;
+    padding: 10px;
+    border: solid 0.5px var(--border);
+    border-radius: 50px;
+    /*box sizing here and background color on the search icon are the key to prevent visible text under the search icon*/
+    box-sizing: border-box;
+    box-shadow: var(--shadow-box-bottom);
+    color: var(--text-primary);
+    font-size: 20px;
+
+}
+
+.searchBar input:focus{
+    outline: none;
+    border-width: 1.2px;
+    box-shadow: var(--shadow-box);
+    font-weight: 600;
+}
+
+/*search icon*/
+.searchBar span {
+    position: absolute;
+    right:0;
+    /*below 2 lines can make an element inline (shift top of the element midway of the line, then pull up it 50% of its height)*/
+    transform: translateY(-50%);
+    top: 50%;
+    margin-right: 10px;
+    background-color: #f9f9f9;
+}
+
+#closeBtn{
+    right: 35px;
+}
+
+#closeBtn:hover, #searchIcon:hover {
+    cursor: pointer;
+    background-color: var(--hover-icon);
+    border-radius: 100%;
+}
+
+/*parent of search bar*/
+.center {
+    display: flex;
+}
+
+.left, .center, .right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}

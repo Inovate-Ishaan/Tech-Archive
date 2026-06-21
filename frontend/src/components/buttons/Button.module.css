@@ -8,6 +8,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    gap: 4px;
 }
 
 .btn:hover{
@@ -23,12 +24,14 @@
 }
 
 .secondaryBlack{
+    padding: 4px 12px;
     font-size: var(--text-body2);
     color: var(--text-white);
     background-color: black;
 }
 
 .secondaryWhite{
+    padding: 8px 12px;
     font-size: var(--text-body2);
     color: var(--text-primary);
     background-color: var(--bg);
