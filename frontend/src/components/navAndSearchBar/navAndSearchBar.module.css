@@ -1,15 +1,23 @@
 .container {
+    background-color: var(--bg-white);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 6px 10px 20px 10px;
+    box-sizing: border-box;
+}
+
+/*hamburger menu*/
+.left > span {
+    transform: translateY(-5%);
 }
 
 .searchBar {
     position: relative;
-    margin: 12px;
+    margin: 12px 5px 12px 12px;
     flex: 1;
     width: clamp(250px, 50vw, 650px);
+    box-sizing: border-box;
 }
 
 .searchBar input {
@@ -56,12 +64,82 @@
 }
 
 /*parent of search bar*/
-.center {
-    display: flex;
-}
 
 .left, .center, .right {
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+
+
+/*Breakpoints*/
+
+/*mobile*/
+@media (max-width: 768px) {
+    /*make the searchbar a little smaller in width*/
+    .searchBar {
+        width: clamp(50px, 30vw, 350px);
+    }
+}
+
+/*Hide the search bar box and only show the icon*/
+@media (max-width: 600px){
+
+    /*reducing spacings and margins between elements for mobile views*/
+    .center{
+        gap:20px;
+    }
+    
+    .left, .right{
+        gap: 2px;
+    }
+
+    .searchBar{
+        width: fit-content;
+        padding: 0px;
+        margin: 0;
+    }
+
+    .searchBar input {
+        display: none;
+    }
+
+    /*search icon*/
+    .searchBar span {
+        margin-right: 0;
+    }
+
+    /*Key to push .center and .right to the right in mobile view*/
+    /*like this --> [left]   [center][right]*/
+    .container {
+    justify-content: flex-start;
+    }
+    .left {
+        flex-shrink: 0;
+    }
+
+    .center {
+        margin-left: auto;
+    }
+
+    .right {
+        margin-left: 8px;
+    }
+
+    /*give right margin to the search icon*/
+    .searchBar span {
+        margin-right: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    /*Hide sort on smal screens*/
+    .center > span {
+        display: none;
+    }
+
+    /*give right margin to the search icon*/
+    .searchBar span {
+        margin-right: 25px;
+    }
 }

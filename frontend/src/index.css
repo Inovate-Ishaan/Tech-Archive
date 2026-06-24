@@ -31,7 +31,7 @@
 /*font sizes*/
   --text-h1 : 48px;  /*Use for titles*/
   --text-h2 :32px; /*Use for subtitles*/ 
-  --text-button : 40px;
+  --text-button-primary : 40px;
   --text-body1 :24px;
   --text-body2 :22px;
   --text-body3 : 20px;
@@ -128,3 +128,9 @@ fieldset {
   font-size: 36px;
 }
 
+@media (max-width: 480px) {
+  /*Reduces icon sizes*/
+  .material-symbols-outlined {
+    font-size: 30px;
+  }
+}
