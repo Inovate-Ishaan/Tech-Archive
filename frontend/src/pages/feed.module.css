@@ -1,0 +1,15 @@
+.feed {
+    display: grid;
+    margin: 0 auto;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: 5px 10px;
+    width: 100%;
+    max-width: 1500px;
+    background-color: red;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+*{
+    max-width: 100%;
+}

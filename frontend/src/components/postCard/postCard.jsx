@@ -1,10 +1,11 @@
 import styles from "./postCard.module.css";
+import thumbnail_placeholder from "../../assets/other_images/thumbnail_placeholder.jpeg";
 
 export default function PostCard({
   title = "AGAIN THIS IS KINDA LONG TITLE JUST TO CHECK HOW THE ",
   author = "Author",
   uploadTime = "1 month",
-  thumbnail = "Thumbnail Link",
+  thumbnail = thumbnail_placeholder,
   profilePic = "P",
   tags = ["tag1", "tag2"],
 }) {
@@ -20,7 +21,9 @@ export default function PostCard({
   const tagsMarkup = (
     <>
       {tags.map((tag, index) => (
-        <p key={index} className={styles.tag}>#{tag}</p>
+        <p key={index} className={styles.tag}>
+          #{tag}
+        </p>
       ))}
     </>
   );
@@ -29,13 +32,15 @@ export default function PostCard({
     <>
       {/*Thumbnail*/}
       <div className={styles.container}>
-        <div className={styles.thumbnail}></div>
+        <img src={thumbnail} className={styles.thumbnail} />
 
         {/*Post Description*/}
         <div className={styles.postDetailsContainer}>
           {/*Profile Pic*/}
           {/*Not Implemented, just a circle*/}
-          <div className={styles.profilePic}></div>
+          <div>
+            <img src={profilePic} className={styles.profilePic} />
+          </div>
 
           {/*Post Details*/}
           <div className={styles.postDetails}>
