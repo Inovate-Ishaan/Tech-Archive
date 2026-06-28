@@ -62,7 +62,7 @@ export default function NavWithSearch() {
         {!(isSearchBarVisible && onSmallDevice) && <>
         <div className={styles.container}>
             <div className={styles.left}>
-                <span className="material-symbols-outlined">menu</span>
+                <span className={`material-symbols-outlined icon`}>menu</span>
                 <h2 className="title">Tech Archive</h2>
 
             </div>
@@ -72,22 +72,22 @@ export default function NavWithSearch() {
                     <input type="text" placeholder="Search Projects" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}></input>
                     
                     {/*Close Button (hide permanently on small screens)*/}
-                    {(searchQuery && !onSmallDevice) && <span onClick={clearSearchBar} className="material-symbols-outlined" id={styles.closeBtn}>close</span>}
+                    {(searchQuery && !onSmallDevice) && <span onClick={clearSearchBar} className={`material-symbols-outlined icon`} id={styles.closeBtn}>close</span>}
 
                     {/*Search Icon*/}
-                    <span className="material-symbols-outlined" id={styles.searchIcon} onClick={onSmallDevice ? handleSearchIconClick : handleSearch}>search</span>
+                    <span className={`material-symbols-outlined icon`} id={styles.searchIcon} onClick={onSmallDevice ? handleSearchIconClick : handleSearch}>search</span>
                     {isSearching && <p>Searching for {searchQuery}</p>}
 
                 </div>
-                <span className="material-symbols-outlined">sort</span>
+                <span className={`material-symbols-outlined icon`}>sort</span>
             </div>
 
             <div className={styles.right}>
             <Button variant="secondaryBlack" status="active">
-                <span className="material-symbols-outlined">add_2</span>
+                <span className={`material-symbols-outlined icon`}>add_2</span>
                 Post
             </Button>
-            <span className="material-symbols-outlined">account_circle</span>
+            <span className={`material-symbols-outlined icon`}>account_circle</span>
             </div>
         </div>
         </>}

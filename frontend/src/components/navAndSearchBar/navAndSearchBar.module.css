@@ -3,8 +3,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 10px 20px 10px;
+    padding: 6px 10px 4px 10px;
     box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    box-shadow: var(--shadow-box-bottom);
+    z-index: 10;
 }
 
 /*hamburger menu*/
