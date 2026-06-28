@@ -57,7 +57,8 @@
     right: 35px;
 }
 
-#closeBtn:hover, #searchIcon:hover {
+/*Hover effect for Icons*/
+#closeBtn:hover, #searchIcon:hover, .left > span:hover, .center > span:hover, .right > span:hover{
     cursor: pointer;
     background-color: var(--hover-icon);
     border-radius: 100%;
