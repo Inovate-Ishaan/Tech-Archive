@@ -53,3 +53,7 @@
         margin: 0 auto 0 100px;
     }
 }
+
+.darken {
+    filter: blur(2px) brightness(60%);
+}

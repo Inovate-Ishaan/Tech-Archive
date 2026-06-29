@@ -9,7 +9,6 @@
     top: 0;
     left: 0;
     right: 0;
-    box-shadow: var(--shadow-box-bottom);
     z-index: 10;
 }
 
@@ -114,6 +113,7 @@
     /*search icon*/
     .searchBar span {
         margin-right: 0;
+        background-color: var(--bg-white);
     }
 
     /*Key to push .center and .right to the right in mobile view*/
@@ -140,6 +140,10 @@
 }
 
 @media (max-width: 480px) {
+    .container{
+        padding: 10px;
+    }
+
     /*Hide sort on smal screens*/
     .center > span {
         display: none;
