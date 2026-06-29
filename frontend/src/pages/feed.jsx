@@ -1,12 +1,34 @@
+import { useEffect, useState } from "react";
 import Footer from "../components/footer/footer";
 import NavWithSearch from "../components/navAndSearchBar/navAndSearchBar";
 import PostCard from "../components/postCard/postCard";
+import SideMenuFixed from "../components/sideMenu/sideMenuFixed";
+import SideMenuToggle from "../components/sideMenu/sideMenuToggle";
 import styles from "./feed.module.css";
 
 export default function FeedPage() {
+
+  //to darken the remaining page when the side menu toggle is open
+  const [sideMenuToggleVisible, setSideMenuToggleVisible] = useState(false);
+  //prevent scroll when the side menu is open
+
+  useEffect( () => {
+    document.body.style.overflow = sideMenuToggleVisible ? "hidden" : "auto";
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [sideMenuToggleVisible]);
+
   return (
     <>
-      <NavWithSearch />
+      <NavWithSearch className={styles.navWithSearch} sideMenuVisible={sideMenuToggleVisible} setSideMenuVisible={setSideMenuToggleVisible}/>
+
+      {/*Feed Body*/}
+      <div className={`styles.feedBody ${sideMenuToggleVisible ? styles.darken : ""}`}>
+
+      
+      <SideMenuFixed className={styles.sideMenuFixed} selectedOption={"home"} />
 
       <div className={styles.feed}>
         <PostCard
@@ -69,6 +91,7 @@ export default function FeedPage() {
             "https://i.pinimg.com/564x/79/e1/29/79e129e5c4b24c6bbf068046a4c22933.jpg"
           }
         />
+      </div>
       </div>
     </>
   );

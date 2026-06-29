@@ -1,5 +1,6 @@
 import styles from "./postCard.module.css";
 import thumbnail_placeholder from "../../assets/other_images/thumbnail_placeholder.jpeg";
+import { useState } from "react";
 
 export default function PostCard({
   title = "AGAIN THIS IS KINDA LONG TITLE JUST TO CHECK HOW THE ",
@@ -8,6 +9,7 @@ export default function PostCard({
   thumbnail = thumbnail_placeholder,
   profilePic = "P",
   tags = ["tag1", "tag2"],
+  bookmarked = false,
 }) {
   //Stripping short the title if its too long (just to display on the card)
   if (title.length > 48) {
@@ -27,6 +29,13 @@ export default function PostCard({
       ))}
     </>
   );
+
+  //Handling bookmark
+  const [isBookmarked, setIsBookmarked] = useState(bookmarked);
+
+  function handleBookmarkClick() {
+    isBookmarked ? setIsBookmarked(false) : setIsBookmarked(true);
+  };
 
   return (
     <>
@@ -65,7 +74,7 @@ export default function PostCard({
             <div className={styles.tagsAndSave}>
               <div className={styles.tagContainer}> {tagsMarkup} </div>
 
-              <span className="material-symbols-outlined">bookmark</span>
+              <span className={`material-symbols-outlined icon ${isBookmarked ? "filled" : ""}`} onClick={handleBookmarkClick}>bookmark</span>
             </div>
           </div>
         </div>

@@ -1,15 +1,59 @@
+/*Container of the side menu and the feed*/
+.feedBody {
+    margin-top: 80px;
+    background-color: var(--bg-white);
+    width: 100%;
+}
+
+
+/*The feed*/
 .feed {
     display: grid;
     margin: 0 auto;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
     gap: 5px 10px;
-    width: 100%;
     max-width: 1500px;
     background-color: var(--bg-white);
     padding: 0 10px;
     box-sizing: border-box;
 }
 
-*{
-    max-width: 100%;
+/*side menu hidden for bigger displays*/
+.sideMenuFixed {
+    display: none;
+}
+
+/*Change padding top at 480px as nav bar shrinks in height*/
+@media (max-width: 480px){
+    .feedBody{
+        margin-top: 50px;
+    }
+}
+
+/*Hide sideMenuFixed at less than 600 and greater than 910px*/
+@media (max-width: 600px) and (min-width: 910px) {
+    .sideMenuFixed {
+        display: none;
+    }
+
+    /*center the feed*/
+    .feed {
+        margin: 0 auto;
+    }
+}
+
+/*Show the fixed side bar b/w 600 & 910px*/
+@media (min-width: 600px) and (max-width: 910px) {
+    .sideMenuFixed {
+        display: block;
+    }
+
+    /*shift the feed*/
+    .feed {
+        margin: 0 auto 0 100px;
+    }
+}
+
+.darken {
+    filter: blur(2px) brightness(60%);
 }

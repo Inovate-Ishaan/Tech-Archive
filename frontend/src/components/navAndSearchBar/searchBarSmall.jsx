@@ -16,7 +16,7 @@ export default function SearchBarSmall( {searchQuery, onChange, handleSearch, cl
         <>
             <div className={styles.container}>
             <div className={styles.left}>
-                <span className="material-symbols-outlined" onClick={hideSearchBar}>arrow_back</span>
+                <span className={`material-symbols-outlined icon`} onClick={hideSearchBar}>arrow_back</span>
             </div>
 
             <div className={styles.center}>
@@ -26,10 +26,10 @@ export default function SearchBarSmall( {searchQuery, onChange, handleSearch, cl
                     <input type="text" placeholder="Search Projects" value={searchQuery} onChange={onChange}></input>
                     
                     {/*Close Button*/}
-                    {showCloseBtn && <span onClick={clearSearchBar} className="material-symbols-outlined" id={styles.closeBtn}>close</span>}
+                    {showCloseBtn && <span onClick={clearSearchBar} className={`material-symbols-outlined icon`} id={styles.closeBtn}>close</span>}
                     
                     {/*Search Icon*/}
-                    <span className="material-symbols-outlined" id={styles.searchIcon} onClick={handleSearch}>search</span>
+                    <span className={`material-symbols-outlined icon`} id={styles.searchIcon} onClick={handleSearch}>search</span>
                     
                 </div>
                 
@@ -37,7 +37,7 @@ export default function SearchBarSmall( {searchQuery, onChange, handleSearch, cl
 
             {/*Sort button*/}
             <div className={styles.right}>
-                <span className="material-symbols-outlined">sort</span>
+                <span className={`material-symbols-outlined icon`}>sort</span>
             </div>
         </div>
         </>
