@@ -1,0 +1,27 @@
+.tagContainer{
+    width:fit-content;
+    position: relative;
+    background-color: var(--bg-offWhite);
+    border: 1px solid var(--border-containers);
+    border-radius: 10px;
+    padding: 0 5px;
+    font-family: "Inter";
+}
+.tag {
+    width: 100%;
+    padding-right: 30px;
+    box-sizing: border-box;
+}
+
+.tagContainer span {
+    position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.tagContainer span:hover{
+    background-color: var(--hover-icon);
+    border-radius: 50%;
+}

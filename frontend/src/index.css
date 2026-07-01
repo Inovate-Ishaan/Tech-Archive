@@ -8,8 +8,10 @@
   --link : #2C27C3;
   --bg-white: #ffffff;
   --bg-gray: #d9d9d970 ;
+  --bg-offWhite: #fefefe; /*For background distinctions in elements on white bg */
   --accent: #ff3300;
   --border: #000;
+  --border-containers: #d9d9d9;
   --accent-bg: rgba(170, 59, 255, 0.1);
   --success: #41da00;
   --error: rgb(167, 0, 0);
@@ -29,7 +31,7 @@
   --font-footer : "Inter", Tahoma, Verdana, sans-serif;
 
 /*font sizes*/
-  --text-h1 : 48px;  /*Use for titles*/
+  --text-h1 : 46px;  /*Use for titles*/
   --text-h2 :32px; /*Use for subtitles*/ 
   --text-button-primary : 40px;
   --text-body1 :24px;
@@ -142,4 +144,8 @@ fieldset {
   .material-symbols-outlined {
     font-size: 30px;
   }
+}
+
+.darkenPage {
+    filter: blur(2px) brightness(60%);
 }

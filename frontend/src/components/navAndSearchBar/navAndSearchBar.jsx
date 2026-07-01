@@ -4,6 +4,26 @@
 //sideMenuToggle is also a child of this component
 //rendering the navAndSearchBar will contain the side menu that is toggled using the hamburger icon
 
+
+//sideMenuVisible , setSideMenuVisible prop guide ----->>
+    // //to darken the remaining page when the side menu toggle is open
+    // const [sideMenuToggleVisible, setSideMenuToggleVisible] = useState(false);
+    // //prevent scroll when the side menu is open
+
+    // useEffect( () => {
+    //   document.body.style.overflow = sideMenuToggleVisible ? "hidden" : "auto";
+
+    //   return () => {
+    //     document.body.style.overflow = 'auto';
+    //   };
+    // }, [sideMenuToggleVisible]);
+
+    // Then use the component something like this
+    //  <NavWithSearch className={styles.navWithSearch} sideMenuVisible={sideMenuToggleVisible} setSideMenuVisible={setSideMenuToggleVisible}/>
+    // This approach allows us to darken the remaining page when side meny toggle is open ---->>>
+    // <div className={`${styles.feedBody} ${sideMenuToggleVisible ? styles.darken : ""}`}></div>
+
+
 import { useEffect, useState } from "react";
 import Button from "../buttons/button";
 import PasswordField from "../passwordField/passwordField";
@@ -11,7 +31,10 @@ import styles from "./navAndSearchBar.module.css";
 import SearchBarSmall from "./searchBarSmall.jsx";
 import SideMenuToggle from "../sideMenu/sideMenuToggle.jsx";
 
-export default function NavWithSearch({ className, sideMenuVisible, setSideMenuVisible}) {
+export default function NavWithSearch({ className, sideMenuVisible, setSideMenuVisible, withPostButton="true", sticky="true"}) {
+
+  //render Post button or not
+  const showPostButton = withPostButton;
   const [searchQuery, setSearchQuery] = useState("");
 
   function clearSearchBar() {
@@ -69,7 +92,7 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
   return (
     <>
       <div className={className}>
-        <div className={styles.container}>
+        <div className={`${styles.container} ${sticky ? styles.sticky : ""}`}>
           {/*searchbar for mobile devices ( < 600px ), visible when search icon is clicked*/}
           {isSearchBarVisible && onSmallDevice && (
             <SearchBarSmall
@@ -126,12 +149,12 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
               </div>
 
               <div className={styles.right}>
-                <Button variant="secondaryBlack" status="active">
+                {showPostButton && <Button variant="secondaryBlack" status="active">
                   <span className={`material-symbols-outlined icon`}>
                     add_2
                   </span>
                   Post
-                </Button>
+                </Button> }
                 <span className={`material-symbols-outlined icon`}>
                   account_circle
                 </span>

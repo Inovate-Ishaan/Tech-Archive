@@ -1,0 +1,203 @@
+.parent {
+    width : 100%;
+    background-color: var(--bg-offWhite);
+}
+
+.bodyContainer {
+    text-align: left;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: var(--bg-white);
+    width: fit-content;
+    margin: 0 auto;
+}
+
+
+.formContainer {
+    border: 1px solid var(--border);
+    background-color: var(--bg-offWhite);
+    border-radius: 8px;
+    box-sizing: border-box;
+    box-shadow: var(--shadow-box);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 60px;
+    max-width: 1200px;
+    width : 80vw;
+    margin: 0 auto;
+    flex: 1;
+    gap: clamp(1rem, 75px, 5rem);
+    margin-bottom: 6rem;
+}
+
+.postDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 30px;
+    width : clamp(400px, 60vw, 600px)
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 600px;
+    row-gap: 5px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* label of input fields */
+.inputGroup > label {
+    font-size: var(--text-body1);
+    font-weight: 600;
+}
+
+/* Input fields */
+
+.inputGroup > input {
+    padding: 10px;
+    font-size: 18px;
+    font-family: "Inter";
+    color: var(--text-primary);
+}
+
+.thumbnailUploadContainer {
+    width: 100%;
+    background-color: var(--bg-white);
+    border: 1px solid var(--border-containers);
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.thumbnailUploadButton {
+    border: 1px solid var(--border-containers);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-direction: column;
+    width : fit-content;
+    padding: 50px;
+    aspect-ratio: 4/3;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f8f8;
+    color: var(--text-secondary);
+    margin: 20px auto 0 auto;
+    cursor: pointer;
+    border: 2px dashed var(--border-containers);
+    border-radius: 10px;
+}
+
+/* Upload Thumbnail Text */
+.thumbnailUploadButton > p {
+    font-size: var(--text-body4);
+}
+
+.hiddenFileInput {
+    display: none;
+}
+
+.graphicContainer {
+    margin-right: 20px;
+}
+
+.thumbnailPreviewContainer {
+    background-color: #f8f8f8;
+    width: 100%;
+    background-color: var(--bg-white);
+    border: 1px solid var(--border-containers);
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.thumbnailPreviewBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width : fit-content;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto 0 auto;
+    
+}
+
+.thumbnailPreview {
+    max-width: 500px;
+    aspect-ratio: 4/3;
+    border-radius: 10px;
+}
+
+.graphic {
+    margin-left: 20px;
+    max-width: 400px;
+    min-width: 200px;
+    width: 100%;
+    height: auto;
+}
+
+/* TAGS */
+
+.tagInputBar {
+    max-width: 600px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    column-gap: 10px;
+    width: auto;
+    overflow-x: scroll;
+    height: 46px;
+    box-sizing: border-box;
+    border: 1px solid var(--border);
+    border-radius: 1px;
+    background-color: var(--bg-white);
+    padding: 0 10px;
+}
+
+.tagMenu{
+    background-color: var(--bg-offWhite);
+    border: 1px solid var(--border-containers);
+    border-radius: 8px ;
+    box-shadow: var(--shadow-box);
+    width: 100%;
+    height: fit-content;
+    max-height: 200px;
+    overflow-y: scroll;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.tagMenuOption {
+    width: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 15px;
+}
+
+.tagMenuOption:hover{
+    cursor: pointer;
+    background-color: var(--hover-icon);
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background-color: black;
+    border-radius: 50%;
+    transform: translateY(60%);
+}
