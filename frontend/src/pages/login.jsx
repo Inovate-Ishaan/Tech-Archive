@@ -54,7 +54,7 @@ export default function LoginPage() {
       if (data.token) {
         localStorage.setItem("auth_token", data.token);
         showAlert("success", "Logged in successfully");
-        setTimeout(() => navigate("/"), 1000);
+        setTimeout(() => navigate("/feed"), 1000);
       }
     } catch (err) {
       const msg = err && err.error ? err.error : "Signin failed";

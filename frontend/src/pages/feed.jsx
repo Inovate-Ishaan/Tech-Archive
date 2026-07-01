@@ -25,7 +25,7 @@ export default function FeedPage() {
       <NavWithSearch className={styles.navWithSearch} sideMenuVisible={sideMenuToggleVisible} setSideMenuVisible={setSideMenuToggleVisible}/>
 
       {/*Feed Body*/}
-      <div className={`${styles.feedBody} ${sideMenuToggleVisible ? styles.darken : ""}`}>
+      <div className={`${styles.feedBody} ${sideMenuToggleVisible ? "darkenPage" : ""}`}>
 
       
       <SideMenuFixed className={styles.sideMenuFixed} selectedOption={"home"} />
