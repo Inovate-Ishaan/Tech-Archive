@@ -6,8 +6,14 @@ import postGraphic from "../assets/graphics/post_online.svg";
 import Button from "../components/buttons/button";
 import Tag from "../components/tag/tag";
 import Alert from "../components/alertPopUP/alertPopUp";
+import validator from "validator";
+import MdEditor from "../components/mdx_md_editor/mdx_md_editor";
 
 export default function CreatePostPage() {
+  //FORM PART VISIBILITY STATES
+  const [part1Visible, setPart1Visible] = useState(true);
+  const [part2Visible, setPart2Visible] = useState(true);
+
   const [formData, setFormData] = useState({
     title: "",
     tags: [],
@@ -20,72 +26,24 @@ export default function CreatePostPage() {
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const onFileChange = (e) => {
     const file = e.target.files[0];
+    const max_file_size = 3145728; //3MB
     if (file) {
-      setSelectedFile(e.target.files[0]);
+      if (file.size > max_file_size){
+        showAlert('error', 'Thumbnail must be less than 3MB');
+        e.target.value ="";
+        return;
+      }
+      setSelectedFile(file);
       setThumbnailPreview(URL.createObjectURL(file));
     }
   };
   const onFileUpload = () => {
     const fileData = new FormData();
-    formData.append("thumbnail", selectedFile, selectedFile.name);
+    fileData.append("thumbnail", selectedFile, selectedFile.name);
 
     //api call
   };
 
-  // import axios from "axios";
-  // import React, { useState } from "react";
-
-  // const App = () => {
-  // 	const [selectedFile, setSelectedFile] = useState(null);
-  // 	const onFileChange = (event) => {
-  // 		setSelectedFile(event.target.files[0]);
-  // 	};
-  // 	const onFileUpload = () => {
-  // 		const formData = new FormData();
-  // 		formData.append(
-  // 			"myFile",
-  // 			selectedFile,
-  // 			selectedFile.name
-  // 		);
-  // 		console.log(selectedFile);
-  // 		axios.post("api/uploadfile", formData);
-  // 	};
-  // 	const fileData = () => {
-  // 		if (selectedFile) {
-  // 			return (
-  // 				<div>
-  // 					<h2>File Details:</h2>
-  // 					<p>File Name: {selectedFile.name}</p>
-  // 					<p>File Type: {selectedFile.type}</p>
-  // 					<p>
-  // 						Last Modified: {selectedFile.lastModifiedDate.toDateString()}
-  // 					</p>
-  // 				</div>
-  // 			);
-  // 		} else {
-  // 			return (
-  // 				<div>
-  // 					<br />
-  // 					<h4>Choose before Pressing the Upload button</h4>
-  // 				</div>
-  // 			);
-  // 		}
-  // 	};
-
-  // 	return (
-  // 		<div>
-  // 			<h1>GeeksforGeeks</h1>
-  // 			<h3>File Upload using React!</h3>
-  // 			<div>
-  // 				<input type="file" onChange={onFileChange} />
-  // 				<button onClick={onFileUpload}>Upload!</button>
-  // 			</div>
-  // 			{fileData()}
-  // 		</div>
-  // 	);
-  // };
-
-  // export default App;
 
   //TAG MANAGEMENT
   const allTags = [
@@ -98,7 +56,6 @@ export default function CreatePostPage() {
     "Physics",
     "Electrical",
   ];
-  const [selectedTags, setSelectedTags] = useState([]);
 
   const [showTagMenu, setShowTagMenu] = useState(false);
   const tagMenuRef = useRef(null);
@@ -120,18 +77,50 @@ export default function CreatePostPage() {
   }, [showTagMenu]);
 
   function addTag(tag) {
-    if (selectedTags.length > 3){
-        showAlert("info", "Add upto 4 tags only");
-        return;
+    if (formData.tags.length > 3) {
+      showAlert("info", "Add upto 4 tags only");
+      return;
     }
-    if (!selectedTags.includes(tag)) {
-      setSelectedTags([...selectedTags, tag]);
+    if (!formData.tags.includes(tag)) {
+      setFormData((prev) => ({ ...prev, tags: [...prev.tags, tag] }));
     }
   }
 
   const removeTag = (tag) => {
-    setSelectedTags(selectedTags.filter((t) => t !== tag));
+    setFormData({ ...formData, tags: formData.tags.filter((t) => t !== tag) });
   };
+
+  //////////////////////////////////////////////////////////////
+
+  //NEXT BUTTON MANAGEMENT
+  const formNotEmpty =
+    formData.title.trim() &&
+    formData.tags.length > 0 &&
+    formData.gitHubRepoURL &&
+    selectedFile;
+
+  const [submitting, setSubmitting] = useState(false);
+
+  formNotEmpty;
+
+  const handleNext = (e) => {
+    e.preventDefault();
+    if (!validator.isURL(formData.gitHubRepoURL)) {
+      showAlert("info", "Enter a vaild Repo URL");
+      return;
+    }
+
+    if (formData.title.trim().length < 16) {
+      showAlert("info", "Make the title a bit longer!!");
+      return;
+    }
+
+    setPart1Visible(false);
+    setPart2Visible(true);
+    console.log(formData, selectedFile);
+    showAlert("success", "Uploading...");
+  };
+  ////////////////////////////////////////////////////////////
 
   //to darken the remaining page when the side menu toggle is open
   const [sideMenuToggleVisible, setSideMenuToggleVisible] = useState(false);
@@ -155,11 +144,11 @@ export default function CreatePostPage() {
   }
 
   useEffect(() => {
-    if (!alert)return;
+    if (!alert) return;
 
     setTimeout(() => {
-    setAlert(null);},
-3000)
+      setAlert(null);
+    }, 3000);
   }, [alert]);
 
   const closeAlert = () => {
@@ -172,12 +161,19 @@ export default function CreatePostPage() {
       <NavWithSearch
         sideMenuVisible={sideMenuToggleVisible}
         setSideMenuVisible={setSideMenuToggleVisible}
+        selectedOption={"post"}
         withPostButton={false}
         sticky={false}
       />
 
       {/* ALERT */}
-        {alert && (<Alert type={alert.type} msg={alert.msg} handleCloseClick={closeAlert}/>)}
+      {alert && (
+        <Alert
+          type={alert.type}
+          msg={alert.msg}
+          handleCloseClick={closeAlert}
+        />
+      )}
 
       <div
         className={`${styles.parent} ${sideMenuToggleVisible ? "darkenPage" : ""}`}
@@ -187,131 +183,157 @@ export default function CreatePostPage() {
           {/* Page title */}
           <h1>Post your Project</h1>
 
-          <div className={styles.formContainer}>
-            {/* Form container */}
-            <div className={styles.postDetailsContainer}>
-              <div className={styles.inputGroup}>
-                <label>Title</label>
-                <input
-                  placeholder="max 100 characters"
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) =>
-                    setFormData({ ...formData, title: e.target.value })
-                  }
-                ></input>
-              </div>
+          {/* THIS IS PART 1 OF THE POST FORM */}
+          {part1Visible && (
+            <div className={styles.formPart}>
+              <label className={`${"description"} ${styles.description}`}>Project Details</label>
 
-              {/* TAGS */}
-              <div
-                className={styles.inputGroup}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowTagMenu(true);
-                }}
-              >
-                <label>Tags</label>
-                <div className={styles.tagInputBar}>
-                  {selectedTags.map((tag) => (
-                    <Tag
-                      label={tag}
-                      key={tag}
-                      onRemove={() => removeTag(tag)}
-                    />
-                  ))}
-                </div>
-              </div>
+              <div className={styles.formContainer}>
+                {/* Form container */}
+                <div className={styles.postDetailsContainer}>
+                  <div className={styles.inputGroup}>
+                    <label>Title</label>
+                    <input
+                      placeholder="max 100 characters"
+                      maxLength={100}
+                      type="text"
+                      value={formData.title}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          title: e.target.value,
+                        }))
+                      }
+                    ></input>
+                  </div>
 
-              {/* TAG Menu */}
-              {showTagMenu && (
-                <div className={styles.tagMenu} ref={tagMenuRef}>
-                  {allTags.map((tag) => (
-                    <div
-                      key={tag}
-                      className={styles.tagMenuOption}
-                      onClick={() => addTag(tag)}
-                    >
-                      #{tag} <div className={styles.dot}></div>
+                  {/* TAGS */}
+                  <div
+                    className={styles.inputGroup}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowTagMenu(true);
+                    }}
+                  >
+                    <label>Tags</label>
+                    <div className={styles.tagInputBar}>
+                      {formData.tags.map((tag) => (
+                        <Tag
+                          label={tag}
+                          key={tag}
+                          onRemove={() => removeTag(tag)}
+                        />
+                      ))}
                     </div>
-                  ))}
+                  </div>
+
+                  {/* TAG Menu */}
+                  {showTagMenu && (
+                    <div className={styles.tagMenu} ref={tagMenuRef}>
+                      {allTags.map((tag) => (
+                        <div
+                          key={tag}
+                          className={styles.tagMenuOption}
+                          onClick={() => addTag(tag)}
+                        >
+                          #{tag} <div className={styles.dot}></div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className={styles.inputGroup}>
+                    <label>GitHub repo URL</label>
+                    <input
+                      placeholder="https://github.com/Inovate-Ishaan/Tech-Archive"
+                      type="url"
+                      value={formData.gitHubRepoURL}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          gitHubRepoURL: e.target.value,
+                        })
+                      }
+                    ></input>
+                  </div>
+
+                  <div
+                    className={`${styles.inputGroup} ${styles.thumbnailUploadContainer}`}
+                  >
+                    <label>Thumbnail</label>
+
+                    <label
+                      htmlFor="thumbnailInput"
+                      className={styles.thumbnailUploadButton}
+                    >
+                      <span className="material-symbols-outlined icon">
+                        image_arrow_up
+                      </span>
+                      <p>{selectedFile ? "Change" : "Upload"} Thumbnail</p>
+                    </label>
+
+                    <input
+                      id="thumbnailInput"
+                      type="file"
+                      accept="image/*"
+                      className={styles.hiddenFileInput}
+                      onChange={onFileChange}
+                    ></input>
+                  </div>
+
+                  {/* Thumbnail Preview */}
+                  {selectedFile && (
+                    <div
+                      className={`${styles.inputGroup} ${styles.thumbnailPreviewContainer}`}
+                    >
+                      <label>Thumbnail Preview</label>
+
+                      <label className={styles.thumbnailPreviewBox}>
+                        <img
+                          src={thumbnailPreview}
+                          className={styles.thumbnailPreview}
+                        ></img>
+                      </label>
+
+                      <input
+                        id="thumbnailInput"
+                        type="file"
+                        accept="image/*"
+                        className={styles.hiddenFileInput}
+                        onChange={onFileChange}
+                      ></input>
+                    </div>
+                  )}
                 </div>
-              )}
 
-              <div className={styles.inputGroup}>
-                <label>GitHub repo URL</label>
-                <input
-                  placeholder="https://github.com/Inovate-Ishaan/Tech-Archive"
-                  type="url"
-                  value={formData.gitHubRepoURL}
-                  onChange={(e) =>
-                    setFormData({ ...formData, gitHubRepoURL: e.target.value })
-                  }
-                ></input>
-              </div>
-
-              <div
-                className={`${styles.inputGroup} ${styles.thumbnailUploadContainer}`}
-              >
-                <label>Thumbnail</label>
-
-                <label
-                  htmlFor="thumbnailInput"
-                  className={styles.thumbnailUploadButton}
-                >
-                  <span className="material-symbols-outlined icon">
-                    image_arrow_up
-                  </span>
-                  <p>{selectedFile ? "Change" : "Upload"} Thumbnail</p>
-                </label>
-
-                <input
-                  id="thumbnailInput"
-                  type="file"
-                  accept="image/*"
-                  className={styles.hiddenFileInput}
-                  onChange={onFileChange}
-                ></input>
-              </div>
-
-              {/* Thumbnail Preview */}
-              {selectedFile && (
-                <div
-                  className={`${styles.inputGroup} ${styles.thumbnailPreviewContainer}`}
-                >
-                  <label>Thumbnail Preview</label>
-
-                  <label className={styles.thumbnailPreviewBox}>
-                    <img
-                      src={thumbnailPreview}
-                      className={styles.thumbnailPreview}
-                    ></img>
-                  </label>
-
-                  <input
-                    id="thumbnailInput"
-                    type="file"
-                    accept="image/*"
-                    className={styles.hiddenFileInput}
-                    onChange={onFileChange}
-                  ></input>
+                {/* the graphic */}
+                <div className={styles.graphicContainer}>
+                  <img src={postGraphic} className={styles.graphic} />
                 </div>
-              )}
+              </div>
             </div>
+          )}
 
-            {/* the graphic */}
-            <div className={styles.graphicContainer}>
-              <img src={postGraphic} className={styles.graphic} />
+          {/* THIS IS THE PART 2 OF THE POST FORM */}
+
+          {part2Visible && (
+            <div className={styles.formPart}>
+              <label className={`${"description"} ${styles.description}`}>Documentation Editor</label>
+
+              <div className={styles.editorContainer}>
+                <MdEditor />
+              </div>
             </div>
-          </div>
-
+          )}
+          {/* NEXT/ POST BUTTON */}
           <div className={styles.button}>
-            {/* <Button
-                  variant="primaryBlack"
-                  status={formNotEmpty && !submitting ? "active" : "disabled"}
-                  onClick={handleSubmit}
-                >
-                  {submitting ? <BtnLoader /> : "Login"}
-                </Button> */}
+            <Button
+              variant="primaryBlack"
+              status={formNotEmpty && !submitting ? "active" : "disabled"}
+              onClick={handleNext}
+            >
+              {submitting ? <BtnLoader /> : "Next"}
+            </Button>
           </div>
         </div>
 
