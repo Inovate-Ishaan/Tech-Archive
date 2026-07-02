@@ -34,12 +34,6 @@
     margin-bottom: 0px ;
 }
 
-.description {
-    font-size: var(--text-body2);
-    color: var(--text-secondary);
-    margin-bottom: 20px;
-    margin-top: 0px;
-}
 form {
     display: flex;
     flex-direction: column;

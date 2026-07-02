@@ -109,9 +109,13 @@ p {
 }
 
 a{
-  color: var(--link);
+  color: var(--text-primary);
   text-decoration: none;
   cursor: pointer;
+}
+
+.link {
+  color: var(--link);
 }
 
 fieldset {
@@ -131,7 +135,11 @@ fieldset {
     font-size: 36px;
 }
 
-.icon.filled {
+.selected {
+  color: var(--link);
+}
+
+.filled {
   font-variation-settings:
     'FILL' 1,
     'wght' 400,
@@ -148,4 +156,11 @@ fieldset {
 
 .darkenPage {
     filter: blur(2px) brightness(60%);
+}
+
+.description {
+    font-size: var(--text-body2);
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    margin-top: 0px;
 }

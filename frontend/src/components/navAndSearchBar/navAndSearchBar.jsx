@@ -30,8 +30,9 @@ import PasswordField from "../passwordField/passwordField";
 import styles from "./navAndSearchBar.module.css";
 import SearchBarSmall from "./searchBarSmall.jsx";
 import SideMenuToggle from "../sideMenu/sideMenuToggle.jsx";
+import { Link } from "react-router-dom";
 
-export default function NavWithSearch({ className, sideMenuVisible, setSideMenuVisible, withPostButton="true", sticky="true"}) {
+export default function NavWithSearch({ className, sideMenuVisible, setSideMenuVisible, selectedOption, withPostButton="true", sticky="true"}) {
 
   //render Post button or not
   const showPostButton = withPostButton;
@@ -149,12 +150,12 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
               </div>
 
               <div className={styles.right}>
-                {showPostButton && <Button variant="secondaryBlack" status="active">
+                {showPostButton && <Link to={"/create-post"}><Button variant="secondaryBlack" status="active">
                   <span className={`material-symbols-outlined icon`}>
                     add_2
                   </span>
                   Post
-                </Button> }
+                </Button></Link> }
                 <span className={`material-symbols-outlined icon`}>
                   account_circle
                 </span>
@@ -165,7 +166,7 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
 
         {sideMenuVisible && <SideMenuToggle
           className={styles.sideMenuToggle}
-          selectedOption={"home"}
+          selectedOption={selectedOption}
           closeBtnFunction={hideSideMenu}
         /> }
       </div>
