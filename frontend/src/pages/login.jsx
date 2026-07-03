@@ -77,7 +77,7 @@ export default function LoginPage() {
           <div className={styles.formParent}>
             <div className={styles.formContainer}>
               <h1 className={styles.title}>Welcome Back</h1>
-              <label className={styles.description}>
+              <label className="description">
                 Good to see you again...
               </label>
               <fieldset disabled={submitting} className={submitting ? "fieldsetDisabled" : ""}>
@@ -110,7 +110,7 @@ export default function LoginPage() {
               </fieldset>
             </div>
             <p className={styles.register}>
-              Don't have an account? <Link to="/register">Register</Link>
+              Don't have an account? <Link to="/register" className="link">Register</Link>
             </p>
           </div>
           <div className={styles.graphicContainer}>

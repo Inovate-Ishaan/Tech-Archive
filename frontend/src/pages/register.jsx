@@ -215,7 +215,7 @@ export default function RegisterPage() {
               </fieldset>
             </div>
             <p className={styles.register}>
-              Already have an account? <Link to="/login">Login</Link>
+              Already have an account? <Link to="/login" className="link">Login</Link>
             </p>
 
           </div>

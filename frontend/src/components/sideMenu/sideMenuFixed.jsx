@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import styles from "./sideMenuFixed.module.css"
 
 export default function SideMenuFixed({ className, selectedOption }) {
@@ -5,10 +6,12 @@ export default function SideMenuFixed({ className, selectedOption }) {
         <>
         <div className={className}>
        <div className={styles.container}>
+        <Link to={"/feed"}>
         <div className={styles.option}>
         <span className={`material-symbols-outlined icon ${selectedOption === "home" ? "filled" : ""}`}>home</span>
         <label className={styles.option_name}>Home</label>
         </div>
+        </Link>
 
         <div className={styles.option}>
         <span className={`material-symbols-outlined icon ${selectedOption === "explore" ? "filled" : ""}`}>category</span>
@@ -18,6 +21,11 @@ export default function SideMenuFixed({ className, selectedOption }) {
         <div className={styles.option}>
         <span className={`material-symbols-outlined icon ${selectedOption === "saved" ? "filled" : ""}`}>bookmarks</span>
         <label className={styles.option_name}>Saved</label>
+        </div>
+
+        <div className={styles.option}>
+        <span className={`material-symbols-outlined icon ${selectedOption === "you" ? "filled" : ""}`}>add_2</span>
+        <label className={styles.option_name}>Post Project</label>
         </div>
 
         <div className={styles.option}>
