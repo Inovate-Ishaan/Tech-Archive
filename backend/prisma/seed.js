@@ -66,91 +66,106 @@ const postLibrary = [
 {
 title:"Understanding React Context API",
 content:"A beginner friendly guide explaining how Context API removes prop drilling and simplifies state management.",
-tags:["React","JavaScript"]
+tags:["React","JavaScript"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Mastering Prisma ORM",
 content:"Learn relations, migrations and efficient querying using Prisma ORM.",
-tags:["Prisma","PostgreSQL"]
+tags:["Prisma","PostgreSQL"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Building REST APIs with Express",
 content:"Design scalable REST APIs using Express and Node.js.",
-tags:["Express","Node.js"]
+tags:["Express","Node.js"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"ESP32 Home Automation",
 content:"Control appliances remotely using MQTT and ESP32.",
-tags:["ESP32","Embedded Systems","Electronics"]
+tags:["ESP32","Embedded Systems","Electronics"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Designing PCBs with KiCad",
 content:"Complete PCB design workflow from schematic to fabrication.",
-tags:["PCB Design","Electronics"]
+tags:["PCB Design","Electronics"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Building a PID Controlled Drone",
 content:"PID tuning techniques for roll, pitch and yaw stabilization.",
-tags:["Drone","STM32","Embedded Systems"]
+tags:["Drone","STM32","Embedded Systems"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Docker for Beginners",
 content:"Containerize Node.js applications using Docker.",
-tags:["Docker","Linux"]
+tags:["Docker","Linux"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Introduction to Kubernetes",
 content:"Deploy and scale containerized applications.",
-tags:["Kubernetes","Docker"]
+tags:["Kubernetes","Docker"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Machine Learning Basics",
 content:"Understand supervised learning with Python.",
-tags:["Machine Learning","Python"]
+tags:["Machine Learning","Python"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Redis Caching",
 content:"Improve backend performance using Redis caching.",
-tags:["Redis","Node.js"]
+tags:["Redis","Node.js"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Tailwind CSS Tips",
 content:"Useful utility classes that speed up frontend development.",
-tags:["Tailwind CSS","React"]
+tags:["Tailwind CSS","React"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Getting Started with PostgreSQL",
 content:"Learn tables, joins and indexing using PostgreSQL.",
-tags:["PostgreSQL"]
+tags:["PostgreSQL"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Arduino Sensor Projects",
 content:"Reading sensor data with Arduino boards.",
-tags:["Arduino","Electronics"]
+tags:["Arduino","Electronics"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Building Authentication using JWT",
 content:"Implement secure login using JSON Web Tokens.",
-tags:["Express","Node.js"]
+tags:["Express","Node.js"],
+coverImage:"/avatars/Posts/postpic.jpg"
 },
 
 {
 title:"Linux Command Line Essentials",
 content:"Commands every backend developer should know.",
-tags:["Linux"]
+tags:["Linux"],
+coverImage:"/avatars/Posts/postpic.jpg"
 }
 
 ];
@@ -186,7 +201,7 @@ async function main() {
   email: "bjayavardh@iitbhilai.ac.in",
   password: hashed,
   displayname: "Jayavardhan",
-  avatar: "/avatars/jaya.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "Backend & RTL Designer",
   branch: "ECE",
   year: 2029,
@@ -201,7 +216,7 @@ async function main() {
   email: "ishukla@iitbhilai.ac.in",
   password: hashed,
   displayname: "Ishaan Shukla",
-  avatar: "/avatars/ishukla.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "Frontend Developer",
   branch: "ECE",
   year: 2029,
@@ -216,7 +231,7 @@ async function main() {
   email: "pawan@iitbhilai.ac.in",
   password: hashed,
   displayname: "Pawan Teja",
-  avatar: "/avatars/pawan.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "Backend Developer",
   branch: "CSE",
   year: 2029,
@@ -231,7 +246,7 @@ async function main() {
   email: "dkori@iitbhilai.ac.in",
   password: hashed,
   displayname: "Divyansh Kori",
-  avatar: "/avatars/dkori.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "Frontend Developer",
   branch: "CSE",
   year: 2029,
@@ -246,7 +261,7 @@ async function main() {
   email: "ananya@iitbhilai.ac.in",
   password: hashed,
   displayname: "Ananya Gupta",
-  avatar: "/avatars/ananya.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "Machine Learning Engineer",
   branch: "CSE",
   year: 2020,
@@ -261,7 +276,7 @@ async function main() {
   email: "vikram@iitbhilai.ac.in",
   password: hashed,
   displayname: "Vikram Singh",
-  avatar: "/avatars/vikram.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "DevOps Engineer",
   branch: "CSE",
   year: 2022,
@@ -276,7 +291,7 @@ async function main() {
   email: "meera@iitbhilai.ac.in",
   password: hashed,
   displayname: "Meera Iyer",
-  avatar: "/avatars/meera.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "UI/UX Designer",
   branch: "CSE",
   year: 2028,
@@ -291,7 +306,7 @@ async function main() {
   email: "harsha@iitbhilai.ac.in",
   password: hashed,
   displayname: "Harsha Vardhan",
-  avatar: "/avatars/harsha.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "Competitive Programmer",
   branch: "CSE",
   year: 2027,
@@ -306,7 +321,7 @@ async function main() {
   email: "neha@iitbhilai.ac.in",
   password: hashed,
   displayname: "Neha Kapoor",
-  avatar: "/avatars/neha.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "Cyber Security Enthusiast",
   branch: "CSE",
   year: 2026,
@@ -321,7 +336,7 @@ async function main() {
   email: "kavya@iitbhilai.ac.in",
   password: hashed,
   displayname: "Kavya Reddy",
-  avatar: "/avatars/kavya.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "Full Stack Developer",
   branch: "ECE",
   year: 2028,
@@ -336,7 +351,7 @@ async function main() {
   email: "arjun@iitbhilai.ac.in",
   password: hashed,
   displayname: "Arjun Nair",
-  avatar: "/avatars/arjun.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "Open Source Contributor",
   branch: "CSE",
   year: 2021,
@@ -351,7 +366,7 @@ async function main() {
   email: "sarah@iitbhilai.ac.in",
   password: hashed,
   displayname: "Sarah Wilson",
-  avatar: "/avatars/sarah.png",
+  avatar: "/avatars/ProfilePics/cat.jpg",
   bio: "Cloud Engineer",
   branch: "CSE",
   year: 2024,
@@ -379,7 +394,6 @@ async function main() {
           author: dbUsers[i % dbUsers.length].username,
           title: template.title + " #" + (Math.floor(i/postLibrary.length)+1),
           content: template.content,
-          coverImage: `/posts/post${(i%10)+1}.jpg`,
           tags: template.tags
       });
   }

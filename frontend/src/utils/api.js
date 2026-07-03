@@ -1,5 +1,6 @@
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
+// Authentication APIs
 export async function signin(email, password) {
   const res = await fetch(`${API_BASE}/api/auth/signin`, {
     method: 'POST',
@@ -52,5 +53,16 @@ export async function setPassword(email, password) {
   });
   const data = await res.json();
   if (!res.ok) throw data;
+  return data;
+}
+
+
+// feed page APIs
+
+export async function getPosts() {
+  const res = await fetch(`${API_BASE}/api/posts`);
+  const data = await res.json();
+  if (!res.ok) throw data;
+
   return data;
 }

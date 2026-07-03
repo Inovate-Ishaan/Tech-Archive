@@ -5,6 +5,7 @@ import PostCard from "../components/postCard/postCard";
 import SideMenuFixed from "../components/sideMenu/sideMenuFixed";
 import SideMenuToggle from "../components/sideMenu/sideMenuToggle";
 import styles from "./feed.module.css";
+import { getPosts } from "../utils/api";
 
 export default function FeedPage() {
 
@@ -12,13 +13,46 @@ export default function FeedPage() {
   const [sideMenuToggleVisible, setSideMenuToggleVisible] = useState(false);
   //prevent scroll when the side menu is open
 
+  //adding 3 extra states for page effects
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+
+   //adding backend used frontend
+  const loadPosts = async () => {
+    try {
+      const response = await getPosts();
+      setPosts(response.data)
+    } catch (err) {
+      setError(err.message || "Failed to load posts");
+    } finally {
+      setLoading(false)
+    }
+  };
+
   useEffect( () => {
     document.body.style.overflow = sideMenuToggleVisible ? "hidden" : "auto";
-
     return () => {
       document.body.style.overflow = 'auto';
     };
   }, [sideMenuToggleVisible]);
+
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
+  if (loading) {
+      return <h2>Loading...</h2>;
+  }
+
+  if (error) {
+      return <h2>{error}</h2>;
+  }
+
+  if (posts.length === 0) {
+      return <h2>No posts yet.</h2>;
+  }
 
   return (
     <>
@@ -31,66 +65,16 @@ export default function FeedPage() {
       <SideMenuFixed className={styles.sideMenuFixed} selectedOption={"home"} />
 
       <div className={styles.feed}>
+      {posts.map((post) => (
         <PostCard
-          title={"Title 1"}
-          author={"Author 1"}
-          thumbnail={
-            "https://i.natgeofe.com/k/6496b566-0510-4e92-84e8-7a0cf04aa505/red-fox-portrait_3x4.jpg"
-          }
-          profilePic={
-            "https://i.pinimg.com/564x/79/e1/29/79e129e5c4b24c6bbf068046a4c22933.jpg"
-          }
+          key={post.id}
+          title={post.title}
+          image={post.image}
+          username={post.author.username}
+          profilePic={post.author.avatar}
+          tags={post.tags}
         />
-        <PostCard
-          title={"Title 2"}
-          author={"Author 2"}
-          thumbnail={
-            "https://i.natgeofe.com/k/6496b566-0510-4e92-84e8-7a0cf04aa505/red-fox-portrait_3x4.jpg"
-          }
-          profilePic={
-            "https://i.pinimg.com/564x/79/e1/29/79e129e5c4b24c6bbf068046a4c22933.jpg"
-          }
-        />
-        <PostCard
-          title={"Title 2"}
-          author={"Author 2"}
-          thumbnail={
-            "https://i.natgeofe.com/k/6496b566-0510-4e92-84e8-7a0cf04aa505/red-fox-portrait_3x4.jpg"
-          }
-          profilePic={
-            "https://i.pinimg.com/564x/79/e1/29/79e129e5c4b24c6bbf068046a4c22933.jpg"
-          }
-        />
-        <PostCard
-          title={"Title 3"}
-          author={"Author 3"}
-          thumbnail={
-            "https://i.natgeofe.com/k/6496b566-0510-4e92-84e8-7a0cf04aa505/red-fox-portrait_3x4.jpg"
-          }
-          profilePic={
-            "https://i.pinimg.com/564x/79/e1/29/79e129e5c4b24c6bbf068046a4c22933.jpg"
-          }
-        />
-        <PostCard
-          title={"Title 4"}
-          author={"Author 4"}
-          thumbnail={
-            "https://i.natgeofe.com/k/6496b566-0510-4e92-84e8-7a0cf04aa505/red-fox-portrait_3x4.jpg"
-          }
-          profilePic={
-            "https://i.pinimg.com/564x/79/e1/29/79e129e5c4b24c6bbf068046a4c22933.jpg"
-          }
-        />
-        <PostCard
-          title={"Title 5"}
-          author={"Author 5"}
-          thumbnail={
-            "https://i.natgeofe.com/k/6496b566-0510-4e92-84e8-7a0cf04aa505/red-fox-portrait_3x4.jpg"
-          }
-          profilePic={
-            "https://i.pinimg.com/564x/79/e1/29/79e129e5c4b24c6bbf068046a4c22933.jpg"
-          }
-        />
+      ))}
       </div>
       </div>
     </>
