@@ -23,6 +23,26 @@
     padding: 20px 150px;
 }
 
+.primaryWhite{
+    font-size: var(--text-button-primary);
+    color: var(--text-primary);
+    background-color: var(--bg);
+    padding: 20px 150px;
+}
+
+.primaryBlackLessPadding{
+    font-size: var(--text-button-primary);
+    color: var(--text-white);
+    background-color: black;
+    padding: 10px 30px;
+}
+
+.primaryWhiteLessPadding{
+    font-size: var(--text-button-primary);
+    color: var(--text-primary);
+    background-color: var(--bg);
+    padding: 10px 30px;
+}
 .secondaryBlack{
     padding: 4px 12px;
     font-size: var(--text-body2);
@@ -37,7 +57,7 @@
     background-color: var(--bg);
 }
 
-.secondaryWhite:hover{
+.primaryWhite:hover, .primaryWhiteLessPadding:hover, .secondaryWhite:hover{
     color: var(--hover-on-black-text);
 }
 
