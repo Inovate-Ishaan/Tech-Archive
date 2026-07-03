@@ -12,7 +12,7 @@ import MdEditor from "../components/mdx_md_editor/mdx_md_editor";
 export default function CreatePostPage() {
   //FORM PART VISIBILITY STATES
   const [part1Visible, setPart1Visible] = useState(true);
-  const [part2Visible, setPart2Visible] = useState(true);
+  const [part2Visible, setPart2Visible] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -91,7 +91,35 @@ export default function CreatePostPage() {
   };
 
   //////////////////////////////////////////////////////////////
+//MARKDOWN SAVE and POST logic
+  const editorRef = useRef(null);
+  const [markdown, setMarkdown] = useState("");
 
+  function handlePost() {
+    const obtainedMD = editorRef.current.getMarkdown();
+    if (!(obtainedMD.length > 50)){
+      showAlert("error", "Please provide more detailed documentation");
+      return;}
+
+    if (obtainedMD.length > 50000){
+      showAlert("error", "Document exceeds the character limit (50,000)")
+      return;
+    }
+    
+    setMarkdown(obtainedMD);
+
+    const postData = new FormData();
+    postData.append("title" ,formData.title);
+    postData.append("tags", formData.tags);
+    postData.append("githubRepoURL", formData.gitHubRepoURL);
+    postData.append("thumbnail", selectedFile, selectedFile.name);
+    postData.append("md", obtainedMD)
+
+    console.log(postData)
+  
+  }
+
+  ///////////////////////////////////////////////////////
   //NEXT BUTTON MANAGEMENT
   const formNotEmpty =
     formData.title.trim() &&
@@ -100,8 +128,6 @@ export default function CreatePostPage() {
     selectedFile;
 
   const [submitting, setSubmitting] = useState(false);
-
-  formNotEmpty;
 
   const handleNext = (e) => {
     e.preventDefault();
@@ -118,7 +144,10 @@ export default function CreatePostPage() {
     setPart1Visible(false);
     setPart2Visible(true);
     console.log(formData, selectedFile);
-    showAlert("success", "Uploading...");
+    showAlert("info", "Fetching your documentation for GitHub.");
+
+    //Sample populating the editor with obtained README.md
+    setMarkdown("I got this from GitHUB");
   };
   ////////////////////////////////////////////////////////////
 
@@ -321,12 +350,37 @@ export default function CreatePostPage() {
               <label className={`${"description"} ${styles.description}`}>Documentation Editor</label>
 
               <div className={styles.editorContainer}>
-                <MdEditor />
+                <MdEditor initialMD={markdown} editorRef={editorRef}/>
               </div>
             </div>
           )}
+
+          {/* Post Button */}
+         {part2Visible && 
+         <div className={styles.postAndBackButtonContainer}>
+
+            <div className={styles.button}>
+            <Button
+              variant="primaryWhiteLessPadding"
+              status="active"
+              onClick={() => {setPart1Visible(true); setPart2Visible(false)}}>
+              <span className={`${"material-symbols-outlined"} ${styles.backButton}`}>arrow_back</span>
+              </Button>
+          </div> 
+
+         <div className={styles.button}>
+            <Button
+              variant="primaryBlackLessPadding"
+              status="active"
+              onClick={handlePost}
+            >
+              {submitting ? <BtnLoader /> : "Post"}
+            </Button>
+            </div>
+          </div>}
+
           {/* NEXT/ POST BUTTON */}
-          <div className={styles.button}>
+         {part1Visible && <div className={styles.button}>
             <Button
               variant="primaryBlack"
               status={formNotEmpty && !submitting ? "active" : "disabled"}
@@ -334,7 +388,7 @@ export default function CreatePostPage() {
             >
               {submitting ? <BtnLoader /> : "Next"}
             </Button>
-          </div>
+          </div> }
         </div>
 
         {/* <Footer /> */}
