@@ -49,6 +49,7 @@ model Post {
   coverImage  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  gitrepo     String
   authorId    String
   author      User     @relation(fields: [authorId], references: [id])
   tags        PostTag[]
