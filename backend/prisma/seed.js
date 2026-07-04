@@ -67,105 +67,120 @@ const postLibrary = [
 title:"Understanding React Context API",
 content:"A beginner friendly guide explaining how Context API removes prop drilling and simplifies state management.",
 tags:["React","JavaScript"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Mastering Prisma ORM",
 content:"Learn relations, migrations and efficient querying using Prisma ORM.",
 tags:["Prisma","PostgreSQL"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Building REST APIs with Express",
 content:"Design scalable REST APIs using Express and Node.js.",
 tags:["Express","Node.js"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"ESP32 Home Automation",
 content:"Control appliances remotely using MQTT and ESP32.",
 tags:["ESP32","Embedded Systems","Electronics"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Designing PCBs with KiCad",
 content:"Complete PCB design workflow from schematic to fabrication.",
 tags:["PCB Design","Electronics"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Building a PID Controlled Drone",
 content:"PID tuning techniques for roll, pitch and yaw stabilization.",
 tags:["Drone","STM32","Embedded Systems"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Docker for Beginners",
 content:"Containerize Node.js applications using Docker.",
 tags:["Docker","Linux"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Introduction to Kubernetes",
 content:"Deploy and scale containerized applications.",
 tags:["Kubernetes","Docker"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Machine Learning Basics",
 content:"Understand supervised learning with Python.",
 tags:["Machine Learning","Python"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Redis Caching",
 content:"Improve backend performance using Redis caching.",
 tags:["Redis","Node.js"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Tailwind CSS Tips",
 content:"Useful utility classes that speed up frontend development.",
 tags:["Tailwind CSS","React"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Getting Started with PostgreSQL",
 content:"Learn tables, joins and indexing using PostgreSQL.",
 tags:["PostgreSQL"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Arduino Sensor Projects",
 content:"Reading sensor data with Arduino boards.",
 tags:["Arduino","Electronics"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Building Authentication using JWT",
 content:"Implement secure login using JSON Web Tokens.",
 tags:["Express","Node.js"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
 title:"Linux Command Line Essentials",
 content:"Commands every backend developer should know.",
 tags:["Linux"],
-coverImage:"/avatars/Posts/postpic.jpg"
+coverImage:"/avatars/Posts/postpic.jpg",
+gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
 }
 
 ];
@@ -394,7 +409,9 @@ async function main() {
           author: dbUsers[i % dbUsers.length].username,
           title: template.title + " #" + (Math.floor(i/postLibrary.length)+1),
           content: template.content,
-          tags: template.tags
+          tags: template.tags,
+          coverImage: template.coverImage,
+          gitrepo: template.gitrepo
       });
   }
 
@@ -409,7 +426,8 @@ async function main() {
           content:item.content,
           coverImage:item.coverImage,
           authorId:author.id,
-          createdAt:new Date(Date.now() - randomInt(0,90) * 86400000)
+          createdAt:new Date(Date.now() - randomInt(0,90) * 86400000),
+          gitrepo: item.gitrepo
         }
     });
 
