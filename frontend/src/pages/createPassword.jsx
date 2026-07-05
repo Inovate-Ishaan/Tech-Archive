@@ -137,7 +137,7 @@ export default function CreatePasswordPage() {
             <div className={styles.formContainer}>
               <h1 className={styles.title}>Create Password</h1>
 
-              <label className={styles.description}>
+              <label className={"description"}>
                 Become a member of the University's Tech Community
               </label>
 

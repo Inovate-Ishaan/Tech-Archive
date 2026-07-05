@@ -6,6 +6,7 @@
     align-items: center;
     justify-content: space-between;
     width : 100%;
+    border-top: 0.8px solid var(--border-containers);
 }
 
 .subheading {

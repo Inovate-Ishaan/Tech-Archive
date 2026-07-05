@@ -12,7 +12,7 @@ export default function SideMenuToggle({ className, selectedOption, closeBtnFunc
 
         <div className={styles.header}>
             <span className={`material-symbols-outlined icon ${styles.close}`} onClick={closeBtnFunction}>close</span>
-            <h2 className="title">Tech Archive</h2>
+            <h2 className={styles.title}>Tech Archive</h2>
 
         </div>
         

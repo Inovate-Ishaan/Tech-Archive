@@ -1,5 +1,6 @@
 .container {
-    background-color: var(--bg-white);
+    background-color: var(--header-navbar-bg);
+    border-bottom: 0.8px solid var(--border-containers);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,7 +28,7 @@
 
 .searchBar input {
     width: 100%;
-    background-color: #f9f9f9;
+    background-color: var(--search-bar-bg);
     position: relative;
     padding: 10px;
     border: solid 0.5px var(--border);
@@ -55,11 +56,12 @@
     transform: translateY(-50%);
     top: 50%;
     margin-right: 10px;
-    background-color: #f9f9f9;
+    background-color: var(--search-bar-bg);
 }
 
 #closeBtn{
     right: 35px;
+    background-color: var(--search-bar-bg);
 }
 
 #closeBtn:hover, #searchIcon:hover, .left > span:hover, .right > span:hover {
