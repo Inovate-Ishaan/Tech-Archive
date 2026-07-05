@@ -135,7 +135,7 @@ export default function RegisterPage() {
             <div className={styles.formContainer}>
               <h1 className={styles.title}>Create Account</h1>
 
-              <label className={styles.description}>
+              <label className={"description"}>
                 Become a member of the University's Tech Community
               </label>
 
@@ -146,7 +146,7 @@ export default function RegisterPage() {
                     <div className={styles.inputGroup}>
                       <label >First name</label>
                       <input
-                        placeholder="firstname"
+                        placeholder="Firstname"
                         value={formData.firstName}
                         onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                       ></input>
@@ -155,7 +155,7 @@ export default function RegisterPage() {
                     <div className={styles.inputGroup}>
                       <label >Last name</label>
                       <input
-                        placeholder="lastname"
+                        placeholder="Lastname"
                         value={formData.lastName}
                         onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                       ></input>

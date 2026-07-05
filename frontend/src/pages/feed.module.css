@@ -13,7 +13,7 @@
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
     gap: 5px 10px;
     max-width: 1500px;
-    background-color: var(--bg-white);
+    background-color: var(--bg-offWhite);
     padding: 0 10px;
     box-sizing: border-box;
 }

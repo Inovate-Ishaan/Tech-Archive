@@ -1,9 +1,17 @@
 .container {
+    background-color: var(--header-navbar-bg);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 6px 10px 20px 10px;
+    border-bottom: 0.8px solid var(--border-containers);
 }
+
+.title{
+    transform: translateY(10%);
+    margin-left: 10px;
+}
+
 
 .left, .right {
     display: flex;

@@ -11,7 +11,7 @@ export default function Header() {
         <div className={styles.container}>
         <div className={styles.left}>
             <img src={logo} alt="logo" className={styles.headerLogo} />
-            <h2 className="title">Tech Archive</h2>
+            <h2 className={styles.title}>Tech Archive</h2>
         </div>
 
         <div className={styles.right}>

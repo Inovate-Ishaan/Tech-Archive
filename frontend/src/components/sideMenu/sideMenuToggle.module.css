@@ -17,6 +17,10 @@
     margin-left: 12px
 }
 
+.title{
+    transform: translateY(10%);
+}
+
 .optionContainer {
     display: flex;
     flex-direction: column;
