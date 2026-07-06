@@ -8,8 +8,7 @@
 }
 
 .title{
-    transform: translateY(10%);
-    margin-left: 10px;
+    transform: translateY(25%);
 }
 
 
@@ -22,4 +21,25 @@
 .headerLogo {
     height: 40px;
     width: 40px;
+}
+
+@media (max-width: 600px){
+    .container{
+        padding: 3px 5px 10px 5px;
+    }
+    .title{
+        font-size: 20px;
+    }
+
+    .left, .right{
+        gap: 3px;
+    }
+
+}
+
+@media (max-width: 390px){
+    .container{
+        padding: 2px 4px 9px 4px;
+    }
+
 }
