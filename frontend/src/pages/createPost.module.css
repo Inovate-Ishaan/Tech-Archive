@@ -121,7 +121,7 @@
 
 /* Upload Thumbnail Text */
 .thumbnailUploadButton > p {
-    font-size: var(--text-body4);
+    font-size: var(--text-body5);
 }
 
 .hiddenFileInput {

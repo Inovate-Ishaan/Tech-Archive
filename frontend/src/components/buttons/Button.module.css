@@ -34,14 +34,14 @@
     font-size: var(--text-button-primary);
     color: var(--button-black-text);
     background-color: var(--button-black-bg);
-    padding: 10px 30px;
+    padding: 15px 30px;
 }
 
 .primaryWhiteLessPadding{
     font-size: var(--text-button-primary);
     color: var(--button-white-text);
     background-color: var(--button-white-bg);
-    padding: 10px 30px;
+    padding: 15px 30px;
 }
 .secondaryBlack{
     padding: 4px 12px;
@@ -74,12 +74,8 @@
 
 /*make it smaller for small devices*/
 @media (max-width: 480px) {
-    .primaryBlack {
-        font-size: var(--text-body1);
-    }
-
     .secondaryBlack, .secondaryWhite{
-        font-size: var(--text-body3);
+        font-size: var(--text-body4);
         padding: 2px 6px;
     }
 } 

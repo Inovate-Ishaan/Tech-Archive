@@ -22,16 +22,19 @@
 
 .success {
     color: var(--text-primary);
+    border: 0.5px solid var(--success);
     border-right: 6px solid var(--success);
 }
 
 .error {
     color: var(--text-primary);
+    border: 0.5px solid var(--error);
     border-right: 6px solid var(--error);
 }
 
 .info {
     color: var(--text-primary);
+    border: 0.5px solid var(--accent);
     border-right: 6px solid var(--accent);
 }
 
@@ -47,4 +50,14 @@
 button {
     border : none;
     background-color: inherit;
+}
+
+@media (max-width: 468px) {
+    .alert{
+        right: 2px;
+        padding: 10px 2.5px 10px 12px ;
+    }
+    .msg{
+        font-size: var(--text-body3);
+    }
 }

@@ -133,11 +133,13 @@ export default function RegisterPage() {
         <div className={styles.bodyContainer}>
           <div className={styles.formParent}>
             <div className={styles.formContainer}>
+              <div className={styles.formTitleDescription}>
               <h1 className={styles.title}>Create Account</h1>
 
               <label className={"description"}>
                 Become a member of the University's Tech Community
               </label>
+              </div>
 
               <fieldset disabled={loading} className={loading ? "fieldsetDisabled" : ""}>
               <form>
@@ -205,11 +207,11 @@ export default function RegisterPage() {
                   </div>
                 </div>
                 <Button
-                  variant="primaryBlack"
+                  variant="primaryBlackLessPadding"
                   status={formNotEmpty && !loading ? "active" : "disabled"}
                   onClick={handleSubmit}
                 >
-                  {loading ? <BtnLoader /> : 'Create account'}
+                  {loading ? <BtnLoader /> : "Verify email"}
                 </Button>
               </form>
               </fieldset>
@@ -224,6 +226,8 @@ export default function RegisterPage() {
           </div>
         </div>
         )}
+
+        <Footer />
       </div>
     </>
   );
