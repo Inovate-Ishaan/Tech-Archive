@@ -54,3 +54,18 @@ export async function setPassword(email, password) {
   if (!res.ok) throw data;
   return data;
 }
+
+export async function fetchReadme(githubUrl) {
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/posts/fetch-readme`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify({ githubUrl }),
+  });
+  const json = await res.json();
+  if (!res.ok) throw json;
+  return json.data;
+}

@@ -10,23 +10,23 @@ datasource db {
 
 // User stores the institute email, password hash, and profile metadata.
 model User {
-  id          String   @id @default(uuid())
-  username    String   @unique
-  email       String   @unique
-  password    String?
-  displayname String
-  avatar      String?
-  bio         String?
-  branch      String?
-  year        Int?
-  github      String?
-  linkedin    String?
-  website     String?
-  posts       Post[]
-  bookmarks   Bookmark[]
-  instituteId String   @unique
-  otps        Otp[]
-  createdAt   DateTime @default(now())
+  id            String   @id @default(uuid())
+  username      String   @unique
+  email         String   @unique
+  password      String?
+  displayname   String
+  avatar        String?
+  bio           String?
+  branch        String?
+  year          Int?
+  github        String?
+  linkedin      String?
+  website       String?
+  emailVerified Boolean  @default(false)
+  posts         Post[]
+  instituteId   String   @unique
+  otps          Otp[]
+  createdAt     DateTime @default(now())
 }
 
 // Stores OTP for verification
@@ -47,40 +47,11 @@ model Post {
   title       String
   content     String
   coverImage  String?
+  githubUrl   String?
+  tags        String[]
+  images      String[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   authorId    String
   author      User     @relation(fields: [authorId], references: [id])
-  tags        PostTag[]
-  bookmarks   Bookmark[]
-}
-
-model Tag {
-
-  id          String   @id @default(uuid())
-  name        String   @unique
-  slug        String   @unique
-  description String?
-  createdAt   DateTime @default(now())
-  posts       PostTag[]
-}
-
-model PostTag {
-
-  postId      String
-  tagId       String
-  post        Post    @relation(fields:[postId], references:[id])
-  tag         Tag     @relation(fields:[tagId], references:[id])
-  @@id([postId, tagId])
-}
-
-model Bookmark {
-
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  userId      String
-  postId      String
-  user        User     @relation(fields:[userId], references:[id])
-  post        Post     @relation(fields:[postId], references:[id])
-  @@unique([userId, postId])
 }

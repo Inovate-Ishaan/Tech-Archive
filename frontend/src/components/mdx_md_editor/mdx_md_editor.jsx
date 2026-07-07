@@ -1,3 +1,4 @@
+import {   MDXEditor } from '@mdxeditor/editor'
 import {
   BlockTypeSelect,
   CodeToggle,
@@ -8,7 +9,6 @@ import {
   InsertImage,
   linkPlugin,
   markdownShortcutPlugin,
-  MDXEditor,
   AdmonitionDirectiveDescriptor,
   InsertAdmonition,
   ListsToggle,
@@ -30,11 +30,16 @@ import {
 
 import "@mdxeditor/editor/style.css";
 import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
 
-function MdEditor() {
+function MdEditor( {initialMD, editorRef} ) {
+
+
+
   return (
     <MDXEditor
-      markdown="# Hello world"
+    ref={editorRef}
+      markdown={initialMD}
       plugins={[
         headingsPlugin(),
         listsPlugin(),
