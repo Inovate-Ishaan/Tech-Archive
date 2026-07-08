@@ -8,7 +8,7 @@ import Alert from "../components/alertPopUP/alertPopUp";
 import validator from "validator";
 import BtnLoader from "../components/loaders/btnLoader";
 import OTPModal from "../components/OTPfield/OTPModal";
-import { register as apiRegister, requestOtp } from "../utils/api";
+import { register as apiRegister } from "../utils/api";
 import { useNavigate, Link } from "react-router-dom";
 
 export default function RegisterPage() {
@@ -81,21 +81,15 @@ export default function RegisterPage() {
     if (!validateInputs()) return;
     setLoading(true);
     try {
-      await apiRegister({ email, username, instituteId: instituteID });
-    } catch (err) {
-      const msg = err && err.error ? err.error : 'Registration failed';
-      showAlert('error', msg);
-      setLoading(false);
-      return;
-    }
-    try {
-      const otpData = await requestOtp(email);
-      if (otpData.devCode) {
-        console.log("[DEV] OTP code:", otpData.devCode);
+      const regData = await apiRegister({ email, username, instituteId: instituteID, firstName, lastName });
+      if (regData?.data?.devCode) {
+        console.log("[DEV] OTP code:", regData.data.devCode);
       }
       setShowOTP(true);
+      setLoading(false);
     } catch (err) {
-      showAlert('error', 'Account created but failed to send OTP. Try again.');
+      const msg = err?.message || 'Registration failed';
+      showAlert('error', msg);
       setLoading(false);
     }
   }

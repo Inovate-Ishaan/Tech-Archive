@@ -1,7 +1,7 @@
 const RATE_LIMITS = {
-  AUTH: { windowMs: 15 * 60 * 1000, max: process.env.NODE_ENV === 'development' ? 50 : 10 },
-  OTP: { windowMs: 60 * 60 * 1000, max: process.env.NODE_ENV === 'development' ? 50 : 3 },
-  STRICT: { windowMs: 15 * 60 * 1000, max: process.env.NODE_ENV === 'development' ? 50 : 5 },
+  AUTH: { windowMs: 15 * 60 * 1000, max: 200 },
+  OTP: { windowMs: 60 * 60 * 1000, max: 200 },
+  STRICT: { windowMs: 15 * 60 * 1000, max: 200 },
 };
 
 const OTP_CONFIG = {
@@ -21,10 +21,4 @@ const HTTP_STATUS = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-const PAGINATION = {
-  DEFAULT_PAGE: 1,
-  DEFAULT_LIMIT: 10,
-  MAX_LIMIT: 100,
-};
-
-module.exports = { RATE_LIMITS, OTP_CONFIG, HTTP_STATUS, PAGINATION };
+module.exports = { RATE_LIMITS, OTP_CONFIG, HTTP_STATUS };

@@ -45,16 +45,18 @@ export default function OTPModal({ email, onVerified }) {
     try {
       const otpString = otp.join("");
       const data = await verifyOtp(email, otpString);
-      if (data.token) {
-        localStorage.setItem("auth_token", data.token);
+      if (data.data?.token) {
+        localStorage.setItem("auth_token", data.data.token);
         setTimeout(() => {
-          if (onVerified) onVerified(data.token);
+          if (onVerified) onVerified(data.data.token);
         }, 500);
+      } else if (data.data?.verified) {
+        if (onVerified) onVerified();
       } else {
         showAlert("error", "Verification failed");
       }
     } catch (err) {
-      const msg = err && err.error ? err.error : "Invalid or expired code";
+      const msg = err?.message || "Invalid or expired code";
       showAlert("error", msg);
       setOtp(["", "", "", "", "", ""]);
       inputRefs.current[0]?.focus();

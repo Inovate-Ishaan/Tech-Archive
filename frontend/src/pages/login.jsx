@@ -51,13 +51,13 @@ export default function LoginPage() {
     setSubmitting(true);
     try {
       const data = await signin(email, password);
-      if (data.token) {
-        localStorage.setItem("auth_token", data.token);
+      if (data.data?.token) {
+        localStorage.setItem("auth_token", data.data.token);
         showAlert("success", "Logged in successfully");
         setTimeout(() => navigate("/feed"), 1000);
       }
     } catch (err) {
-      const msg = err && err.error ? err.error : "Signin failed";
+      const msg = err?.message || "Signin failed";
       showAlert("error", msg);
     } finally {
       setSubmitting(false);

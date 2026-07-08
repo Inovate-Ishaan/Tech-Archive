@@ -11,11 +11,11 @@ export async function signin(email, password) {
   return data;
 }
 
-export async function register({ email, password, username, instituteId }) {
+export async function register({ email, password, username, instituteId, firstName, lastName }) {
   const res = await fetch(`${API_BASE}/api/auth/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password, username, instituteId }),
+    body: JSON.stringify({ email, password, username, instituteId, firstName, lastName }),
   });
   const data = await res.json();
   if (!res.ok) throw data;

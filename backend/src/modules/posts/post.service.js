@@ -1,24 +1,12 @@
 const postRepository = require('./post.repository');
-const { paginationHelper } = require('../../utils/pagination');
 const ApiError = require('../../utils/ApiError');
 const { HTTP_STATUS } = require('../../utils/constants');
 
 async function listPosts(query) {
-  const { page, limit, skip } = paginationHelper(query);
-  const { posts, total } = await postRepository.findAll({
-    skip,
-    limit,
+  return postRepository.findAll({
     author: query.author,
     search: query.search,
   });
-
-  return {
-    posts,
-    total,
-    page,
-    limit,
-    totalPages: Math.ceil(total / limit),
-  };
 }
 
 async function getPost(id) {

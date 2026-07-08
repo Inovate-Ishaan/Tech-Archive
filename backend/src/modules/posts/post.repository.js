@@ -6,7 +6,7 @@ const postInclude = {
   },
 };
 
-async function findAll({ skip, limit, author, search }) {
+async function findAll({ author, search }) {
   const where = {};
   if (author) where.author = { username: author };
   if (search) {
@@ -16,18 +16,13 @@ async function findAll({ skip, limit, author, search }) {
     ];
   }
 
-  const [posts, total] = await Promise.all([
-    prisma.post.findMany({
-      where,
-      skip,
-      take: limit,
-      orderBy: { createdAt: 'desc' },
-      include: postInclude,
-    }),
-    prisma.post.count({ where }),
-  ]);
+  const posts = await prisma.post.findMany({
+    where,
+    orderBy: { createdAt: 'desc' },
+    include: postInclude,
+  });
 
-  return { posts, total };
+  return posts;
 }
 
 async function findById(id) {
