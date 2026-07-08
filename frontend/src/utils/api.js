@@ -68,6 +68,20 @@ export async function fetchReadme(githubUrl) {
   const json = await res.json();
   if (!res.ok) throw json;
   return json.data;
+};
+
+export async function uploadPost(formData){
+  const token = localStorage.getItem('auth_token');
+  for (const [key, value] of formData.entries()) {
+  console.log(key, value);
 }
-
-
+  const resp = await fetch(`${API_BASE}/api/posts`, {
+    method: 'POST',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
+    body: formData,
+  });
+  console.log(resp);
+  return "request complete, respone above"
+};

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { fetchReadme } from "../utils/api";
+import { fetchReadme, uploadPost } from "../utils/api";
 import Footer from "../components/footer/footer";
 import NavWithSearch from "../components/navAndSearchBar/navAndSearchBar";
 import styles from "./createPost.module.css";
@@ -38,6 +38,8 @@ export default function CreatePostPage() {
       setThumbnailPreview(URL.createObjectURL(file));
     }
   };
+
+  //For integration of cloudinay, upload image directly and get the url
   const onFileUpload = () => {
     const fileData = new FormData();
     fileData.append("thumbnail", selectedFile, selectedFile.name);
@@ -115,10 +117,17 @@ export default function CreatePostPage() {
     postData.append("content", obtainedMD);
     postData.append("githubUrl", formData.gitHubRepoURL);
     postData.append("tags", JSON.stringify(formData.tags));
-    postData.append("thumbnail", selectedFile, selectedFile.name);
+    postData.append("thumbnail", selectedFile);
+  
 
+    try {
+      const resp = await uploadPost(postData);
+      console.log(resp);
+    } catch(err) {
+      const msg = (err && err.error) || (err && err.msg) || "Post upload failed";
+      console.log(msg)
+    }
   }
-
 
   //Markdown editor ERROR handler
   function editorErrorHandler({ msg, source }) {
