@@ -29,9 +29,9 @@ export default function CreatePostPage() {
     const file = e.target.files[0];
     const max_file_size = 3145728; //3MB
     if (file) {
-      if (file.size > max_file_size){
-        showAlert('error', 'Thumbnail must be less than 3MB');
-        e.target.value ="";
+      if (file.size > max_file_size) {
+        showAlert("error", "Thumbnail must be less than 3MB");
+        e.target.value = "";
         return;
       }
       setSelectedFile(file);
@@ -44,7 +44,6 @@ export default function CreatePostPage() {
 
     //api call
   };
-
 
   //TAG MANAGEMENT
   const allTags = [
@@ -92,21 +91,23 @@ export default function CreatePostPage() {
   };
 
   //////////////////////////////////////////////////////////////
-//MARKDOWN SAVE and POST logic
+  //MARKDOWN SAVE and POST logic
   const editorRef = useRef(null);
   const [markdown, setMarkdown] = useState("");
 
-  function handlePost() {
+  async function handlePost() {
     const obtainedMD = editorRef.current.getMarkdown();
-    if (!(obtainedMD.length > 50)){
+    if (!(obtainedMD.length > 50)) {
       showAlert("error", "Please provide more detailed documentation");
-      return;}
-
-    if (obtainedMD.length > 50000){
-      showAlert("error", "Document exceeds the character limit (50,000)")
       return;
     }
-    
+
+    if (obtainedMD.length > 50000) {
+      showAlert("error", "Document exceeds the character limit (50,000)");
+      return;
+    }
+
+    //inculcate the changes the user has made into the markdown state
     setMarkdown(obtainedMD);
 
     const postData = new FormData();
@@ -116,10 +117,15 @@ export default function CreatePostPage() {
     postData.append("tags", JSON.stringify(formData.tags));
     postData.append("thumbnail", selectedFile, selectedFile.name);
 
-    console.log([...postData.entries()]);
-  
   }
 
+
+  //Markdown editor ERROR handler
+  function editorErrorHandler({ msg, source }) {
+    showAlert("error", "Error Parsing the README contents")
+    console.log(`Msg: ${msg}`);
+    console.log(`Source: ${source}`);
+  };
   ///////////////////////////////////////////////////////
   //NEXT BUTTON MANAGEMENT
   const formNotEmpty =
@@ -142,17 +148,24 @@ export default function CreatePostPage() {
       return;
     }
 
-    showAlert("info", "Fetching your documentation from GitHub.");
-
-    try {
-      const data = await fetchReadme(formData.gitHubRepoURL);
-      setMarkdown(data.content);
-      setPart1Visible(false);
-      setPart2Visible(true);
-    } catch (err) {
-      const msg = (err && err.message) || (err && err.error) || "Failed to fetch README";
-      showAlert("error", msg);
+    //make the request only if there's no markdown already
+    if (!markdown) {
+      showAlert("info", "Fetching your documentation from GitHub.");
+      try {
+        const data = await fetchReadme(formData.gitHubRepoURL);
+        setMarkdown(data.content);
+      } catch (err) {
+        const msg =
+          (err && err.message) ||
+          (err && err.error) ||
+          "Failed to fetch README";
+        showAlert("error", msg);
+      }
     }
+
+    //show the doc editor (Part 2)
+    setPart1Visible(false);
+    setPart2Visible(true);
   };
   ////////////////////////////////////////////////////////////
 
@@ -220,7 +233,9 @@ export default function CreatePostPage() {
           {/* THIS IS PART 1 OF THE POST FORM */}
           {part1Visible && (
             <div className={styles.formPart}>
-              <label className={`${"description"} ${styles.description}`}>Project Details</label>
+              <label className={`${"description"} ${styles.description}`}>
+                Project Details
+              </label>
 
               <div className={styles.formContainer}>
                 {/* Form container */}
@@ -276,17 +291,20 @@ export default function CreatePostPage() {
                     </div>
                   )}
 
+              {/* Github Repo URL */}
                   <div className={styles.inputGroup}>
                     <label>GitHub repo URL</label>
                     <input
                       placeholder="https://github.com/Inovate-Ishaan/Tech-Archive"
                       type="url"
                       value={formData.gitHubRepoURL}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         setFormData({
                           ...formData,
                           gitHubRepoURL: e.target.value,
-                        })
+                        });
+                        setMarkdown("") //discard previous markdown on URL change
+                      }
                       }
                     ></input>
                   </div>
@@ -352,48 +370,60 @@ export default function CreatePostPage() {
 
           {part2Visible && (
             <div className={styles.formPart}>
-              <label className={`${"description"} ${styles.description}`}>Documentation Editor</label>
+              <label className={`${"description"} ${styles.description}`}>
+                Documentation Editor
+              </label>
 
               <div className={styles.editorContainer}>
-                <MdEditor initialMD={markdown} editorRef={editorRef}/>
+                <MdEditor initialMD={markdown} editorRef={editorRef} handleEditorError={editorErrorHandler} />
               </div>
             </div>
           )}
 
           {/* Post Button */}
-         {part2Visible && 
-         <div className={styles.postAndBackButtonContainer}>
+          {part2Visible && (
+            <div className={styles.postAndBackButtonContainer}>
+              <div className={styles.button}>
+                <Button
+                  variant="primaryWhiteLessPadding"
+                  status="active"
+                  onClick={() => {
+                    setPart1Visible(true);
+                    setPart2Visible(false);
+                  }}
+                >
+                  <span
+                    className={`${"material-symbols-outlined"} ${styles.backButton}`}
+                  >
+                    arrow_back
+                  </span>
+                </Button>
+              </div>
 
-            <div className={styles.button}>
-            <Button
-              variant="primaryWhiteLessPadding"
-              status="active"
-              onClick={() => {setPart1Visible(true); setPart2Visible(false)}}>
-              <span className={`${"material-symbols-outlined"} ${styles.backButton}`}>arrow_back</span>
-              </Button>
-          </div> 
-
-         <div className={styles.button}>
-            <Button
-              variant="primaryBlackLessPadding"
-              status="active"
-              onClick={handlePost}
-            >
-              {submitting ? <BtnLoader /> : "Post"}
-            </Button>
+              <div className={styles.button}>
+                <Button
+                  variant="primaryBlackLessPadding"
+                  status="active"
+                  onClick={handlePost}
+                >
+                  {submitting ? <BtnLoader /> : "Post"}
+                </Button>
+              </div>
             </div>
-          </div>}
+          )}
 
-          {/* NEXT/ POST BUTTON */}
-         {part1Visible && <div className={styles.button}>
-            <Button
-              variant="primaryBlack"
-              status={formNotEmpty && !submitting ? "active" : "disabled"}
-              onClick={handleNext}
-            >
-              {submitting ? <BtnLoader /> : "Next"}
-            </Button>
-          </div> }
+          {/* NEXT BUTTON */}
+          {part1Visible && (
+            <div className={styles.button}>
+              <Button
+                variant="primaryBlack"
+                status={formNotEmpty && !submitting ? "active" : "disabled"}
+                onClick={handleNext}
+              >
+                {submitting ? <BtnLoader /> : "Next"}
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* <Footer /> */}
