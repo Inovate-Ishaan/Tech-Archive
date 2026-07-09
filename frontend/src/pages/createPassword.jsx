@@ -28,7 +28,7 @@ export default function CreatePasswordPage() {
     } else {
       // No email in session, redirect to register
       showAlert("info", "Redirecting to create account");
-      navigate("/create-password");
+      navigate("/register");
     }
   }, [navigate]);
 
@@ -98,10 +98,7 @@ export default function CreatePasswordPage() {
 
     try {
       await setPassword(email, formData.password);
-      showAlert(
-        "success",
-        "Taking you to the feed...",
-      );
+      showAlert("success", "Taking you to the feed...");
       sessionStorage.removeItem("registrationEmail");
       setTimeout(() => {
         navigate("/feed");
@@ -185,7 +182,6 @@ export default function CreatePasswordPage() {
                 </Button>
               </form>
             </div>
-
           </div>
           <div className={styles.graphicContainer}>
             <img src={passwordGraphic} className={styles.graphic} />
