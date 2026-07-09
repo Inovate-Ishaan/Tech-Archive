@@ -389,7 +389,21 @@ export default function CreatePostPage() {
             </div>
           )}
 
-          {/* Post Button */}
+
+          {/* NEXT BUTTON */}
+          {part1Visible && (
+            <div className={styles.button}>
+              <Button
+                variant="primaryBlack"
+                status={formNotEmpty && !submitting ? "active" : "disabled"}
+                onClick={handleNext}
+              >
+                {submitting ? <BtnLoader /> : "Next"}
+              </Button>
+            </div>
+          )}
+
+          {/* Post Button and back button*/}
           {part2Visible && (
             <div className={styles.postAndBackButtonContainer}>
               <div className={styles.button}>
@@ -421,21 +435,9 @@ export default function CreatePostPage() {
             </div>
           )}
 
-          {/* NEXT BUTTON */}
-          {part1Visible && (
-            <div className={styles.button}>
-              <Button
-                variant="primaryBlack"
-                status={formNotEmpty && !submitting ? "active" : "disabled"}
-                onClick={handleNext}
-              >
-                {submitting ? <BtnLoader /> : "Next"}
-              </Button>
-            </div>
-          )}
         </div>
 
-        {/* <Footer /> */}
+        <Footer /> 
       </div>
     </>
   );
