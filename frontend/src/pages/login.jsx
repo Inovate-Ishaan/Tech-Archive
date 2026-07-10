@@ -76,10 +76,13 @@ export default function LoginPage() {
         <div className={styles.bodyContainer}>
           <div className={styles.formParent}>
             <div className={styles.formContainer}>
+
+              <div className={styles.formTitleDescription}>
               <h1 className={styles.title}>Welcome Back</h1>
               <label className="description">
                 Good to see you again...
               </label>
+              </div>
               <fieldset disabled={submitting} className={submitting ? "fieldsetDisabled" : ""}>
               <form>
                 <div className={styles.inputGroup}>
@@ -93,6 +96,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className={styles.inputGroup}>
+                  <label>Password</label>
                   <PasswordField
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -103,9 +107,11 @@ export default function LoginPage() {
                   variant="primaryBlack"
                   status={formNotEmpty && !submitting ? "active" : "disabled"}
                   onClick={handleSubmit}
+                  className={styles.submitButton}
                 >
                   {submitting ? <BtnLoader /> : "Login"}
                 </Button>
+                
               </form>
               </fieldset>
             </div>

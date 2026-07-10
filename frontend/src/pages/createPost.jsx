@@ -175,6 +175,11 @@ export default function CreatePostPage() {
     //show the doc editor (Part 2)
     setPart1Visible(false);
     setPart2Visible(true);
+    console.log(formData, selectedFile);
+    showAlert("info", "Fetching your documentation for GitHub.");
+
+    //Sample populating the editor with obtained README.md
+    setMarkdown("I got this from GitHUB");
   };
   ////////////////////////////////////////////////////////////
 
@@ -390,49 +395,39 @@ export default function CreatePostPage() {
           )}
 
           {/* Post Button */}
-          {part2Visible && (
-            <div className={styles.postAndBackButtonContainer}>
-              <div className={styles.button}>
-                <Button
-                  variant="primaryWhiteLessPadding"
-                  status="active"
-                  onClick={() => {
-                    setPart1Visible(true);
-                    setPart2Visible(false);
-                  }}
-                >
-                  <span
-                    className={`${"material-symbols-outlined"} ${styles.backButton}`}
-                  >
-                    arrow_back
-                  </span>
-                </Button>
-              </div>
+         {part2Visible && 
+         <div className={styles.postAndBackButtonContainer}>
 
-              <div className={styles.button}>
-                <Button
-                  variant="primaryBlackLessPadding"
-                  status="active"
-                  onClick={handlePost}
-                >
-                  {submitting ? <BtnLoader /> : "Post"}
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {/* NEXT BUTTON */}
-          {part1Visible && (
             <div className={styles.button}>
-              <Button
-                variant="primaryBlack"
-                status={formNotEmpty && !submitting ? "active" : "disabled"}
-                onClick={handleNext}
-              >
-                {submitting ? <BtnLoader /> : "Next"}
+            <Button
+              variant="primaryWhiteLessPadding"
+              status="active"
+              onClick={() => {setPart1Visible(true); setPart2Visible(false)}}>
+              <span className={`${"material-symbols-outlined"} ${styles.backButton}`}>arrow_back</span>
               </Button>
+          </div> 
+
+         <div className={styles.button}>
+            <Button
+              variant="primaryBlackLessPadding"
+              status="active"
+              onClick={handlePost}
+            >
+              {submitting ? <BtnLoader /> : "Post"}
+            </Button>
             </div>
-          )}
+          </div>}
+
+          {/* NEXT/ POST BUTTON */}
+         {part1Visible && <div className={styles.button}>
+            <Button
+              variant="primaryBlack"
+              status={formNotEmpty && !submitting ? "active" : "disabled"}
+              onClick={handleNext}
+            >
+              {submitting ? <BtnLoader /> : "Next"}
+            </Button>
+          </div> }
         </div>
 
         {/* <Footer /> */}

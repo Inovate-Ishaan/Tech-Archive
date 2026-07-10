@@ -4,6 +4,7 @@ const postRoutes = require('../modules/posts/post.routes');
 const userRoutes = require('../modules/users/user.routes');
 const uploadRoutes = require('../modules/uploads/upload.routes');
 const postService = require('../modules/posts/post.service');
+const postRoutes = require("../modules/feed/feed.routes");
 const { HTTP_STATUS } = require('../utils/constants');
 const ApiResponse = require('../utils/ApiResponse');
 
@@ -13,6 +14,7 @@ router.use('/auth', authRoutes);
 router.use('/posts', postRoutes);
 router.use('/users', userRoutes);
 router.use('/uploads', uploadRoutes);
+router.use("/feed", postRoutes);
 
 router.get('/feed', async (req, res, next) => {
   try {
@@ -24,3 +26,4 @@ router.get('/feed', async (req, res, next) => {
 });
 
 module.exports = router;
+

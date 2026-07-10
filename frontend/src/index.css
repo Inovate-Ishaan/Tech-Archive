@@ -1,20 +1,31 @@
 :root {
   /*Colors*/
-  --text-secondary: #828282;
   --text-primary: #000;
-  --text-white : #fff;
+  --text-secondary: #828282;
+  --text-white: #fff;
   --hover-on-white-text: #d1cdcd;
   --hover-on-black-text: #575757;
   --link : #2C27C3;
   --bg-white: #ffffff;
-  --bg-gray: #d9d9d970 ;
-  --bg-offWhite: #fefefe; /*For background distinctions in elements on white bg */
+  --bg-gray: #d9d9d970;
+  --bg-offWhite: #fefefe;
+  --header-navbar-bg: rgb(246, 246, 246);
+
+  /*For background distinctions in elements on white bg */
+  --search-bar-bg: #f9f9f9;
   --accent: #ff3300;
   --border: #000;
   --border-containers: #d9d9d9;
   --accent-bg: rgba(170, 59, 255, 0.1);
   --success: #41da00;
   --error: rgb(167, 0, 0);
+
+  /* Colors for Buttons */
+  --button-black-bg: #000;
+  --button-black-text: #fff;
+  --button-white-bg: #fff;
+  --button-white-text: #000;
+
   --hover-icon: #ededed;
   --shadow-box:
     rgba(0, 0, 0, 0.3) 0 0 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
@@ -22,25 +33,31 @@
     rgba(0, 0, 0, 0.2) 0 3px 5px;
   --shadow-text: 0 0 5px #ebebeb9b;
 
-  /*Post card colors*/
-  --postCard-container : #f5f5f5;
-  --postCard-children: #e3e3e3;
-
   /*fonts*/
-  --font-primary : "Montserrat", Tahoma, Verdana, sans-serif;
-  --font-footer : "Inter", Tahoma, Verdana, sans-serif;
+  --font-primary: "Montserrat", Tahoma, Verdana, sans-serif;
+  --font-footer: "Inter", Tahoma, Verdana, sans-serif;
 
-/*font sizes*/
-  --text-h1 : 46px;  /*Use for titles*/
-  --text-h2 :32px; /*Use for subtitles*/ 
-  --text-button-primary : 40px;
-  --text-body1 :24px;
-  --text-body2 :22px;
-  --text-body3 : 20px;
-  --text-body4 : 16px;
- 
-  color-scheme: light; /*add dark later*/
-  background: var(--bg);
+  /*font sizes*/
+  --text-h1: 46px;
+  /*Use for titles*/
+  --text-h2: 32px;
+  /*Use for subtitles*/
+  --text-button-primary: 40px;
+  --text-body1: 24px;
+  --text-body2: 22px;
+  --text-body3: 20px;
+  --text-body4: 18px;
+  --text-body5: 16px;
+
+
+  /* Other Properties */
+  /* Input border and focus */
+  --input-border: 0.6px solid black;
+  --input-focus-outline: 1px solid #000;
+
+  color-scheme: light dark;
+
+  background: var(--bg-white);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -53,23 +70,34 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    /* Dark mode colors */
+    /* Texts */
+    --text-primary: #eeeeee;
+    --text-secondary: #a7a2a2;
+    --bg-white: #16171d;
+    --bg-white: rgb(29, 29, 29);
+    --bg-white: #121212;
+    --bg-offWhite: #232323;
+    --bg-gray: #7c7c7c;
+    --bg-gray: #181818;
+
+    --hover-icon: #323232;
+
+    --search-bar-bg: #343232;
+    --header-navbar-bg: #141414;
+    --border-containers: #2b2b2b;
+    --link: #69a0ff;
+
+    /* Other Properties */
+    /* Input border and focus */
+    --input-border: 1px solid rgb(0, 0, 0);
+    --input-focus-outline: 1px solid #fff;
   }
 }
 
 body {
   margin: 0;
-  background-color: var(--bg);
+  background-color: var(--bg-white);
   font-family: var(--font-primary);
 }
 
@@ -90,25 +118,40 @@ h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0;
+
   @media (max-width: 1024px) {
     font-size: 36px;
     margin: 20px 0;
   }
 }
+
 h2 {
   font-size: 24px;
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
+
   @media (max-width: 1024px) {
     font-size: 20px;
   }
 }
+
 p {
   margin: 0;
 }
 
-a{
+input{
+  outline: none;
+  border: var(--input-border);
+}
+
+input, select {
+  width: 100%;
+  min-width: 0px;
+  box-sizing: border-box;
+    background-color: var(--bg-offWhite);
+}
+a {
   color: var(--text-primary);
   text-decoration: none;
   cursor: pointer;
@@ -118,9 +161,45 @@ a{
   color: var(--link);
 }
 
-fieldset {
-  border: none;
+/* Button hover animation */
+/* Underline From Center */
+.hvr-underline-from-center {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  position: relative;
+  overflow: hidden;
 }
+.hvr-underline-from-center:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 51%;
+  right: 51%;
+  bottom: 0;
+  background: var(--text-secondary);
+  height: 2px;
+  -webkit-transition-property: left, right;
+  transition-property: left, right;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-underline-from-center:hover:before, .hvr-underline-from-center:focus:before, .hvr-underline-from-center:active:before {
+  left: 0;
+  right: 0;
+}
+
+fieldset {
+  box-sizing: border-box;
+  border: none;
+  padding: 0;
+  width: 100%;
+}
+
 .fieldsetDisabled {
   cursor: not-allowed;
 }
@@ -131,8 +210,8 @@ fieldset {
     'wght' 400,
     'GRAD' 0,
     'opsz' 24;
-    cursor: pointer;
-    font-size: 36px;
+  cursor: pointer;
+  font-size: 36px;
 }
 
 .selected {
@@ -147,20 +226,58 @@ fieldset {
     'opsz' 24;
 }
 
+.darkenPage {
+  filter: blur(2px) brightness(60%);
+}
+
+.description {
+  font-size: var(--text-body2);
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  margin-top: 0px;
+}
+
+
 @media (max-width: 480px) {
+
   /*Reduces icon sizes*/
   .material-symbols-outlined {
     font-size: 30px;
   }
+
+  .description{
+    font-size: var(--text-body4);
+  }
+
+  :root{
+      --text-button-primary: var(--text-body1);
+  }
 }
 
-.darkenPage {
-    filter: blur(2px) brightness(60%);
-}
+@media (max-width: 390px){
+  /* Make texts smaller for ultra small screens */
+  h1{
+    font-size: 32px;
+  }
+  h2{
+    font-size: 20px;
+  }
 
-.description {
-    font-size: var(--text-body2);
-    color: var(--text-secondary);
-    margin-bottom: 20px;
-    margin-top: 0px;
+  :root{
+  /*font sizes*/
+  --text-h1: 44px;
+  /*Use for titles*/
+  --text-h2: 30px;
+  /*Use for subtitles*/
+
+  --text-body1: 20px;
+  --text-body2: 18px;
+  --text-body3: 16px;
+  --text-body4: 14px;
+  --text-body5: 12px;
+  }
+
+  input {
+    min-width: 0;
+  }
 }

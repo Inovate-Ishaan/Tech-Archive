@@ -1,3 +1,16 @@
+:root {
+    /*Post card colors*/
+  --postCard-container: #f5f5f5;
+  --postCard-children: #e3e3e3;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --postCard-container:#323232;
+        --postCard-children: #343232;
+    };
+}
+
 .container {
     background-color: var(--bg-white);
     height: auto;
@@ -13,7 +26,7 @@
 }
 
 .container:hover{
-    background-color: var(--postCard-container);
+    background-color: var(--hover-icon);
 }
 
 .thumbnail {
@@ -75,7 +88,7 @@
 
 .uploadTime {
     color: var(--text-secondary);
-    font-size: var(--text-body4);
+    font-size: var(--text-body5);
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;

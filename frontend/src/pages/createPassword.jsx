@@ -7,6 +7,8 @@ import passwordGraphic from "../assets/graphics/enter_password.svg";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { setPassword } from "../utils/api";
+import BtnLoader from "../components/loaders/btnLoader";
+import PasswordField from "../components/passwordField/passwordField";
 
 export default function CreatePasswordPage() {
   const navigate = useNavigate();
@@ -15,9 +17,6 @@ export default function CreatePasswordPage() {
     password: "",
     confirmPassword: "",
   });
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [email, setEmail] = useState("");
 
@@ -28,7 +27,8 @@ export default function CreatePasswordPage() {
       setEmail(storedEmail);
     } else {
       // No email in session, redirect to register
-      navigate("/register");
+      showAlert("info", "Redirecting to create account");
+      navigate("/create-password");
     }
   }, [navigate]);
 
@@ -78,7 +78,10 @@ export default function CreatePasswordPage() {
     }
 
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
-      showAlert("error", "Password must contain at least one special character (!@#$%^&*(),.?\":{}|<>)");
+      showAlert(
+        "error",
+        'Password must contain at least one special character (!@#$%^&*(),.?":{}|<>)',
+      );
       return false;
     }
 
@@ -95,10 +98,13 @@ export default function CreatePasswordPage() {
 
     try {
       await setPassword(email, formData.password);
-      showAlert("success", "Password set successfully! Redirecting to login...");
+      showAlert(
+        "success",
+        "Taking you to the feed...",
+      );
       sessionStorage.removeItem("registrationEmail");
       setTimeout(() => {
-        navigate("/login");
+        navigate("/feed");
       }, 1500);
     } catch (err) {
       const msg = err?.message || "Failed to set password";
@@ -129,15 +135,21 @@ export default function CreatePasswordPage() {
     <>
       <div className={styles.app}>
         <Header />
-        
-        {alert && (<Alert type={alert.type} msg={alert.msg} handleCloseClick={closeAlert}/>)}
+
+        {alert && (
+          <Alert
+            type={alert.type}
+            msg={alert.msg}
+            handleCloseClick={closeAlert}
+          />
+        )}
 
         <div className={styles.bodyContainer}>
           <div className={styles.formParent}>
             <div className={styles.formContainer}>
               <h1 className={styles.title}>Create Password</h1>
 
-              <label className={styles.description}>
+              <label className={"description"}>
                 Become a member of the University's Tech Community
               </label>
 
@@ -145,56 +157,35 @@ export default function CreatePasswordPage() {
                 <div className={styles.formFieldContainer}>
                   <div className={styles.inputGroup}>
                     <label>Create Password</label>
-                    <div className={styles.passwordWrapper}>
-                      <input
-                        placeholder="****************"
-                        type={showPassword ? "text" : "password"}
-                        value={formData.password}
-                        onChange={handlePassChange}
-                      ></input>
-                      <button
-                        type="button"
-                        className={styles.togglePassword}
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? "Hide" : "Show"}
-                      </button>
-                    </div>
+                    <PasswordField
+                      value={formData.password}
+                      onChange={handlePassChange}
+                    />
                   </div>
 
                   <div className={styles.inputGroup}>
                     <label>Confirm Password</label>
-                    <div className={styles.passwordWrapper}>
-                      <input
-                        placeholder="****************"
-                        type={showConfirmPassword ? "text" : "password"}
-                        value={formData.confirmPassword}
-                        onChange={handleConfirmPassChange}
-                      ></input>
-                      <button
-                        type="button"
-                        className={styles.togglePassword}
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      >
-                        {showConfirmPassword ? "Hide" : "Show"}
-                      </button>
-                    </div>
+                    <PasswordField
+                      value={formData.confirmPassword}
+                      onChange={handleConfirmPassChange}
+                    />
                   </div>
                 </div>
 
                 <Button
-                  variant="primaryBlack" 
-                  status={formData.password && formData.confirmPassword ? "active" : "disabled"}
+                  variant="primaryBlackLessPadding"
+                  status={
+                    formData.password && formData.confirmPassword
+                      ? "active"
+                      : "disabled"
+                  }
                   onClick={handleCreatePassClick}
-                  >
-                    Create Account
+                >
+                  {loading ? <BtnLoader /> : "Create Account"}
                 </Button>
-
               </form>
             </div>
-            <p className={styles.register}>
-              Already have an account? <Link to="/login">Login</Link>
-            </p>
+
           </div>
           <div className={styles.graphicContainer}>
             <img src={passwordGraphic} className={styles.graphic} />

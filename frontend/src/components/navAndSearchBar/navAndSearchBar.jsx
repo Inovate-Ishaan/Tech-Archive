@@ -111,7 +111,7 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
             <>
               <div className={styles.left}>
                 <span className={`material-symbols-outlined icon`} onClick={showSideMenu}>menu</span>
-                <h2 className="title">Tech Archive</h2>
+                <h2 className={styles.title}>Tech Archive</h2>
               </div>
 
               <div className={styles.center}>
