@@ -430,7 +430,7 @@ export default function CreatePostPage() {
           </div> }
         </div>
 
-        {/* <Footer /> */}
+        <Footer /> 
       </div>
     </>
   );
