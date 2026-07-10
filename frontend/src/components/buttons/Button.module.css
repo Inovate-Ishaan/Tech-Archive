@@ -25,23 +25,23 @@
 
 .primaryWhite{
     font-size: var(--text-button-primary);
-    color: var(--button-white-text);
-    background-color: var(--button-white-bg);
+    color: var(--text-primary);
+    background-color: var(--bg);
     padding: 20px 150px;
 }
 
 .primaryBlackLessPadding{
     font-size: var(--text-button-primary);
-    color: var(--button-black-text);
-    background-color: var(--button-black-bg);
-    padding: 15px 30px;
+    color: var(--text-white);
+    background-color: black;
+    padding: 10px 30px;
 }
 
 .primaryWhiteLessPadding{
     font-size: var(--text-button-primary);
-    color: var(--button-white-text);
-    background-color: var(--button-white-bg);
-    padding: 15px 30px;
+    color: var(--text-primary);
+    background-color: var(--bg);
+    padding: 10px 30px;
 }
 .secondaryBlack{
     padding: 4px 12px;

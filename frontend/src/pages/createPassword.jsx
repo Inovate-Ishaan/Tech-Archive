@@ -107,7 +107,7 @@ export default function CreatePasswordPage() {
         navigate("/feed");
       }, 1500);
     } catch (err) {
-      const msg = err && err.error ? err.error : "Failed to set password";
+      const msg = err?.message || "Failed to set password";
       showAlert("error", msg);
       setLoading(false);
     }

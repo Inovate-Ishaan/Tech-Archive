@@ -22,7 +22,7 @@ model User {
   github        String?
   linkedin      String?
   website       String?
-  emailVerified Boolean
+  emailVerified Boolean  @default(false)
   posts         Post[]
   bookmarks     Bookmark[]
   instituteId   String   @unique
@@ -58,7 +58,7 @@ model Post {
   bookmarks   Bookmark[]
 }
 
-model Tag {
+model Tags {
 
   id          String   @id @default(uuid())
   name        String   @unique
@@ -73,7 +73,7 @@ model PostTag {
   postId      String
   tagId       String
   post        Post    @relation(fields:[postId], references:[id])
-  tag         Tag     @relation(fields:[tagId], references:[id])
+  tags        Tags    @relation(fields:[tagId], references:[id])
   @@id([postId, tagId])
 }
 

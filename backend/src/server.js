@@ -1,7 +1,6 @@
-const app = require("./app");
+const app = require('./app');
+const env = require('./config/env');
 
-const PORT = process.env.PORT || 4000;
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(env.PORT, () => {
+  console.log(`Tech Archive server is listening on port ${env.PORT}`);
 });

@@ -203,7 +203,7 @@ async function main() {
 
   // creating tags
   console.log("Creating tags...");
-  await prisma.tag.createMany({
+  await prisma.tags.createMany({
     data: tags
   });
 
@@ -414,7 +414,7 @@ async function main() {
 
   // identifying tags and users for maintaining user post with tags realtion
   const dbUsers = await prisma.user.findMany();
-  const dbTags = await prisma.tag.findMany();
+  const dbTags = await prisma.tags.findMany();
 
   const generatedPosts = [];
 
