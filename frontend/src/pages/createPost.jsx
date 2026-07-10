@@ -18,7 +18,7 @@ export default function CreatePostPage() {
   const [formData, setFormData] = useState({
     title: "",
     tags: [],
-    gitHubRepoURL: "",
+    githubUrl: "",
   });
 
   //THUMBNAIL UPLOAD LOGIC
@@ -115,7 +115,7 @@ export default function CreatePostPage() {
     const postData = new FormData();
     postData.append("title", formData.title);
     postData.append("content", obtainedMD);
-    postData.append("githubUrl", formData.gitHubRepoURL);
+    postData.append("githubUrl", formData.githubUrl);
     postData.append("tags", JSON.stringify(formData.tags));
     postData.append("thumbnail", selectedFile);
   
@@ -140,14 +140,14 @@ export default function CreatePostPage() {
   const formNotEmpty =
     formData.title.trim() &&
     formData.tags.length > 0 &&
-    formData.gitHubRepoURL &&
+    formData.githubUrl &&
     selectedFile;
 
   const [submitting, setSubmitting] = useState(false);
 
   const handleNext = async (e) => {
     e.preventDefault();
-    if (!validator.isURL(formData.gitHubRepoURL)) {
+    if (!validator.isURL(formData.githubUrl)) {
       showAlert("info", "Enter a valid Repo URL");
       return;
     }
@@ -161,7 +161,7 @@ export default function CreatePostPage() {
     if (!markdown) {
       showAlert("info", "Fetching your documentation from GitHub.");
       try {
-        const data = await fetchReadme(formData.gitHubRepoURL);
+        const data = await fetchReadme(formData.githubUrl);
         setMarkdown(data.content);
       } catch (err) {
         const msg =
@@ -179,7 +179,7 @@ export default function CreatePostPage() {
     showAlert("info", "Fetching your documentation for GitHub.");
 
     //Sample populating the editor with obtained README.md
-    setMarkdown("I got this from GitHUB");
+    // setMarkdown("I got this from GitHUB");
   };
   ////////////////////////////////////////////////////////////
 
@@ -311,11 +311,11 @@ export default function CreatePostPage() {
                     <input
                       placeholder="https://github.com/Inovate-Ishaan/Tech-Archive"
                       type="url"
-                      value={formData.gitHubRepoURL}
+                      value={formData.githubUrl}
                       onChange={(e) => {
                         setFormData({
                           ...formData,
-                          gitHubRepoURL: e.target.value,
+                          githubUrl: e.target.value,
                         });
                         setMarkdown("") //discard previous markdown on URL change
                       }

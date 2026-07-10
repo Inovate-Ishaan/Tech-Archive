@@ -1,6 +1,6 @@
 const userService = require('../users/user.service');
 const uploadService = require('./upload.service');
-const ApiResponse = require('../../utils/ApiResponse');
+const { ApiResponse } = require('../../utils/ApiResponse');
 const { HTTP_STATUS } = require('../../utils/constants');
 
 async function uploadAvatar(req, res, next) {

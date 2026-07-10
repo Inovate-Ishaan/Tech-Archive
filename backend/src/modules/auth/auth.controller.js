@@ -1,5 +1,5 @@
 const authService = require('./auth.service');
-const ApiResponse = require('../../utils/ApiResponse');
+const { ApiResponse } = require('../../utils/ApiResponse');
 const { HTTP_STATUS } = require('../../utils/constants');
 
 async function requestOtp(req, res, next) {

@@ -197,7 +197,7 @@ async function main() {
   await prisma.post.deleteMany();
 
   // Then parent tables
-  await prisma.tag.deleteMany();
+  await prisma.tags.deleteMany();
   await prisma.user.deleteMany();
   await prisma.otp.deleteMany();
 

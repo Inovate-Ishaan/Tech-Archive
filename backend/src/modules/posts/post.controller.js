@@ -1,5 +1,5 @@
 const postService = require('./post.service');
-const ApiResponse = require('../../utils/ApiResponse');
+const { ApiResponse } = require('../../utils/ApiResponse');
 const { HTTP_STATUS } = require('../../utils/constants');
 
 async function listPosts(req, res, next) {

@@ -1,5 +1,5 @@
 const userService = require('./user.service');
-const ApiResponse = require('../../utils/ApiResponse');
+const { ApiResponse } = require('../../utils/ApiResponse');
 const { HTTP_STATUS } = require('../../utils/constants');
 
 async function getMe(req, res, next) {
