@@ -24,6 +24,7 @@ model User {
   website       String?
   emailVerified Boolean  @default(false)
   posts         Post[]
+  bookmarks     Bookmark[]
   instituteId   String   @unique
   otps          Otp[]
   createdAt     DateTime @default(now())
@@ -48,10 +49,41 @@ model Post {
   content     String
   coverImage  String?
   githubUrl   String?
-  tags        String[]
   images      String[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   authorId    String
   author      User     @relation(fields: [authorId], references: [id])
+  tags        PostTag[]
+  bookmarks   Bookmark[]
+}
+
+model Tags {
+
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  posts       PostTag[]
+}
+
+model PostTag {
+
+  postId      String
+  tagId       String
+  post        Post    @relation(fields:[postId], references:[id])
+  tags        Tags    @relation(fields:[tagId], references:[id])
+  @@id([postId, tagId])
+}
+
+model Bookmark {
+
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  userId      String
+  postId      String
+  user        User     @relation(fields:[userId], references:[id])
+  post        Post     @relation(fields:[postId], references:[id])
+  @@unique([userId, postId])
 }

@@ -4,6 +4,9 @@ const postInclude = {
   author: {
     select: { id: true, username: true, displayname: true, avatar: true },
   },
+  tags: {
+    select: {tags:{select:{id:true,name:true,slug:true}}},
+  },
 };
 
 async function findAll({ author, search }) {
@@ -33,16 +36,43 @@ async function findById(id) {
 }
 
 async function create(data) {
+  const { tagIds = [], ...postData } = data;
+
   return prisma.post.create({
-    data,
+    data: {...postData,
+      tags: {create: tagIds.map((tagId) => ({
+          tags: {
+            connect: {
+              id: tagId,
+            },
+          },
+        })),
+      },
+    },
     include: postInclude,
   });
 }
 
 async function update(id, data) {
+  const { tagIds, ...postData } = data;
+
+  const updateData = {...postData,};
+  if (tagIds) {
+    updateData.tags = {
+      deleteMany: {},
+      create: tagIds.map((tagId) => ({
+        tags: {
+          connect: {
+            id: tagId,
+          },
+        },
+      })),
+    };
+  }
+
   return prisma.post.update({
     where: { id },
-    data,
+    data: updateData,
     include: postInclude,
   });
 }

@@ -1,12 +1,39 @@
 const postRepository = require('./post.repository');
 const ApiError = require('../../utils/ApiError');
 const { HTTP_STATUS } = require('../../utils/constants');
+const { prisma } = require('../../config/prisma');
 
 async function listPosts(query) {
   return postRepository.findAll({
     author: query.author,
     search: query.search,
   });
+}
+
+async function resolveTagIds(tags) {
+  if (!tags || tags.length === 0) {
+    return [];
+  }
+
+  const cleanedTags = [...new Set(tags.filter(tag => typeof tag === "string").map(tag => tag.trim()).filter(tag => tag.length > 0))];
+
+  const tagRecords = [];
+  for (const tagName of cleanedTags) {
+    const slug = tagName.toLowerCase().trim().replace(/\s+/g, "-");
+
+    let tag = await prisma.tags.findUnique({where: { slug }});
+
+    if (!tag) {
+      tag = await prisma.tags.create({
+        data: {
+          name: tagName,
+          slug,
+        },
+      });
+    }
+    tagRecords.push(tag.id);
+  }
+  return tagRecords;
 }
 
 async function getPost(id) {
@@ -50,11 +77,13 @@ async function createPost(userId, body, file) {
     coverImage = `/posts/${file.filename}`;
   }
 
+  const tagIds = await resolveTagIds(tags)
+
   const post = await postRepository.create({
     title: title.trim(),
     content,
     coverImage,
-    tags,
+    tagIds,
     images,
     githubUrl: githubUrl || null,
     authorId: userId,
@@ -91,7 +120,7 @@ async function updatePost(postId, userId, body, file) {
     if (!Array.isArray(parsed) || parsed.length > 4) {
       throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'Maximum 4 tags allowed');
     }
-    updateData.tags = parsed;
+    updateData.tagIds = await resolveTagIds(parsed);
   }
   if (body.images !== undefined) {
     let parsed;
