@@ -7,7 +7,7 @@ const mapPostToFeedCard = (post) => {
             username: post.author.username,
             avatar: post.author.avatar
         },
-        tags: post.tags.map((t) => t.tag.name)
+        tags: post.tags.map((t) => t.tags.name)
     };
 };
 
