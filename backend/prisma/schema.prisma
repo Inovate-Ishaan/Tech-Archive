@@ -10,23 +10,24 @@ datasource db {
 
 // User stores the institute email, password hash, and profile metadata.
 model User {
-  id          String   @id @default(uuid())
-  username    String   @unique
-  email       String   @unique
-  password    String?
-  displayname String
-  avatar      String?
-  bio         String?
-  branch      String?
-  year        Int?
-  github      String?
-  linkedin    String?
-  website     String?
-  posts       Post[]
-  bookmarks   Bookmark[]
-  instituteId String   @unique
-  otps        Otp[]
-  createdAt   DateTime @default(now())
+  id            String   @id @default(uuid())
+  username      String   @unique
+  email         String   @unique
+  password      String?
+  displayname   String
+  avatar        String?
+  bio           String?
+  branch        String?
+  year          Int?
+  github        String?
+  linkedin      String?
+  website       String?
+  emailVerified Boolean
+  posts         Post[]
+  bookmarks     Bookmark[]
+  instituteId   String   @unique
+  otps          Otp[]
+  createdAt     DateTime @default(now())
 }
 
 // Stores OTP for verification
@@ -47,9 +48,10 @@ model Post {
   title       String
   content     String
   coverImage  String?
+  githubUrl   String?
+  images      String[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  gitrepo     String
   authorId    String
   author      User     @relation(fields: [authorId], references: [id])
   tags        PostTag[]

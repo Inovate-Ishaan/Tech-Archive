@@ -1,4 +1,4 @@
-const postService = require("./post_service");
+const postService = require("./feed.service");
 const {sendSuccess} = require("../../utils/ApiResponse")
 const {sendError} = require("../../utils/ApiResponse")
 

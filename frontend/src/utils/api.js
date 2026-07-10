@@ -60,7 +60,7 @@ export async function setPassword(email, password) {
 // feed page APIs
 
 export async function getPosts() {
-  const res = await fetch(`${API_BASE}/api/posts`);
+  const res = await fetch(`${API_BASE}/api/feed`);
   const data = await res.json();
   if (!res.ok) throw data;
 
