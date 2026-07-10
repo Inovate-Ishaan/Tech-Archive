@@ -1,5 +1,5 @@
 const prisma = require("../../config/prisma");
-const { mapPostToFeedCard } = require("./post_mapper");
+const { mapPostToFeedCard } = require("./feed.mapper");
 const NotFoundError = require("../../errors/NotFoundError");
 
 const getAllPosts = async (page,limit) => {

@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const { PrismaPg } = require("@prisma/adapter-pg");
 const { Pool } = require("pg");
 const connectionString = process.env.DATABASE_URL;
+
+
 // Create the pool
 const pool = new Pool({ connectionString });
 // Create the adapter
@@ -68,7 +70,7 @@ title:"Understanding React Context API",
 content:"A beginner friendly guide explaining how Context API removes prop drilling and simplifies state management.",
 tags:["React","JavaScript"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -76,7 +78,7 @@ title:"Mastering Prisma ORM",
 content:"Learn relations, migrations and efficient querying using Prisma ORM.",
 tags:["Prisma","PostgreSQL"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -84,7 +86,7 @@ title:"Building REST APIs with Express",
 content:"Design scalable REST APIs using Express and Node.js.",
 tags:["Express","Node.js"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -92,7 +94,7 @@ title:"ESP32 Home Automation",
 content:"Control appliances remotely using MQTT and ESP32.",
 tags:["ESP32","Embedded Systems","Electronics"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -100,7 +102,7 @@ title:"Designing PCBs with KiCad",
 content:"Complete PCB design workflow from schematic to fabrication.",
 tags:["PCB Design","Electronics"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -108,7 +110,7 @@ title:"Building a PID Controlled Drone",
 content:"PID tuning techniques for roll, pitch and yaw stabilization.",
 tags:["Drone","STM32","Embedded Systems"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -116,7 +118,7 @@ title:"Docker for Beginners",
 content:"Containerize Node.js applications using Docker.",
 tags:["Docker","Linux"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -124,7 +126,7 @@ title:"Introduction to Kubernetes",
 content:"Deploy and scale containerized applications.",
 tags:["Kubernetes","Docker"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -132,7 +134,7 @@ title:"Machine Learning Basics",
 content:"Understand supervised learning with Python.",
 tags:["Machine Learning","Python"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -140,7 +142,7 @@ title:"Redis Caching",
 content:"Improve backend performance using Redis caching.",
 tags:["Redis","Node.js"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -148,7 +150,7 @@ title:"Tailwind CSS Tips",
 content:"Useful utility classes that speed up frontend development.",
 tags:["Tailwind CSS","React"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -156,7 +158,7 @@ title:"Getting Started with PostgreSQL",
 content:"Learn tables, joins and indexing using PostgreSQL.",
 tags:["PostgreSQL"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -164,7 +166,7 @@ title:"Arduino Sensor Projects",
 content:"Reading sensor data with Arduino boards.",
 tags:["Arduino","Electronics"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -172,7 +174,7 @@ title:"Building Authentication using JWT",
 content:"Implement secure login using JSON Web Tokens.",
 tags:["Express","Node.js"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 },
 
 {
@@ -180,7 +182,7 @@ title:"Linux Command Line Essentials",
 content:"Commands every backend developer should know.",
 tags:["Linux"],
 coverImage:"/avatars/Posts/postpic.jpg",
-gitrepo: "https://github.com/Inovate-Ishaan/Tech-Archive"
+githubUrl: "https://github.com/Inovate-Ishaan/Tech-Archive"
 }
 
 ];
@@ -197,6 +199,7 @@ async function main() {
   // Then parent tables
   await prisma.tag.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.otp.deleteMany();
 
   // creating tags
   console.log("Creating tags...");
@@ -223,7 +226,8 @@ async function main() {
   instituteId: "B25EC009",
   github: "https://github.com/UNDEO157K",
   linkedin: "jayvardhan",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -238,7 +242,8 @@ async function main() {
   instituteId: "B25EC019",
   github: "https://github.com/Inovate-Ishaan",
   linkedin: "https://www.linkedin.com/in/ishaan-shukla-a42bb2376?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -253,7 +258,8 @@ async function main() {
   instituteId: "B25CS032",
   github: "https://github.com/PawanTeja-Max",
   linkedin: "PawanTeja",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -268,7 +274,8 @@ async function main() {
   instituteId: "B25CS016",
   github: "https://github.com/Divvyansh02",
   linkedin: "DivyanshKori",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -283,7 +290,8 @@ async function main() {
   instituteId: "B16CS009",
   github: "ananyagupta",
   linkedin: "ananyagupta",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -298,7 +306,8 @@ async function main() {
   instituteId: "B18CS009",
   github: "vikramsingh",
   linkedin: "vikramsingh",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -313,7 +322,8 @@ async function main() {
   instituteId: "B24CS009",
   github: "meeraiyer",
   linkedin: "meeraiyer",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -328,7 +338,8 @@ async function main() {
   instituteId: "B23CS009",
   github: "harshav",
   linkedin: "harshav",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -343,7 +354,8 @@ async function main() {
   instituteId: "B22CS009",
   github: "nehakapoor",
   linkedin: "nehakapoor",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -358,7 +370,8 @@ async function main() {
   instituteId: "B24EC019",
   github: "kavyareddy",
   linkedin: "kavyareddy",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -373,7 +386,8 @@ async function main() {
   instituteId: "B17CS009",
   github: "arjunnair",
   linkedin: "arjunnair",
-  website: null
+  website: null,
+  emailVerified: true
   },
 
   {
@@ -388,7 +402,8 @@ async function main() {
   instituteId: "B20CS009",
   github: "sarahwilson",
   linkedin: "sarahwilson",
-  website: null
+  website: null,
+  emailVerified: true
   }
   ]
   });
@@ -411,7 +426,7 @@ async function main() {
           content: template.content,
           tags: template.tags,
           coverImage: template.coverImage,
-          gitrepo: template.gitrepo
+          githubUrl: template.githubUrl
       });
   }
 
@@ -427,7 +442,7 @@ async function main() {
           coverImage:item.coverImage,
           authorId:author.id,
           createdAt:new Date(Date.now() - randomInt(0,90) * 86400000),
-          gitrepo: item.gitrepo
+          githubUrl: item.githubUrl
         }
     });
 
