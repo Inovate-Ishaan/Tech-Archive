@@ -9,7 +9,7 @@
 
 Local Setup Guide
 
-# Ububntu
+# Ubuntu
 sudo apt install postgresql postgresql-contrib
 sudo systemctl start postgresql
 
@@ -63,7 +63,7 @@ Open two terminals:
 
 # Terminal 1 — Backend (port 4000)
 cd backend
-node index.js
+npm run dev
 
 # Terminal 2 — Frontend (port 5173)
 cd frontend
