@@ -5,14 +5,13 @@ import styles from "./Button.module.css";
 function Button({
   variant = "primaryBlack",
   status = "active",
-  className = "",
   children,
   ...rest
 }) {
   return (
     <>
       <button
-        className={`${styles.btn} ${styles[variant]} ${styles[status]} ${className} ${status === "active" ? "hvr-underline-from-center" : ""}`}
+        className={`${styles.btn} ${styles[variant]} ${styles[status]}`}
         {...rest}
         disabled={status === "disabled" ? true : false}
       >

@@ -239,6 +239,8 @@
     margin-bottom: 3rem;
     padding: 10px;
     min-height: 75vh;
+    max-height: 80vh;
+    overflow-y: scroll;
 }
 
 .postAndBackButtonContainer {

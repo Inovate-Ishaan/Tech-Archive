@@ -18,6 +18,8 @@ import {
 } from "@mdxeditor/editor";
 import {
   headingsPlugin,
+  codeBlockPlugin,
+  codeMirrorPlugin,
   quotePlugin,
   linkDialogPlugin,
   listsPlugin,
@@ -32,13 +34,14 @@ import "@mdxeditor/editor/style.css";
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
 
-function MdEditor( {initialMD, editorRef} ) {
+function MdEditor( {initialMD, editorRef, handleEditorError} ) {
 
 
 
   return (
     <MDXEditor
     ref={editorRef}
+    onError={handleEditorError}
       markdown={initialMD}
       plugins={[
         headingsPlugin(),
@@ -49,7 +52,16 @@ function MdEditor( {initialMD, editorRef} ) {
         markdownShortcutPlugin(),
         tablePlugin(),
         thematicBreakPlugin(),
-        directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor]}),
+        codeBlockPlugin({ defaultCodeBlockLanguage: 'txt'}),
+        codeMirrorPlugin({codeBlockLanguages: {
+    js: 'JavaScript',
+    ts: 'TypeScript',
+    bash: 'Bash',
+    json: 'JSON',
+    md: 'Markdown',
+    txt: 'Text'
+  }}),
+        directivesPlugin({ directiveDescriptors: [AdmonitionDirectiveDescriptor], escapeUnknownTextDirectives: true}),
         diffSourcePlugin({ viewMode: "source" }),
         imagePlugin({}),
         toolbarPlugin({
