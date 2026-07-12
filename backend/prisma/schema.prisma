@@ -23,6 +23,7 @@ model User {
   linkedin      String?
   website       String?
   emailVerified Boolean  @default(false)
+  tokenVersion  Int      @default(0)
   posts         Post[]
   bookmarks     Bookmark[]
   instituteId   String   @unique

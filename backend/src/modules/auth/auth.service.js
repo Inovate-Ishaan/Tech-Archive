@@ -12,7 +12,10 @@ async function requestOtp(email) {
   const code = Math.floor(100000 + Math.random() * 900000).toString();
   const expiresAt = new Date(Date.now() + OTP_CONFIG.EXPIRY_MINUTES * 60 * 1000);
   const user = await authRepository.findUserByEmail(email);
-  await authRepository.createOtp({ email, code, expiresAt, userId: user ? user.id : null });
+  if (!user) {
+    throw new ApiError(HTTP_STATUS.NOT_FOUND, 'No account found with this email.');
+  }
+  await authRepository.createOtp({ email, code, expiresAt, userId: user.id });
 
   console.log(`\n[DEV] OTP for ${email}: ${code}\n`);
 
@@ -21,7 +24,7 @@ async function requestOtp(email) {
   const html = `<p>Your one-time sign-in code is: <strong>${code}</strong>.</p><p>It expires in ${OTP_CONFIG.EXPIRY_MINUTES} minutes.</p>`;
   const result = await sendEmail({ to: email, subject, text, html });
 
-  return { devCode: code, previewUrl: result?.previewUrl };
+  return { ...(env.NODE_ENV === 'development' && { devCode: code }), previewUrl: result?.previewUrl };
 }
 
 async function verifyOtp(email, code) {
@@ -49,7 +52,7 @@ async function verifyOtp(email, code) {
   if (user) {
     await authRepository.markEmailVerified(user.id);
     if (user.password) {
-      const payload = { id: user.id, email: user.email };
+      const payload = { id: user.id, email: user.email, tokenVersion: user.tokenVersion };
       const token = signToken(payload);
       return {
         token,
@@ -121,7 +124,7 @@ async function signin(email, password) {
     throw new ApiError(HTTP_STATUS.UNAUTHORIZED, 'Incorrect password. Please try again.');
   }
 
-  const payload = { id: user.id, email: user.email };
+  const payload = { id: user.id, email: user.email, tokenVersion: user.tokenVersion };
   const token = signToken(payload);
   return {
     token,
@@ -129,4 +132,28 @@ async function signin(email, password) {
   };
 }
 
-module.exports = { requestOtp, verifyOtp, register, signin, setPassword };
+async function resetPassword(email, password) {
+  const user = await authRepository.findUserByEmail(email);
+  if (!user) {
+    throw new ApiError(HTTP_STATUS.NOT_FOUND, 'No account found with this email.');
+  }
+  if (!user.password) {
+    throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'No password set. Please register first.');
+  }
+
+  const otpVerified = await authRepository.hasRecentVerifiedOtp(email);
+  if (!otpVerified) {
+    throw new ApiError(HTTP_STATUS.FORBIDDEN, 'OTP verification required. Please verify your email first.');
+  }
+
+  const hashed = await bcrypt.hash(password, 10);
+  const { prisma } = require('../../config/prisma');
+  await prisma.$transaction([
+    prisma.user.update({ where: { id: user.id }, data: { password: hashed } }),
+    prisma.user.update({ where: { id: user.id }, data: { tokenVersion: { increment: 1 } } }),
+  ]);
+
+  return { message: 'Password reset successfully' };
+}
+
+module.exports = { requestOtp, verifyOtp, register, signin, setPassword, resetPassword };

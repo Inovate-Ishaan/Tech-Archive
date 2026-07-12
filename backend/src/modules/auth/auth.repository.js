@@ -21,13 +21,6 @@ async function markEmailVerified(userId) {
   });
 }
 
-async function findLatestOtp(email, code) {
-  return prisma.otp.findFirst({
-    where: { email, code, used: false, expiresAt: { gt: new Date() } },
-    orderBy: { createdAt: 'desc' },
-  });
-}
-
 async function findLatestOtpByEmail(email) {
   return prisma.otp.findFirst({
     where: { email },
@@ -65,16 +58,33 @@ async function cleanExpiredOtps() {
   return count;
 }
 
+async function hasRecentVerifiedOtp(email, withinMinutes = 10) {
+  const cutoff = new Date(Date.now() - withinMinutes * 60 * 1000);
+  const otp = await prisma.otp.findFirst({
+    where: { email, used: true, createdAt: { gte: cutoff } },
+    orderBy: { createdAt: 'desc' },
+  });
+  return !!otp;
+}
+
+async function incrementTokenVersion(userId) {
+  return prisma.user.update({
+    where: { id: userId },
+    data: { tokenVersion: { increment: 1 } },
+  });
+}
+
 module.exports = {
   findUserByEmail,
   findUserByEmailOrUsername,
   createUser,
   markEmailVerified,
-  findLatestOtp,
   updateUserPassword,
   findLatestOtpByEmail,
   createOtp,
   invalidateOtps,
   markOtpUsed,
   cleanExpiredOtps,
+  hasRecentVerifiedOtp,
+  incrementTokenVersion,
 };

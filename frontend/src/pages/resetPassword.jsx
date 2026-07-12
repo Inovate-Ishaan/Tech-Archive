@@ -4,13 +4,14 @@ import styles from "./authForm.module.css";
 import Button from "../components/buttons/button";
 import Alert from "../components/alertPopUP/alertPopUp";
 import forgotPasswordGraphic from "../assets/graphics/forgot_password.svg";
-import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { setPassword } from "../utils/api";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { resetPassword } from "../utils/api";
 import BtnLoader from "../components/loaders/btnLoader";
 import PasswordField from "../components/passwordField/passwordField";
 import validator from "validator";
 import { requestOtp } from "../utils/api";
+import OTPModal from "../components/OTPfield/OTPModal";
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
@@ -107,11 +108,12 @@ export default function ResetPasswordPage() {
     setLoading(true);
     try {
       const otpData = await requestOtp(formData.email);
-      if (otpData.devCode) {
-        console.log("[DEV] OTP code:", otpData.devCode);
+      if (otpData.data?.devCode) {
+        console.log("[DEV] OTP code:", otpData.data.devCode);
       }
       setShowOTP(true);
-    } catch (err) {
+      setLoading(false);
+    } catch {
       showAlert("error", "Failed to send OTP. Try again.");
       setLoading(false);
     }
@@ -119,7 +121,7 @@ export default function ResetPasswordPage() {
 
   function handleVerified() {
     setVerified(true);
-    showOTP(false);
+    setShowOTP(false);
     setEmailSectionVisible(false);
     setPasswordSectionVisible(true);
   }
@@ -131,13 +133,14 @@ export default function ResetPasswordPage() {
     setLoading(true);
 
     try {
-      await setPassword(formData.email, formData.password);
-      showAlert("success", "Password changed. Login again...");
+      await resetPassword(formData.email, formData.password);
+      localStorage.removeItem("auth_token");
+      showAlert("success", "Password reset. Redirecting to login...");
       setTimeout(() => {
-        navigate("/");
+        navigate("/login");
       }, 1500);
     } catch (err) {
-      const msg = err && err.error ? err.error : "Failed to set password";
+      const msg = err?.message || "Failed to reset password";
       showAlert("error", msg);
       setLoading(false);
     }
@@ -204,7 +207,7 @@ export default function ResetPasswordPage() {
 
                     <Button
                       variant="primaryBlackLessPadding"
-                      status={formData.email ? "active" : "disabled"}
+                      status={formData.email && !loading ? "active" : "disabled"}
                       onClick={handleVerifyEmailClick}
                     >
                       {loading ? <BtnLoader /> : "Verify Email"}
@@ -242,7 +245,7 @@ export default function ResetPasswordPage() {
                     <Button
                       variant="primaryBlackLessPadding"
                       status={
-                        formData.password && formData.confirmPassword
+                        formData.password && formData.confirmPassword && !loading
                           ? "active"
                           : "disabled"
                       }

@@ -103,6 +103,10 @@ export default function LoginPage() {
                   />
                 </div>
 
+                <p className={styles.register}>
+                  <Link to="/reset-password" className="link">Forgot Password?</Link>
+                </p>
+
                 <Button
                   variant="primaryBlack"
                   status={formNotEmpty && !submitting ? "active" : "disabled"}

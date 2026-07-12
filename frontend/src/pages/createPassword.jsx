@@ -5,7 +5,7 @@ import Button from "../components/buttons/button";
 import Alert from "../components/alertPopUP/alertPopUp";
 import passwordGraphic from "../assets/graphics/enter_password.svg";
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setPassword } from "../utils/api";
 import BtnLoader from "../components/loaders/btnLoader";
 import PasswordField from "../components/passwordField/passwordField";
