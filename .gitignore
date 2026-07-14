@@ -185,7 +185,7 @@ psd
 thumb
 sketch
 
-uploads/*
-!uploads/.gitkeep
+backend/uploads/*
+!backend/uploads/.gitkeep
 
 # End of https://www.toptal.com/developers/gitignore/api/react,nextjs,node

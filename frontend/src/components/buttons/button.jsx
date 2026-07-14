@@ -5,13 +5,14 @@ import styles from "./Button.module.css";
 function Button({
   variant = "primaryBlack",
   status = "active",
+  className = "",
   children,
   ...rest
 }) {
   return (
     <>
       <button
-        className={`${styles.btn} ${styles[variant]} ${styles[status]}`}
+        className={`${styles.btn} ${className} ${styles[variant]} ${styles[status]}`}
         {...rest}
         disabled={status === "disabled" ? true : false}
       >

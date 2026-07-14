@@ -83,8 +83,7 @@ export async function uploadPost(formData){
     },
     body: formData,
   });
-  console.log(resp);
-  return "request complete, respone above"
+  return resp;
 };
 
 // feed page APIs
