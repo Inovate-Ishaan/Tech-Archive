@@ -122,10 +122,14 @@ export default function CreatePostPage() {
 
     try {
       const resp = await uploadPost(postData);
-      console.log(resp);
+      if (!resp.ok){
+        showAlert("error", resp.statusText )
+        return;
+      };
+      showAlert("success", "Uploaded succesfully");
     } catch(err) {
       const msg = (err && err.error) || (err && err.msg) || "Post upload failed";
-      console.log(msg)
+      showAlert("error", msg)
     }
   }
 
@@ -175,8 +179,6 @@ export default function CreatePostPage() {
     //show the doc editor (Part 2)
     setPart1Visible(false);
     setPart2Visible(true);
-    console.log(formData, selectedFile);
-    showAlert("info", "Fetching your documentation for GitHub.");
 
     //Sample populating the editor with obtained README.md
     // setMarkdown("I got this from GitHUB");
@@ -418,7 +420,7 @@ export default function CreatePostPage() {
             </div>
           </div>}
 
-          {/* NEXT/ POST BUTTON */}
+          {/* NEXT BUTTON */}
          {part1Visible && <div className={styles.button}>
             <Button
               variant="primaryBlack"
