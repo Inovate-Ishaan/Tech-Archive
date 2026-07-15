@@ -116,9 +116,14 @@ export default function LoginPage() {
               </form>
               </fieldset>
             </div>
-            <p className={styles.register}>
+            <div className={styles.otherLinks}>
+            <p>
               Don't have an account? <Link to="/register" className="link">Register</Link>
             </p>
+            <p>
+              <Link to="/reset-password" className="link">Forgot password?</Link>
+            </p>
+            </div>
           </div>
           <div className={styles.graphicContainer}>
             <img src={welcomeGraphic} className={styles.graphic} />

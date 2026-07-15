@@ -5,7 +5,7 @@ import Button from "../components/buttons/button";
 import Alert from "../components/alertPopUP/alertPopUp";
 import forgotPasswordGraphic from "../assets/graphics/forgot_password.svg";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { resetPassword } from "../utils/api";
 import BtnLoader from "../components/loaders/btnLoader";
 import PasswordField from "../components/passwordField/passwordField";
@@ -87,10 +87,10 @@ export default function ResetPasswordPage() {
       return false;
     }
 
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+    if (!/[!@#$%^&*(),.?":{}|<>_]/.test(formData.password)) {
       showAlert(
         "error",
-        'Password must contain at least one special character (!@#$%^&*(),.?":{}|<>)',
+        'Password must contain at least one special character (!@#$%^&*(),.?":{}|<>_)',
       );
       return false;
     }
@@ -106,16 +106,22 @@ export default function ResetPasswordPage() {
     e.preventDefault();
     if (!validateEmail()) return;
     setLoading(true);
-    try {
-      const otpData = await requestOtp(formData.email);
-      if (otpData.data?.devCode) {
-        console.log("[DEV] OTP code:", otpData.data.devCode);
+    if (verified) {
+      setEmailSectionVisible(false);
+      setPasswordSectionVisible(true);
+      setLoading(false);
+    } else {
+      try {
+        const otpData = await requestOtp(formData.email);
+        if (otpData.data?.devCode) {
+          console.log("[DEV] OTP code:", otpData.data.devCode);
+        }
+        setShowOTP(true);
+        setLoading(false);
+      } catch {
+        showAlert("error", "Failed to send OTP. Try again.");
+        setLoading(false);
       }
-      setShowOTP(true);
-      setLoading(false);
-    } catch {
-      showAlert("error", "Failed to send OTP. Try again.");
-      setLoading(false);
     }
   }
 
@@ -143,6 +149,8 @@ export default function ResetPasswordPage() {
       const msg = err?.message || "Failed to reset password";
       showAlert("error", msg);
       setLoading(false);
+      setPasswordSectionVisible(false);
+      setEmailSectionVisible(true);
     }
   }
   // managing the popup
@@ -182,81 +190,108 @@ export default function ResetPasswordPage() {
 
         <div className={styles.bodyContainer}>
           <div className={styles.formParent}>
-            <div className={styles.formContainer}>
-              <h1 className={styles.title}>Reset Password</h1>
-
-              {/* Enter Email Section */}
-              {emailSectionVisible && (
-                <>
-                  <label className={"description"}>
-                    Haha! Looks like you're bad at remembering...
-                  </label>
-
-                  <form>
-                    <div className={styles.formFieldContainer}>
-                      <div className={styles.inputGroup}>
-                        <label>Email</label>
-                        <input
-                          type="email"
-                          placeholder="pawanteja@email.com"
-                          value={formData.email}
-                          onChange={handleEmailChange}
-                        />
-                      </div>
-                    </div>
-
-                    <Button
-                      variant="primaryBlackLessPadding"
-                      status={formData.email && !loading ? "active" : "disabled"}
-                      onClick={handleVerifyEmailClick}
-                    >
-                      {loading ? <BtnLoader /> : "Verify Email"}
-                    </Button>
-                  </form>
-                </>
-              )}
-
-              {/* New Password Section */}
-              {passwordSectionVisible && (
-                <>
-                  <label className={"description"}>
-                    Don't forget this though...
-                  </label>
-
-                  <form>
-                    <div className={styles.formFieldContainer}>
-                      <div className={styles.inputGroup}>
-                        <label>New Password</label>
-                        <PasswordField
-                          value={formData.password}
-                          onChange={handlePassChange}
-                        />
+            {/* Enter Email Section */}
+            {emailSectionVisible && (
+              <>
+                <div className={styles.formContainer}>
+                  <div className={styles.formTitleDescription}>
+                    <h1 className={styles.title}>Reset Password</h1>
+                    <label className={"description"}>
+                      Haha! Looks like you're bad at remembering...
+                    </label>
+                  </div>
+                  <fieldset
+                    disabled={loading}
+                    className={loading ? "fieldsetDisabled" : ""}
+                  >
+                    <form>
+                      <div className={styles.formFieldContainer}>
+                        <div className={styles.inputGroup}>
+                          <label>Email</label>
+                          <input
+                            type="email"
+                            placeholder="pawanteja@email.com"
+                            value={formData.email}
+                            onChange={handleEmailChange}
+                          />
+                        </div>
                       </div>
 
-                      <div className={styles.inputGroup}>
-                        <label>Confirm Password</label>
-                        <PasswordField
-                          value={formData.confirmPassword}
-                          onChange={handleConfirmPassChange}
-                        />
-                      </div>
-                    </div>
+                      <Button
+                        variant="primaryBlackLessPadding"
+                        status={
+                          formData.email && !loading ? "active" : "disabled"
+                        }
+                        onClick={handleVerifyEmailClick}
+                      >
+                        {loading ? <BtnLoader /> : "Verify Email"}
+                      </Button>
+                    </form>
+                  </fieldset>
+                </div>
 
-                    <Button
-                      variant="primaryBlackLessPadding"
-                      status={
-                        formData.password && formData.confirmPassword && !loading
-                          ? "active"
-                          : "disabled"
-                      }
-                      onClick={handleResetPassClick}
-                    >
-                      {loading ? <BtnLoader /> : "Reset Password"}
-                    </Button>
-                  </form>
-                </>
-              )}
-            </div>
+                <div className={styles.otherLinks}>
+                  <p>
+                    Back to{" "}
+                    <Link to="/login" className="link">
+                      Login
+                    </Link>
+                  </p>
+                </div>
+              </>
+            )}
+
+            {/* New Password Section */}
+            {passwordSectionVisible && (
+              <>
+                <div className={styles.formContainer}>
+                  <div className={styles.formTitleDescription}>
+                    <h1 className={styles.title}>Reset Password</h1>
+                    <label className={"description"}>
+                      Don't forget this though...
+                    </label>
+                  </div>
+                  <fieldset
+                    disabled={loading}
+                    className={loading ? "fieldsetDisabled" : ""}
+                  >
+                    <form>
+                      <div className={styles.formFieldContainer}>
+                        <div className={styles.inputGroup}>
+                          <label>New Password</label>
+                          <PasswordField
+                            value={formData.password}
+                            onChange={handlePassChange}
+                          />
+                        </div>
+
+                        <div className={styles.inputGroup}>
+                          <label>Confirm Password</label>
+                          <PasswordField
+                            value={formData.confirmPassword}
+                            onChange={handleConfirmPassChange}
+                          />
+                        </div>
+                      </div>
+
+                      <Button
+                        variant="primaryBlackLessPadding"
+                        status={
+                          formData.password &&
+                          formData.confirmPassword &&
+                          !loading
+                            ? "active"
+                            : "disabled"
+                        }
+                        onClick={handleResetPassClick}
+                      >
+                        {loading ? <BtnLoader /> : "Reset Password"}
+                      </Button>
+                    </form>
+                  </fieldset>
+                </div>
+              </>
+            )}
           </div>
           <div className={styles.graphicContainer}>
             <img src={forgotPasswordGraphic} className={styles.graphic} />
