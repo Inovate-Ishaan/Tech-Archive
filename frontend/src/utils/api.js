@@ -56,6 +56,17 @@ export async function setPassword(email, password) {
   return data;
 }
 
+export async function resetPassword(email, password) {
+  const res = await fetch(`${API_BASE}/api/auth/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+  return data;
+}
+
 export async function fetchReadme(githubUrl) {
   const token = localStorage.getItem('auth_token');
   const res = await fetch(`${API_BASE}/api/posts/fetch-readme`, {

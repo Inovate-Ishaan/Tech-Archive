@@ -1,8 +1,9 @@
 const { verifyToken } = require('../config/jwt');
+const { prisma } = require('../config/prisma');
 const ApiError = require('../utils/ApiError');
 const { HTTP_STATUS } = require('../utils/constants');
 
-function authenticate(req, res, next) {
+async function authenticate(req, res, next) {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -11,6 +12,16 @@ function authenticate(req, res, next) {
 
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
+
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: { tokenVersion: true },
+    });
+
+    if (!user || user.tokenVersion !== decoded.tokenVersion) {
+      throw new ApiError(HTTP_STATUS.UNAUTHORIZED, 'Token revoked. Please log in again.');
+    }
+
     req.user = decoded;
     next();
   } catch (err) {

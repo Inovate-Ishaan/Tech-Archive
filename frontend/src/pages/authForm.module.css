@@ -108,8 +108,11 @@ select:focus{
 }
 
 
-.register {
+.otherLinks {
     margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .graphicContainer {

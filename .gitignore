@@ -178,6 +178,8 @@ dist
 **/*.back.*
 
 node_modules
+uploads/*
+backend/uploads/*
 
 *.sublime*
 

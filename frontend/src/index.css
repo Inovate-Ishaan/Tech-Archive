@@ -23,7 +23,7 @@
   /* Colors for Buttons */
   --button-black-bg: #000;
   --button-black-text: #fff;
-  --button-white-bg: #fff;
+  --button-white-bg: #f3f0ee;
   --button-white-text: #000;
 
   --hover-icon: #ededed;
@@ -72,7 +72,7 @@
   :root {
     /* Dark mode colors */
     /* Texts */
-    --text-primary: #eeeeee;
+    --text-primary: #f3f0ee;
     --text-secondary: #a7a2a2;
     --bg-white: #16171d;
     --bg-white: rgb(29, 29, 29);
@@ -140,17 +140,19 @@ p {
   margin: 0;
 }
 
-input{
+input {
   outline: none;
   border: var(--input-border);
 }
 
-input, select {
+input,
+select {
   width: 100%;
   min-width: 0px;
   box-sizing: border-box;
-    background-color: var(--bg-offWhite);
+  background-color: var(--bg-offWhite);
 }
+
 a {
   color: var(--text-primary);
   text-decoration: none;
@@ -172,6 +174,7 @@ a {
   position: relative;
   overflow: hidden;
 }
+
 .hvr-underline-from-center:before {
   content: "";
   position: absolute;
@@ -188,7 +191,10 @@ a {
   -webkit-transition-timing-function: ease-out;
   transition-timing-function: ease-out;
 }
-.hvr-underline-from-center:hover:before, .hvr-underline-from-center:focus:before, .hvr-underline-from-center:active:before {
+
+.hvr-underline-from-center:hover:before,
+.hvr-underline-from-center:focus:before,
+.hvr-underline-from-center:active:before {
   left: 0;
   right: 0;
 }
@@ -245,36 +251,38 @@ fieldset {
     font-size: 30px;
   }
 
-  .description{
+  .description {
     font-size: var(--text-body4);
   }
 
-  :root{
-      --text-button-primary: var(--text-body1);
+  :root {
+    --text-button-primary: var(--text-body1);
   }
 }
 
-@media (max-width: 390px){
+@media (max-width: 390px) {
+
   /* Make texts smaller for ultra small screens */
-  h1{
+  h1 {
     font-size: 32px;
   }
-  h2{
+
+  h2 {
     font-size: 20px;
   }
 
-  :root{
-  /*font sizes*/
-  --text-h1: 44px;
-  /*Use for titles*/
-  --text-h2: 30px;
-  /*Use for subtitles*/
+  :root {
+    /*font sizes*/
+    --text-h1: 44px;
+    /*Use for titles*/
+    --text-h2: 30px;
+    /*Use for subtitles*/
 
-  --text-body1: 20px;
-  --text-body2: 18px;
-  --text-body3: 16px;
-  --text-body4: 14px;
-  --text-body5: 12px;
+    --text-body1: 20px;
+    --text-body2: 18px;
+    --text-body3: 16px;
+    --text-body4: 14px;
+    --text-body5: 12px;
   }
 
   input {

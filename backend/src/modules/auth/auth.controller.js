@@ -51,4 +51,14 @@ async function setPassword(req, res, next) {
   }
 }
 
-module.exports = { requestOtp, verifyOtp, register, signin, setPassword };
+async function resetPassword(req, res, next) {
+  try {
+    const { email, password } = req.body;
+    const result = await authService.resetPassword(email, password);
+    res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, result));
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { requestOtp, verifyOtp, register, signin, setPassword, resetPassword };

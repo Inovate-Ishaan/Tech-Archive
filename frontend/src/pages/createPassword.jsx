@@ -5,7 +5,7 @@ import Button from "../components/buttons/button";
 import Alert from "../components/alertPopUP/alertPopUp";
 import passwordGraphic from "../assets/graphics/enter_password.svg";
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { setPassword } from "../utils/api";
 import BtnLoader from "../components/loaders/btnLoader";
 import PasswordField from "../components/passwordField/passwordField";
@@ -28,7 +28,7 @@ export default function CreatePasswordPage() {
     } else {
       // No email in session, redirect to register
       showAlert("info", "Redirecting to create account");
-      navigate("/create-password");
+      navigate("/register");
     }
   }, [navigate]);
 
@@ -98,10 +98,7 @@ export default function CreatePasswordPage() {
 
     try {
       await setPassword(email, formData.password);
-      showAlert(
-        "success",
-        "Taking you to the feed...",
-      );
+      showAlert("success", "Taking you to the feed...");
       sessionStorage.removeItem("registrationEmail");
       setTimeout(() => {
         navigate("/feed");
@@ -185,7 +182,6 @@ export default function CreatePasswordPage() {
                 </Button>
               </form>
             </div>
-
           </div>
           <div className={styles.graphicContainer}>
             <img src={passwordGraphic} className={styles.graphic} />

@@ -8,6 +8,7 @@ const {
   validateVerifyOtp,
   validateSignin,
   validateSetPassword,
+  validateResetPassword,
 } = require('./auth.validation');
 const { RATE_LIMITS } = require('../../utils/constants');
 
@@ -42,5 +43,6 @@ router.post('/request-otp', otpLimiter, validate(validateRequestOtp), authContro
 router.post('/verify-otp', strictLimiter, validate(validateVerifyOtp), authController.verifyOtp);
 router.post('/signin', authLimiter, validate(validateSignin), authController.signin);
 router.post('/set-password', authLimiter, validate(validateSetPassword), authController.setPassword);
+router.post('/reset-password', authLimiter, validate(validateResetPassword), authController.resetPassword);
 
 module.exports = router;
