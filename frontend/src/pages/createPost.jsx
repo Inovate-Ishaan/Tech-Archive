@@ -284,6 +284,7 @@ export default function CreatePostPage() {
                     <div className={styles.tagInputBar}>
                       {formData.tags.map((tag) => (
                         <Tag
+                          removeable={true}
                           label={tag}
                           key={tag}
                           onRemove={() => removeTag(tag)}

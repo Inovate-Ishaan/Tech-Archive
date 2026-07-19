@@ -1,0 +1,5 @@
+.container{
+    background-color: var(--bg-offWhite);
+    width: calc(100% - 270px);
+    height: fit-content;
+}
