@@ -9,6 +9,7 @@ import FeedPage from "./pages/feed";
 import CreatePostPage from "./pages/createPost";
 import ComponentTest from "./pages/componentTest";
 import ResetPasswordPage from "./pages/resetPassword";
+import PostPage from "./pages/post";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -18,10 +19,11 @@ createRoot(document.getElementById("root")).render(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/create-password" element={<CreatePasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/feed" element={<FeedPage />} />
+        <Route path="/post" element={<PostPage />} />
         <Route path="/create-post" element={<CreatePostPage />} />
         <Route path="/component-test" element={<ComponentTest />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

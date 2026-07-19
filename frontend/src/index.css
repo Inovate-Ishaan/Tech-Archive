@@ -13,7 +13,8 @@
 
   /*For background distinctions in elements on white bg */
   --search-bar-bg: #f9f9f9;
-  --accent: #ffcc00;
+  --accent: #ff3300;
+  --alert-info: #ffcc00;
   --border: #000;
   --border-containers: #d9d9d9;
   --accent-bg: rgba(170, 59, 255, 0.1);

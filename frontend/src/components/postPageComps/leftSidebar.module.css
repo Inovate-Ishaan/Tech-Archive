@@ -1,0 +1,135 @@
+.container{
+    background-color: var(--bg-white);
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    z-index: 9;
+    padding-top: 15px;
+    border-right: 1px solid var(--border-containers) ;
+}  
+
+.subsectionContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 0px;
+    border-right: 1px solid var(--bg-gray);
+    padding: 300px auto auto 20px;
+    margin-top: 30px;
+    width: 100%;
+}
+.subsectionLabel {
+    font-size: var(--text-body2);
+    font-weight: 600 ;
+}
+
+.subsectionOptionContainer{
+    margin-top: 25px;
+    width: 100%;
+}
+
+.option {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px 2px 2px 8px;
+    font-family: "Inter";
+    font-weight: 400;
+    font-size: var(--text-body3);
+}
+
+.hr{
+    border: 1px solid var(--border-containers);
+    width: 40%;
+    margin: 25px auto;
+}
+
+.github{
+    font-size: var(--text-body2);
+    font-weight: 450;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 8px;
+    padding: 10px 0;
+}
+
+.github:hover{
+    cursor: crosshair;
+    background-color: var(--hover-icon);
+}
+
+.githubLogo{
+    max-width: 35px;
+    aspect-ratio: 1;
+}
+
+/* Collaborations */
+.collaborations{
+    border: 1px solid var(--border-containers);
+    padding: 20px 0px;
+    border-radius: 8px;
+
+}
+
+.desc {
+    font-family: "Inter";
+    color: var(--text-secondary);
+    font-size: var(--text-body3);
+    font-weight: 300;
+}
+
+.collabTitle{
+    font-size: var(--text-body2);
+    text-decoration: underline;
+    margin: 20px auto 15px auto;
+}
+
+.author{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-left: 8px;
+    padding: 8px 5px;
+    min-width: 0;
+    overflow-x: scroll;
+    border-radius: 8px 0 0 8px;
+}
+
+.author:hover{
+    text-decoration: underline;
+    cursor: pointer;
+    background-color: var(--hover-icon);
+}
+
+.profilePic{
+    width: 40px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+}
+
+.authorName {
+    font-family: "Inter";
+    font-size: var(--text-body1);
+    font-weight: 450;
+    text-align: left;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+.selected {
+    background-color: #FFF6F6;
+    border: 1px solid var(--border-containers);
+    border-right: 6px solid var(--accent);
+}
+
+.option:hover{
+    cursor: pointer;
+    background-color: var(--hover-icon);
+}
