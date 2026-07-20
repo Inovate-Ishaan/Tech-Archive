@@ -1,5 +1,6 @@
 .container{
     background-color: var(--bg-offWhite);
     width: calc(100% - 270px);
-    height: fit-content;
+    height: 100%;
+    min-height: 100vh
 }

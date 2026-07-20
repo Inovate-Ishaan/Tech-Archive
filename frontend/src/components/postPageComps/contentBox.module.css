@@ -1,0 +1,18 @@
+.container{
+    background-color: var(--bg-white);
+    margin: 14px 100px 3rem 270px;
+    border: 1px solid var(--border-containers);
+    border-radius: 8px;
+    box-sizing: border-box;
+    box-shadow: var(--shadow-box-bottom);
+    max-width: 1200px;
+    width : 100%;
+    padding: 10px;
+    min-height: 75vh;
+    max-height: fit-content;
+    text-align: left;
+}
+
+h1{
+    font-size: 42px;
+}

@@ -9,6 +9,7 @@
     z-index: 9;
     padding-top: 15px;
     border-right: 1px solid var(--border-containers) ;
+    box-sizing: border-box;
 }  
 
 .subsectionContainer{
@@ -116,7 +117,7 @@
 
 .authorName {
     font-family: "Inter";
-    font-size: var(--text-body1);
+    font-size: var(--text-body3);
     font-weight: 450;
     text-align: left;
     line-height: 1.2;
