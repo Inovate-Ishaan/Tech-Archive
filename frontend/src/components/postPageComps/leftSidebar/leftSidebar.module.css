@@ -7,10 +7,23 @@
     top: 0;
     overflow-y: auto;
     z-index: 9;
-    padding-top: 15px;
+    padding-top: 60px;
     border-right: 1px solid var(--border-containers) ;
     box-sizing: border-box;
 }  
+
+.close{
+    position: absolute;
+    width: fit-content;
+    top:87px;
+    right: 5px;
+    padding: 4px;
+}
+.close:hover{
+    background-color: var(--hover-icon);
+    border-radius: 50px;
+    cursor: pointer;
+}
 
 .subsectionContainer{
     display: flex;
@@ -62,6 +75,17 @@
 .github:hover{
     cursor: crosshair;
     background-color: var(--hover-icon);
+}
+
+/* Giving the white bg to github svg as the cat is transparent */
+.logoBg{
+    background-color: #fff;
+    width: 34px;
+    height: 34px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .githubLogo{
@@ -125,7 +149,8 @@
 }
 
 .selected {
-    background-color: #FFF6F6;
+    font-weight: 600;
+    background-color: var(--accent-light);
     border: 1px solid var(--border-containers);
     border-right: 6px solid var(--accent);
 }
@@ -133,4 +158,14 @@
 .option:hover{
     cursor: pointer;
     background-color: var(--hover-icon);
+}
+
+@media (max-width:600px){
+    .container{
+        padding-top: 40px;
+    }
+    
+    .close{
+        top: 65px;
+    }
 }

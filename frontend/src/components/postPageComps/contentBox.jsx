@@ -39,9 +39,19 @@ VITE_API_URL=http://localhost:4000 npx vite --host
   return (
     <>
       <div className={styles.container}>
+        <div className={styles.contentHeader}>
+        <div className={styles.subsectionTitle}>
+          Overview
+        </div>
+        <div className={styles.readTimeAndSecNum}>
+          11 minutes read | Section 1 of 6
+        </div>
+        </div>
+        <div className={styles.content}>
         <Markdown remarkPlugins={[remarkGfm]}>
         {markdown}
         </Markdown>
+        </div>
       </div>
     </>
   );

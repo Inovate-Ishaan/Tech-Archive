@@ -1,7 +1,7 @@
 import styles from "./postDetails.module.css";
 import Tag from "../tag/tag.jsx";
 import { useState } from "react";
-export default function PostDetails() {
+export default function PostDetails({showLeftSidebar}) {
   // Handling Bookmarks
   const [bookmarked, setBookmarked] = useState(false);
   function handleBookmarkClick() {
@@ -11,9 +11,15 @@ export default function PostDetails() {
   return (
     <>
       <div className={styles.container}>
+        <div className={styles.backAndToc}>
         <div className={styles.backToFeed}>
           <span className="material-symbols-outlined">arrow_back</span>
           <span>Back to Feed</span>
+        </div>
+        <div className={styles.viewAllSections} onClick={showLeftSidebar}>
+          <span className="material-symbols-outlined">toc</span>
+          <span>View all Sections</span>
+        </div>
         </div>
 
         <div className={styles.postTitle}>

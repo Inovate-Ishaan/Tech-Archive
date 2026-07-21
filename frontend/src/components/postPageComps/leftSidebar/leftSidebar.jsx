@@ -1,6 +1,6 @@
 import styles from "./leftSidebar.module.css";
 import { Link } from "react-router-dom";
-import githubLogo from "../../assets/graphics/github.svg";
+import githubLogo from "../../../assets/logos/github.svg";
 
 export default function LeftSidebar({className, selectedOption="overview"}) {
     return(
@@ -12,7 +12,7 @@ export default function LeftSidebar({className, selectedOption="overview"}) {
         {/* Subsections */}
         <div className={styles.subsectionContainer}>
         <div className={styles.subsectionLabel}>
-        <label>Subsections</label>
+        <label>Sections</label>
        </div>
 
         <div className={styles.subsectionOptionContainer}>
@@ -49,7 +49,7 @@ export default function LeftSidebar({className, selectedOption="overview"}) {
 
        {/* Github */}
         <div className={styles.github}>
-            <img src={githubLogo} className={styles.githubLogo}/>
+            <div className={styles.logoBg}><img src={githubLogo} className={styles.githubLogo}/></div>
             <p>Project Repository</p>
         </div>
 
