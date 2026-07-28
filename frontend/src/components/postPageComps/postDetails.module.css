@@ -1,6 +1,6 @@
 .container{
     background-color: var(--bg-offWhite);
-    width: 100%;
+    width: calc(100% - 270px);
     margin: 0 0 auto 270px;
     display: flex;
     flex-direction: column;
