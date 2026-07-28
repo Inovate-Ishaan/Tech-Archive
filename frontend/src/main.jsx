@@ -21,7 +21,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/create-password" element={<CreatePasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/feed" element={<FeedPage />} />
-        <Route path="/post" element={<PostPage />} />
+        <Route path="/post/:id" element={<PostPage />} />
         <Route path="/create-post" element={<CreatePostPage />} />
         <Route path="/component-test" element={<ComponentTest />} />
       </Routes>
