@@ -12,6 +12,12 @@ export default function FeedPage() {
   //to darken the remaining page when the side menu toggle is open
   const [sideMenuToggleVisible, setSideMenuToggleVisible] = useState(false);
   //prevent scroll when the side menu is open
+  useEffect( () => {
+    document.body.style.overflow = sideMenuToggleVisible ? "hidden" : "auto";
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [sideMenuToggleVisible]);
 
   //adding 3 extra states for page effects
   const [posts, setPosts] = useState([]);
@@ -30,13 +36,6 @@ export default function FeedPage() {
       setLoading(false)
     }
   };
-
-  useEffect( () => {
-    document.body.style.overflow = sideMenuToggleVisible ? "hidden" : "auto";
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [sideMenuToggleVisible]);
 
   useEffect(() => {
     loadPosts();
@@ -70,7 +69,7 @@ export default function FeedPage() {
           key={post.id}
           title={post.title}
           image={post.image}
-          username={post.author.username}
+          author={post.author.username}
           profilePic={post.author.avatar}
           tags={post.tags}
         />

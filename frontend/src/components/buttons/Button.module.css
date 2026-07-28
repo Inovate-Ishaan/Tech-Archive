@@ -9,11 +9,12 @@
     align-items: center;
     justify-content: center;
     gap: 4px;
+    font-weight: 500;
 }
 
 .btn:hover{
     color: var(--hover-on-white-text);
-    box-shadow: var(--shadow-box);
+    box-shadow: var(--shadow-box-bottom);
 }
 
 .primaryBlack{
@@ -59,7 +60,23 @@
     border-radius: 4px;
 }
 
-.primaryWhite:hover, .primaryWhiteLessPadding:hover, .secondaryWhite:hover{
+.tertiaryBlack{
+    padding: 10px 24px;
+    font-size: var(--text-body3);
+    color: var(--button-black-text);
+    background-color: var(--button-black-bg);
+    border-radius: 8px;
+}
+
+.tertiaryWhite{
+    padding: 10px 24px;
+    font-size: var(--text-body3);
+    color: var(--button-white-text);
+    background-color: var(--button-white-bg);
+    border-radius: 8px;
+}
+
+.primaryWhite:hover, .primaryWhiteLessPadding:hover, .secondaryWhite:hover, .tertiaryWhite:hover{
     color: var(--hover-on-black-text);
 }
 

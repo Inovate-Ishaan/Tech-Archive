@@ -34,8 +34,8 @@
 
 .info {
     color: var(--text-primary);
-    border: 0.5px solid var(--accent);
-    border-right: 6px solid var(--accent);
+    border: 0.5px solid var(--alert-info);
+    border-right: 6px solid var(--alert-info);
 }
 
 .closeIcon {

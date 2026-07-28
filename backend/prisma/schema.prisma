@@ -82,9 +82,9 @@ model Bookmark {
 
   id          String   @id @default(uuid())
   createdAt   DateTime @default(now())
-  userId      String
+  username    String
   postId      String
-  user        User     @relation(fields:[userId], references:[id])
+  user        User     @relation(fields:[username], references:[username])
   post        Post     @relation(fields:[postId], references:[id])
   @@unique([userId, postId])
 }

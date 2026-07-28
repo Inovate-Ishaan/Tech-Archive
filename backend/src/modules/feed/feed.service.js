@@ -2,9 +2,6 @@ const { prisma } = require("../../config/prisma");
 const { mapPostToFeedCard } = require("./feed.mapper");
 const NotFoundError = require("../../errors/NotFoundError");
 
-console.log(prisma);
-console.log(prisma.post);
-
 const getAllPosts = async (page,limit) => {
 
     const skip = (page-1)*limit;

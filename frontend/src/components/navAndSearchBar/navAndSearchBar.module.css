@@ -6,6 +6,7 @@
     padding: 6px 10px 4px 10px;
     box-sizing: border-box;
     border-bottom: 1px solid var(--border-containers);
+    z-index: 9999;
 }
 
 .title{
