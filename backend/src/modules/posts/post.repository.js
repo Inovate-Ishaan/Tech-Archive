@@ -77,8 +77,14 @@ async function update(id, data) {
   });
 }
 
+async function findByAuthorAndGithubUrl(authorId, githubUrl) {
+  return prisma.post.findFirst({
+    where: { authorId, githubUrl },
+  });
+}
+
 async function remove(id) {
   return prisma.post.delete({ where: { id } });
 }
 
-module.exports = { findAll, findById, create, update, remove };
+module.exports = { findAll, findById, create, update, remove, findByAuthorAndGithubUrl };

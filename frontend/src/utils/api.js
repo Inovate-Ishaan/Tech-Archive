@@ -84,9 +84,6 @@ export async function fetchReadme(githubUrl) {
 
 export async function uploadPost(formData){
   const token = localStorage.getItem('auth_token');
-  for (const [key, value] of formData.entries()) {
-  console.log(key, value);
-}
   const resp = await fetch(`${API_BASE}/api/posts`, {
     method: 'POST',
     headers: {
@@ -94,7 +91,9 @@ export async function uploadPost(formData){
     },
     body: formData,
   });
-  return resp;
+  const data = await resp.json();
+  if (!resp.ok) throw data;
+  return data;
 };
 
 // feed page APIs

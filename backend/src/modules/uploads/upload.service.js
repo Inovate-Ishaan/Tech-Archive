@@ -1,15 +1,13 @@
-const path = require('path');
-
-function getAvatarUrl(filename) {
-  return `/avatars/${filename}`;
+function getAvatarUrl(avatarUrl) {
+  return avatarUrl;
 }
 
-function getPostImageUrl(filename) {
-  return `/posts/${filename}`;
+function getPostImageUrl(imageUrl) {
+  return imageUrl;
 }
 
 function getPostImageUrls(files) {
-  return files.map((f) => `/posts/${f.filename}`);
+  return files.map((f) => f.path);
 }
 
 module.exports = { getAvatarUrl, getPostImageUrl, getPostImageUrls };
