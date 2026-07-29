@@ -8,12 +8,14 @@
   --link : #2C27C3;
   --bg-white: #ffffff;
   --bg-gray: #d9d9d970;
-  --bg-offWhite: #fefefe;
+  --bg-offWhite: #f9f9f9;
   --header-navbar-bg: rgb(246, 246, 246);
 
   /*For background distinctions in elements on white bg */
   --search-bar-bg: #f9f9f9;
   --accent: #ff3300;
+  --accent-light: #FFF6F6;
+  --alert-info: #ffcc00;
   --border: #000;
   --border-containers: #d9d9d9;
   --accent-bg: rgba(170, 59, 255, 0.1);
@@ -38,7 +40,7 @@
   --font-footer: "Inter", Tahoma, Verdana, sans-serif;
 
   /*font sizes*/
-  --text-h1: 46px;
+  --text-h1: 44px;
   /*Use for titles*/
   --text-h2: 32px;
   /*Use for subtitles*/
@@ -80,6 +82,7 @@
     --bg-offWhite: #232323;
     --bg-gray: #7c7c7c;
     --bg-gray: #181818;
+    --accent-light: #ff330028;
 
     --hover-icon: #323232;
 
@@ -257,6 +260,17 @@ fieldset {
 
   :root {
     --text-button-primary: var(--text-body1);
+    /*font sizes*/
+    --text-h1: 40px;
+    /*Use for titles*/
+    --text-h2: 30px;
+    /*Use for subtitles*/
+
+    --text-body1: 22px;
+    --text-body2: 20px;
+    --text-body3: 18px;
+    --text-body4: 16px;
+    --text-body5: 14px;
   }
 }
 
@@ -273,16 +287,16 @@ fieldset {
 
   :root {
     /*font sizes*/
-    --text-h1: 44px;
+    --text-h1: 38px;
     /*Use for titles*/
-    --text-h2: 30px;
+    --text-h2: 28px;
     /*Use for subtitles*/
 
-    --text-body1: 20px;
-    --text-body2: 18px;
-    --text-body3: 16px;
-    --text-body4: 14px;
-    --text-body5: 12px;
+    --text-body1: 18px;
+    --text-body2: 16px;
+    --text-body3: 14px;
+    --text-body4: 12px;
+    --text-body5: 10px;
   }
 
   input {

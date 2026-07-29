@@ -1,17 +1,18 @@
 //Standard button
-//avaiable variants - Primary Black (primaryBlack), Primary White (primaryWhite), Primary Black (primaryBlackLessPadding), Primary White (primaryWhiteLessPadding), Secondary Black (secondaryBalck), Secondary White (secondaryWhite)
+//avaiable variants - Primary Black (primaryBlack), Primary White (primaryWhite), Primary Black (primaryBlackLessPadding), Primary White (primaryWhiteLessPadding), Secondary Black (secondaryBalck), Secondary White (secondaryWhite), Tertiary Black/White (tertiaryBlack/White)
 import styles from "./Button.module.css";
 
 function Button({
   variant = "primaryBlack",
   status = "active",
+  className = "",
   children,
   ...rest
 }) {
   return (
     <>
       <button
-        className={`${styles.btn} ${styles[variant]} ${styles[status]}`}
+        className={`${styles.btn} ${className} ${styles[variant]} ${styles[status]}`}
         {...rest}
         disabled={status === "disabled" ? true : false}
       >

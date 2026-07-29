@@ -79,7 +79,7 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
   }
 
   //toggling of the side menu (hamburger)
-  //state has been uplifted to feed.jsx to enable darkening of the screen when menu is open
+  //state has been uplifted to feed.jsx or the parent compnent to enable darkening of the screen when menu is open
   const isSideMenuVisible = sideMenuVisible;
   const setIsSideMenuVisible = setSideMenuVisible;
 

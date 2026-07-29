@@ -1,8 +1,9 @@
 import styles from "./postCard.module.css";
 import thumbnail_placeholder from "../../assets/other_images/thumbnail_placeholder.jpeg";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function PostCard({
+export default function PostCard({key,
   title = "AGAIN THIS IS KINDA LONG TITLE JUST TO CHECK HOW THE ",
   author = "Author",
   uploadTime = "1 month",
@@ -18,6 +19,8 @@ export default function PostCard({
 
   //adding "ago" to upload time
   uploadTime = uploadTime + " ago";
+
+  const navigate = useNavigate();
 
   //destructuring tags
   const tagsMarkup = (
@@ -40,7 +43,7 @@ export default function PostCard({
   return (
     <>
       {/*Thumbnail*/}
-      <div className={styles.container}>
+      <div className={styles.container} onClick={()=>navigate(`/post/${key}`)}>
         <img src={thumbnail} className={styles.thumbnail} />
 
         {/*Post Description*/}

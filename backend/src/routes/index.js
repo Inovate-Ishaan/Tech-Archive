@@ -4,6 +4,7 @@ const postRoutes = require('../modules/posts/post.routes');
 const userRoutes = require('../modules/users/user.routes');
 const uploadRoutes = require('../modules/uploads/upload.routes');
 const feedRoutes = require('../modules/feed/feed.routes')
+const boomarkRoutes = require('../modules/bookmarks/bookmark.routes')
 
 
 const router = Router();
@@ -13,7 +14,7 @@ router.use('/posts', postRoutes);
 router.use('/users', userRoutes);
 router.use('/uploads', uploadRoutes);
 router.use("/feed", feedRoutes);
-
+router.use("/bookmark",boomarkRoutes);
 module.exports = router;
 
 

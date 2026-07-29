@@ -99,7 +99,44 @@ export async function uploadPost(formData){
 // feed page APIs
 
 export async function getPosts() {
-  const res = await fetch(`${API_BASE}/api/feed`);
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/feed`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    }
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+
+  return data;
+}
+
+export async function viewpost(id){
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/posts/${id}`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
+    body: JSON.stringify({ id }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+
+  return data;
+}
+
+export async function bookmarker(id,bookmarked){
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/${id}/bookmark`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
+    body: JSON.stringify({ bookmarked })
+  });
   const data = await res.json();
   if (!res.ok) throw data;
 

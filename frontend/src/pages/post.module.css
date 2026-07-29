@@ -1,0 +1,26 @@
+.navButtons{
+    display: flex;
+    column-gap: 12px;
+    margin: 24px auto 3rem 270px ;
+    width:fit-content;
+}
+
+@media (min-width:768px){
+    .leftSideBarToggle{
+        display: none;
+    }
+}
+
+@media (max-width:768px){
+    .container{
+        width: 100%;
+    }
+
+    .leftSideBar{
+        display: none;
+    }
+
+    .navButtons{
+        margin: 24px auto 3rem 4px;
+    }
+}
