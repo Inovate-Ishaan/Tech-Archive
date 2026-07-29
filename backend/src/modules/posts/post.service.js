@@ -74,7 +74,14 @@ async function createPost(userId, body, file) {
 
   let coverImage = null;
   if (file) {
-    coverImage = `/posts/${file.filename}`;
+    coverImage = file.path;
+  }
+
+  if (githubUrl) {
+    const existing = await postRepository.findByAuthorAndGithubUrl(userId, githubUrl);
+    if (existing) {
+      throw new ApiError(HTTP_STATUS.CONFLICT, 'You have already posted a project with this GitHub URL');
+    }
   }
 
   const tagIds = await resolveTagIds(tags)
@@ -107,7 +114,7 @@ async function updatePost(postId, userId, body, file) {
   const updateData = {};
   if (body.title !== undefined) updateData.title = body.title;
   if (body.content !== undefined) updateData.content = body.content;
-  if (file) updateData.coverImage = `/posts/${file.filename}`;
+  if (file) updateData.coverImage = file.path;
   if (body.coverImage !== undefined && !file) updateData.coverImage = body.coverImage;
   if (body.githubUrl !== undefined) updateData.githubUrl = body.githubUrl;
   if (body.tags !== undefined) {
