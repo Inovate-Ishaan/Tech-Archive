@@ -69,8 +69,8 @@ export default function FeedPage() {
         <PostCard
           key={post.id}
           title={post.title}
-          thumbnail={post.image}
-          author={post.author.username}
+          image={post.image}
+          username={post.author.username}
           profilePic={post.author.avatar}
           tags={post.tags}
         />
