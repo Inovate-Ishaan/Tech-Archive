@@ -98,9 +98,9 @@ export async function uploadPost(formData){
 
 // feed page APIs
 
-export async function getPosts() {
+export async function getPosts(page) {
   const token = localStorage.getItem('auth_token');
-  const res = await fetch(`${API_BASE}/api/feed`, {
+  const res = await fetch(`${API_BASE}/api/feed?page=${page}&limit=24`, {
     method: 'GET',
     headers: {
       ...(token ? {Authorization: `Bearer ${token}`} : {})

@@ -124,6 +124,7 @@
 @media (max-width: 768px) {
     .container{
         margin: 0 4px 3rem 4px;
+        width: 100%;
     }
 
     .postTitle{
