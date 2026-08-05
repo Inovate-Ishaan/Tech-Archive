@@ -7,9 +7,33 @@ import PostDetails from "../components/postPageComps/postDetails.jsx";
 import ContentBox from "../components/postPageComps/contentBox.jsx";
 import Button from "../components/buttons/button.jsx";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { viewpost } from "../utils/api.js";
 
 export default function PostPage() {
     
+    //extracting the post ID from the URL
+    const { id } = useParams();
+    console.log(`Post ID: ${id}`);
+
+    //state for the post data
+    const [postData, setPostData] = useState({});
+   
+
+    async function getPostData() {
+        if (!id) return;
+        
+        const response = await viewpost(id);
+        const data = response.data;
+        setPostData(data);
+        console.log(data);
+   };
+
+//effect to get the post data
+useEffect(() => {
+    getPostData();
+}, [id]);
+
     //LeftSidebar is not collapsable and it is for >768px
     //LeftsidebarToggle is collapsable
     //Switching betwenn these two is handled by CSS media queries, so no worries about it here
@@ -37,10 +61,10 @@ export default function PostPage() {
         <>
         <div className={styles.container}>
         <NavWithSearch sideMenuVisible={sideMenuToggleVisible} setSideMenuVisible={setSideMenuToggleVisible} selectedOption={"home"}/>
-        <LeftSidebar className={styles.leftSideBar} selectedOption="overview"/>
-        {showLeftSidebar && <LeftSidebarToggle className={styles.leftSideBarToggle} selectedOption="overview" closeBtnFunction={handleCloseLeftSidebar}/>}
-        <PostDetails showLeftSidebar={handleViewAllSectionsClick}/>
-        <ContentBox />
+        <LeftSidebar className={styles.leftSideBar} selectedOption="overview" githubUrl={postData.githubUrl}/>
+        {showLeftSidebar && <LeftSidebarToggle className={styles.leftSideBarToggle} selectedOption="overview" closeBtnFunction={handleCloseLeftSidebar} githubUrl={postData.githubUrl}/>}
+        <PostDetails title={postData.title} tags={postData.tags} author={postData.author} content={postData.content} showLeftSidebar={handleViewAllSectionsClick}/>
+        <ContentBox content={postData.content} />
         <div className={styles.navButtons}>
             <Button variant="tertiaryWhite">
                 Previous

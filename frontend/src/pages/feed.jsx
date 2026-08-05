@@ -225,7 +225,7 @@ export default function FeedPage() {
               key={post.id}
               postID={post.id}
               title={post.title}
-              image={post.image}
+              thumbnail={post.image}
               author={post.author?.username}
               profilePic={post.author?.avatar}
               tags={post.tags}

@@ -119,7 +119,6 @@ export async function viewpost(id){
     headers: {
       ...(token ? {Authorization: `Bearer ${token}`} : {})
     },
-    body: JSON.stringify({ id }),
   });
   const data = await res.json();
   if (!res.ok) throw data;

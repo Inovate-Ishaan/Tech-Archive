@@ -3,7 +3,7 @@ import styles from "./leftSidebar.module.css";
 import { Link } from "react-router-dom";
 import githubLogo from "../../../assets/logos/github.svg";
 
-export default function LeftSidebar({className, selectedOption="overview", closeBtnFunction}) {
+export default function LeftSidebar({className, selectedOption="overview", closeBtnFunction, githubUrl}) {
     return(
         <>
         <div className={className}>
@@ -51,10 +51,12 @@ export default function LeftSidebar({className, selectedOption="overview", close
         <div className={styles.hr}></div>
 
        {/* Github */}
+       <a href={githubUrl} target="_blank">
         <div className={styles.github}>
             <div className={styles.logoBg}><img src={githubLogo} className={styles.githubLogo}/></div>
             <p>Project Repository</p>
         </div>
+        </a>
 
         {/* HR */}
         <div className={styles.hr}></div>
