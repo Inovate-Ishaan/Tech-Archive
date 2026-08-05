@@ -9,7 +9,7 @@ const getAllPosts = async (req, res,next) => {
 
         const limit = Math.min(
             Math.max(parseInt(req.query.limit, 10) || 6, 1),
-            20
+            24
         );
 
         const result = await postService.getAllPosts(page, limit);

@@ -1,23 +1,26 @@
 Include this to the parent component
 
 
-const [alert, setAlert] = useState(null);
+    //Alert logic
+  const [alert, setAlert] = useState(null);
+  const timeoutRef =  useRef(null);
 
-function showAlert(type, msg) {
+  function showAlert(type, msg) {
     setAlert({
-        type,
-        msg,
-    })
+      type,
+      msg,
+    });
 
-    setTimeout(() => {
-    setAlert(null)
+    clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      setAlert(null);
     }, 3000);
-};
+  }
 
-const closeAlert = () => {
-setAlert(null);
-};
-
+  const closeAlert = () => {
+    setAlert(null);
+  };
 
 and this in the return of the component
 

@@ -1,9 +1,10 @@
 import styles from "./postCard.module.css";
 import thumbnail_placeholder from "../../assets/other_images/thumbnail_placeholder.jpeg";
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function PostCard({key,
+function PostCard({
+  postID,
   title = "AGAIN THIS IS KINDA LONG TITLE JUST TO CHECK HOW THE ",
   author = "Author",
   uploadTime = "1 month",
@@ -36,14 +37,15 @@ export default function PostCard({key,
   //Handling bookmark
   const [isBookmarked, setIsBookmarked] = useState(bookmarked);
 
-  function handleBookmarkClick() {
+  function handleBookmarkClick(e) {
+    e.stopPropagation();
     isBookmarked ? setIsBookmarked(false) : setIsBookmarked(true);
   };
 
   return (
     <>
       {/*Thumbnail*/}
-      <div className={styles.container} onClick={()=>navigate(`/post/${key}`)}>
+      <div className={styles.container} onClick={()=>navigate(`/post/${postID}`)}>
         <img src={thumbnail} className={styles.thumbnail} />
 
         {/*Post Description*/}
@@ -77,11 +79,13 @@ export default function PostCard({key,
             <div className={styles.tagsAndSave}>
               <div className={styles.tagContainer}> {tagsMarkup} </div>
 
-              <span className={`material-symbols-outlined icon ${isBookmarked ? "filled" : ""}`} onClick={handleBookmarkClick}>bookmark</span>
+              <span className={`material-symbols-outlined icon ${isBookmarked ? "filled" : ""}`} onClick={e => handleBookmarkClick(e)}>bookmark</span>
             </div>
           </div>
         </div>
       </div>
     </>
   );
-}
+};
+
+export default PostCard;

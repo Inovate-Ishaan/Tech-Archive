@@ -16,11 +16,28 @@
     background-color: var(--bg-offWhite);
     padding: 0 10px;
     box-sizing: border-box;
+    height: fit-content;
+    overflow-y: scroll;
 }
 
 /*side menu hidden for bigger displays*/
 .sideMenuFixed {
     display: none;
+}
+
+.observer{
+    /* border: 2px solid red; */
+    height: 100px;
+}
+
+.infiniteLoader {
+    background-color: var(--bg-offWhite);
+    padding: 10px;
+}
+
+.endMessage {
+    font-family: "Inter";
+    padding: 15px;
 }
 
 /*Change padding top at 480px as nav bar shrinks in height*/
