@@ -74,6 +74,7 @@
 }
 
 .author{
+    box-sizing: border-box;
     width: 100%;
     display: flex;
     align-items: center;
@@ -84,11 +85,12 @@
     min-width: 0;
     overflow-x: scroll;
     border-radius: 8px 8px 0 8px;
+    border: 1px solid var(--bg-offWhite);
 }
 
 .author:hover{
-    text-decoration: underline;
     cursor: pointer;
+    border-color: var(--border-containers);
     background-color: var(--hover-icon);
 }
 
@@ -96,6 +98,22 @@
     width: 40px;
     border-radius: 50%;
     aspect-ratio: 1;
+}
+
+.defaultProfilePic{
+    width: 40px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    background-color: var(--accent-light);
+    border: 0.5px solid var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#faceIcon {
+    font-size: 35px;
+    color: #b80000;
 }
 
 .authorName {

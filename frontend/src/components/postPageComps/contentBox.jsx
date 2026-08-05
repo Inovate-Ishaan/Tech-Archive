@@ -2,7 +2,7 @@ import styles from "./contentBox.module.css";
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 
-export default function ContentBox() {
+export default function ContentBox({ sectionName="", readTime="", currentSection="", totalSections="", content="" }) {
 const markdown = `
 # Tech-Archive
 
@@ -35,6 +35,7 @@ cd frontend
 VITE_API_URL=http://localhost:4000 npx vite --host
 
 `;
+console.log(content);
 
   return (
     <>
@@ -49,7 +50,7 @@ VITE_API_URL=http://localhost:4000 npx vite --host
         </div>
         <div className={styles.content}>
         <Markdown remarkPlugins={[remarkGfm]}>
-        {markdown}
+        {content}
         </Markdown>
         </div>
       </div>
