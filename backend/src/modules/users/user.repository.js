@@ -28,6 +28,7 @@ async function findUserByUsername(username) {
       id: true,
       username: true,
       displayname: true,
+      email: true,
       avatar: true,
       bio: true,
       branch: true,
