@@ -126,6 +126,20 @@ export async function viewpost(id){
   return data;
 }
 
+export async function viewbookmarks(username){
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/me/bookamark`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+
+  return data;
+}
+
 export async function bookmarker(id,bookmarked){
   const token = localStorage.getItem('auth_token');
   const res = await fetch(`${API_BASE}/api/${id}/bookmark`, {
