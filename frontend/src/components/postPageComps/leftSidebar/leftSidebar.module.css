@@ -128,7 +128,6 @@
 }
 
 .author:hover{
-    text-decoration: underline;
     cursor: pointer;
     background-color: var(--hover-icon);
 }
@@ -138,6 +137,21 @@
     border-radius: 50%;
     aspect-ratio: 1;
     margin-left: 8px ;
+}
+
+.defaultProfilePic{
+    width: 40px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    border: 0.5px solid var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#faceIcon {
+    font-size: 35px;
+    color: #d007ca;
 }
 
 .authorName {

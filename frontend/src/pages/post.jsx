@@ -61,8 +61,8 @@ useEffect(() => {
         <>
         <div className={styles.container}>
         <NavWithSearch sideMenuVisible={sideMenuToggleVisible} setSideMenuVisible={setSideMenuToggleVisible} selectedOption={"home"}/>
-        <LeftSidebar className={styles.leftSideBar} selectedOption="overview" githubUrl={postData.githubUrl}/>
-        {showLeftSidebar && <LeftSidebarToggle className={styles.leftSideBarToggle} selectedOption="overview" closeBtnFunction={handleCloseLeftSidebar} githubUrl={postData.githubUrl}/>}
+        <LeftSidebar className={styles.leftSideBar} selectedOption="overview" githubUrl={postData.githubUrl} author={postData.author}/>
+        {showLeftSidebar && <LeftSidebarToggle className={styles.leftSideBarToggle} selectedOption="overview" closeBtnFunction={handleCloseLeftSidebar} githubUrl={postData.githubUrl} author={postData.author}/>}
         <PostDetails title={postData.title} tags={postData.tags} author={postData.author} content={postData.content} showLeftSidebar={handleViewAllSectionsClick}/>
         <ContentBox content={postData.content} />
         <div className={styles.navButtons}>
