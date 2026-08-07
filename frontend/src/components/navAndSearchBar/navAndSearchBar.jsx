@@ -156,9 +156,12 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
                   </span>
                   Post
                 </Button></Link> }
+
+                <Link to={"/profile"}>
                 <span className={`material-symbols-outlined icon`}>
                   account_circle
                 </span>
+                </Link>
               </div>
             </>
           )}

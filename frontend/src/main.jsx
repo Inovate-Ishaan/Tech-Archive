@@ -10,6 +10,7 @@ import CreatePostPage from "./pages/createPost";
 import ComponentTest from "./pages/componentTest";
 import ResetPasswordPage from "./pages/resetPassword";
 import PostPage from "./pages/post";
+import ProfilePage from "./pages/userProfile";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -23,6 +24,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/feed" element={<FeedPage />} />
         <Route path="/post/:id" element={<PostPage />} />
         <Route path="/create-post" element={<CreatePostPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/component-test" element={<ComponentTest />} />
       </Routes>
     </BrowserRouter>

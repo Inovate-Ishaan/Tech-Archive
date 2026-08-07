@@ -45,16 +45,16 @@
     padding: 10px 30px;
 }
 .secondaryBlack{
-    padding: 4px 12px;
-    font-size: var(--text-body2);
+    padding: 6px 14px;
+    font-size: var(--text-body1);
     color: var(--button-black-text);
     background-color: var(--button-black-bg);
     border-radius: 4px;
 }
 
 .secondaryWhite{
-    padding: 4px 12px;
-    font-size: var(--text-body2);
+    padding: 6px 14px;
+    font-size: var(--text-body1);
     color: var(--button-white-text);
     background-color: var(--button-white-bg);
     border-radius: 4px;
@@ -92,7 +92,7 @@
 /*make it smaller for small devices*/
 @media (max-width: 480px) {
     .secondaryBlack, .secondaryWhite{
-        font-size: var(--text-body4);
-        padding: 2px 6px;
+        font-size: var(--text-body2);
+        padding: 4px 8px;
     }
 } 
