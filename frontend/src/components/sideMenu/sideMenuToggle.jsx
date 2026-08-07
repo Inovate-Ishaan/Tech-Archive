@@ -43,10 +43,12 @@ export default function SideMenuToggle({ className, selectedOption, closeBtnFunc
         </div>
         </Link>
 
+        <Link to={"/profile"}>
         <div className={`${styles.option} ${selectedOption === "you" ? "selected" : ""}`}>
         <span className={`material-symbols-outlined icon ${selectedOption === "you" ? "filled" : ""}`}>account_circle</span>
         <label className={styles.option_name}>You</label>
         </div>
+        </Link>
 
        </div>
        </div>

@@ -9,6 +9,7 @@
   --bg-white: #ffffff;
   --bg-gray: #d9d9d970;
   --bg-offWhite: #f9f9f9;
+  --bg-offWhite-semiTransparent: #f9f9f9eb;
   --header-navbar-bg: rgb(246, 246, 246);
 
   /*For background distinctions in elements on white bg */
@@ -33,7 +34,7 @@
     rgba(0, 0, 0, 0.3) 0 0 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
   --shadow-box-bottom:
     rgba(0, 0, 0, 0.2) 0 3px 5px;
-  --shadow-text: 0 0 5px #ebebeb9b;
+  --shadow-text: 1px 4px 5px #d4d4d4cf;
 
   /*fonts*/
   --font-primary: "Montserrat", Tahoma, Verdana, sans-serif;
@@ -80,6 +81,7 @@
     --bg-white: rgb(29, 29, 29);
     --bg-white: #121212;
     --bg-offWhite: #232323;
+    --bg-offWhite-semiTransparent: #232323e8;
     --bg-gray: #7c7c7c;
     --bg-gray: #181818;
     --accent-light: #ff330028;
@@ -236,7 +238,7 @@ fieldset {
 }
 
 .darkenPage {
-  filter: blur(2px) brightness(60%);
+  filter: blur(2px) brightness(97%);
 }
 
 .description {
@@ -244,6 +246,20 @@ fieldset {
   color: var(--text-secondary);
   margin-bottom: 20px;
   margin-top: 0px;
+}
+
+/* close button styles for generic popups */
+.close{
+    position: absolute;
+    width: fit-content;
+    top:10px;
+    right: 10px;
+    padding: 4px;
+}
+.close:hover{
+    background-color: var(--hover-icon);
+    border-radius: 50px;
+    cursor: pointer;
 }
 
 
