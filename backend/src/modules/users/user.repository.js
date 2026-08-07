@@ -27,6 +27,7 @@ async function findUserByUsername(username) {
     select: {
       id: true,
       username: true,
+      email: true,
       displayname: true,
       avatar: true,
       bio: true,
