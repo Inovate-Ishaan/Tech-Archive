@@ -142,7 +142,7 @@ export async function viewbookmarks(username,page){
 
 export async function bookmarker(id,bookmarked){
   const token = localStorage.getItem('auth_token');
-  const res = await fetch(`${API_BASE}/api//bookmark/${id}/bookmark`, {
+  const res = await fetch(`${API_BASE}/api/bookmark/${id}/bookmark`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
