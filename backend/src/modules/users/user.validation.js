@@ -4,7 +4,7 @@ function validateUpdateProfile(body) {
     return 'Display name cannot be empty';
   }
   if (bio !== undefined && typeof bio !== 'string') return 'Invalid bio';
-  if (year !== undefined && (typeof year !== 'number' || year < 1900 || year > 2100)) {
+  if (year !== undefined && (typeof year !== 'number' || year < 1950 || year > 2100)) {
     return 'Invalid year';
   }
   if (github !== undefined && typeof github !== 'string') return 'Invalid github URL';
@@ -13,4 +13,15 @@ function validateUpdateProfile(body) {
   return null;
 }
 
-module.exports = { validateUpdateProfile };
+function validateUpdateUsername(body) {
+  const { username } = body || {};
+  if (typeof username !== 'string' || username.length < 3 || username.length > 30) {
+    return 'Username must be 3-30 characters';
+  }
+  if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+    return 'Username can only contain letters, numbers, and underscores';
+  }
+  return null;
+}
+
+module.exports = { validateUpdateProfile, validateUpdateUsername };

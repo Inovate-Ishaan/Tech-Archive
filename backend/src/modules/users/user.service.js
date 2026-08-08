@@ -36,4 +36,22 @@ async function updateAvatar(userId, avatarPath) {
   return userRepository.updateAvatar(userId, avatarPath);
 }
 
-module.exports = { getProfile, getProfileByUsername, updateProfile, updateAvatar };
+async function updateUsername(userId, currentUsername, newUsername) {
+  const user = await userRepository.findUserByUsername(currentUsername);
+  if (!user) {
+    throw new ApiError(HTTP_STATUS.NOT_FOUND, 'User not found');
+  }
+  if (user.id !== userId) {
+    throw new ApiError(HTTP_STATUS.FORBIDDEN, 'You can only change your own username');
+  }
+  if (user.username === newUsername) {
+    throw new ApiError(HTTP_STATUS.BAD_REQUEST, 'Username is unchanged');
+  }
+  const existing = await userRepository.findUserByUsername(newUsername);
+  if (existing) {
+    throw new ApiError(HTTP_STATUS.CONFLICT, 'Username already taken');
+  }
+  return userRepository.updateUser(userId, { username: newUsername });
+}
+
+module.exports = { getProfile, getProfileByUsername, updateProfile, updateAvatar, updateUsername };
