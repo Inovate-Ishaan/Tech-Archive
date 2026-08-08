@@ -1,0 +1,69 @@
+.title{
+    font-size: var(--text-body1);
+    font-weight: 700;
+    margin-top: 20px;
+}
+
+.filterContainer{
+    max-height: 450px;
+    overflow-y: scroll;
+}
+
+.basicFilters, .tagFilters{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 30px;
+    display: flex;
+    align-items: flex-start;
+    column-gap: 40px;
+    flex-wrap: wrap;
+    row-gap: 20px;
+}
+
+.filter{
+    width: fit-content;
+    background-color: var(--bg-gray1);
+    border: 1px solid var(--border-containers);
+    border-radius: 8px;
+    padding: 5px 15px;
+    font-family: "Inter";
+    font-size: var(--text-body2) ;
+    font-weight: 500;
+    transition: transform 0.1s ease;
+    position: relative;
+}
+
+.filterApplied {
+    padding-right: 30px;
+    background-color: var(--bg-gray2);
+    border-color: var(--border) ;
+    box-shadow: var(--shadow-box);
+}
+
+
+.filter:hover{
+    background-color: var(--hoverOnGrayBg);
+    cursor: pointer;
+    transform: scale(1.008);
+}
+
+.filter span {
+    position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.filter span:hover{
+    background-color: var(--hover-icon);
+    border-radius: 50%;
+}
+
+.hr{
+    width: 40%;
+    margin: 10px auto;
+    background-color: var(--border-containers);
+    height: 1px;
+    box-shadow: var(--shadow-box);
+}

@@ -7,7 +7,8 @@
   --hover-on-black-text: #575757;
   --link : #2C27C3;
   --bg-white: #ffffff;
-  --bg-gray: #d9d9d970;
+  --bg-gray1: #d9d9d970;
+  --bg-gray2: #d9d9d9;
   --bg-offWhite: #f9f9f9;
   --bg-offWhite-semiTransparent: #f9f9f9eb;
   --header-navbar-bg: rgb(246, 246, 246);
@@ -30,6 +31,7 @@
   --button-white-text: #000;
 
   --hover-icon: #ededed;
+  --hoverOnGrayBg: #d9d9d982;
   --shadow-box:
     rgba(0, 0, 0, 0.3) 0 0 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
   --shadow-box-bottom:
@@ -82,8 +84,8 @@
     --bg-white: #121212;
     --bg-offWhite: #232323;
     --bg-offWhite-semiTransparent: #232323e8;
-    --bg-gray: #7c7c7c;
-    --bg-gray: #181818;
+    --bg-gray1: #7c7c7c;
+    --bg-gray2: #181818;
     --accent-light: #ff330028;
 
     --hover-icon: #323232;
@@ -148,6 +150,7 @@ p {
 input {
   outline: none;
   border: var(--input-border);
+  border-radius: 4px;
 }
 
 input,

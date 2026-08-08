@@ -2,14 +2,13 @@ import { useState } from "react";
 import styles from "./setPFP.module.css";
 import Button from "../buttons/button";
 import avatar from "../../assets/avatars/avataaars(14).svg";
+import FullScreenDialog from "../dialogBoxes/fullScreenDialog/fullScreenDialog";
 
 export default function EditPFP({ closeBtnFunction }){
     const [newUsername, setNewUsername] = useState("");
     return(
         <>
-        <div className={styles.container}>
-            <div className={styles.dialogBox}>
-                <span className="material-symbols-outlined close icon" onClick={closeBtnFunction}>close</span>
+        <FullScreenDialog closeBtnFunction={closeBtnFunction} >
             
             
             <div className={styles.pfpGallary}>
@@ -30,8 +29,7 @@ export default function EditPFP({ closeBtnFunction }){
            </Button>
            
 
-           </div>
-        </div>
+           </FullScreenDialog>
         </>
     );
 }
