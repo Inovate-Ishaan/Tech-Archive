@@ -155,3 +155,35 @@ export async function bookmarker(id,bookmarked){
 
   return data;
 }
+
+// user profile APIs
+
+export async function getUserProfile(username) {
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/users/${username}`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+
+  return data;
+}
+
+export async function updateUsername(username, newUsername) {
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/users/${username}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
+    body: JSON.stringify({ username: newUsername })
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+
+  return data;
+}

@@ -86,5 +86,5 @@ model Bookmark {
   postId      String
   user        User     @relation(fields:[username], references:[username])
   post        Post     @relation(fields:[postId], references:[id])
-  @@unique([userId, postId])
+  @@unique([username, postId])
 }

@@ -29,4 +29,13 @@ async function getUserByUsername(req, res, next) {
   }
 }
 
-module.exports = { getMe, updateMe, getUserByUsername };
+async function updateUsername(req, res, next) {
+  try {
+    const user = await userService.updateUsername(req.user.id, req.params.username, req.body.username);
+    res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, user));
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getMe, updateMe, getUserByUsername, updateUsername };
