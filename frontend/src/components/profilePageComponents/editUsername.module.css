@@ -1,38 +1,7 @@
-.container{
-    width: 100%;
-    min-height: calc(100vh - 60px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(2px);
-    position: absolute;/*compensate for navbar */
-    top: 60px;
-    left: 0;
-    right: 0;
-}
-
-.dialogBox{
-    background-color: var(--bg-offWhite);
-    max-width: 600px;
-    min-width: 400px;
-    width: 60vw;
-    height: 40vh;
-    min-height: 300px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    box-shadow: var(--shadow-box);
-    position: relative;
-    box-sizing: border-box;
-}
-
-
 .title{
     font-size: var(--text-h2);
     font-weight: 700;
-    margin: 40px auto 15px auto;
+    margin: 20px auto 15px auto;
     text-shadow: var(--shadow-text);
 }
 
@@ -46,7 +15,6 @@
 
 .itemsContainer{
     width: 90%; 
-    box-shadow: var(--shadow-box-bottom);
     padding: 20px 30px;
     border-radius: 8px;
     background-color: var(--bg-offWhite-semiTransparent);

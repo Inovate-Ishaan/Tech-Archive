@@ -2,15 +2,13 @@ import { useState } from "react";
 import styles from "./editUsername.module.css";
 import Button from "../buttons/button";
 import graphic from "../../assets/graphics/changeUsername.svg";
+import FullScreenDialog from "../dialogBoxes/fullScreenDialog/fullScreenDialog";
 
 export default function EditUsername({ closeBtnFunction }){
     const [newUsername, setNewUsername] = useState("");
     return(
         <>
-        <div className={styles.container}>
-            <div className={styles.dialogBox}>
-                <span className="material-symbols-outlined close icon" onClick={closeBtnFunction}>close</span>
-
+        <FullScreenDialog closeBtnFunction={closeBtnFunction} >
                 <div className={styles.title}>Change Username</div>
             <div className={styles.itemsContainer}>
             <div className={styles.items}>
@@ -22,8 +20,8 @@ export default function EditUsername({ closeBtnFunction }){
            </div>
            </div>
            <img src={graphic} className={styles.graphic}></img>
-           </div>
-        </div>
+           
+           </FullScreenDialog>
         </>
     );
 }

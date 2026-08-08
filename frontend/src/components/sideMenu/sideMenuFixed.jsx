@@ -13,10 +13,10 @@ export default function SideMenuFixed({ className, selectedOption }) {
         </div>
         </Link>
 
-        <div className={styles.option}>
+        {/* <div className={styles.option}>
         <span className={`material-symbols-outlined icon ${selectedOption === "explore" ? "filled" : ""}`}>category</span>
         <label className={styles.option_name}>Explore</label>
-        </div>
+        </div> */}
 
         <Link to={"/saved"}>
         <div className={styles.option}>

@@ -31,6 +31,7 @@ import styles from "./navAndSearchBar.module.css";
 import SearchBarSmall from "./searchBarSmall.jsx";
 import SideMenuToggle from "../sideMenu/sideMenuToggle.jsx";
 import { Link } from "react-router-dom";
+import Sort from "./sort/sort.jsx";
 
 export default function NavWithSearch({ className, sideMenuVisible, setSideMenuVisible, selectedOption, withPostButton="true", sticky="true"}) {
 
@@ -90,9 +91,17 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
     setSideMenuVisible(false)
   }
 
+  //sort dialog box state
+  const [sortDialogOpen, setSortDialogOpen] = useState(false);
+
+  const closeSortDialog = () => {
+    sortDialogOpen ? setSortDialogOpen(false) : setSortDialogOpen(true);
+  };
+
   return (
     <>
       <div className={className}>
+        {sortDialogOpen && <Sort closeSortDialog={closeSortDialog}/>}
         <div className={`${styles.container} ${sticky ? styles.sticky : ""}`}>
           {/*searchbar for mobile devices ( < 600px ), visible when search icon is clicked*/}
           {isSearchBarVisible && onSmallDevice && (
@@ -146,7 +155,7 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
                   </span>
                   {isSearching && <p>Searching for {searchQuery}</p>}
                 </div>
-                <span className={`material-symbols-outlined icon`}>sort</span>
+                <span className={`material-symbols-outlined icon`} onClick={(e) => {setSortDialogOpen(true)}}>sort</span>
               </div>
 
               <div className={styles.right}>

@@ -4,7 +4,6 @@ import styles from "./userProfile.module.css";
 import githubLogo from "../assets/logos/github.svg";
 import PostCard from "../components/postCard/postCard";
 import { useState, useEffect } from "react";
-import { createPortal } from 'react-dom';
 import noPosts from "../assets/graphics/noPosts1.svg";
 import emailIcon from "../assets/graphics/email.svg";
 import EditUsername from "../components/profilePageComponents/editUsername";
@@ -52,8 +51,8 @@ export default function ProfilePage() {
           sideMenuToggleVisible ? "darkenPage" : ""
         }`}
       >
-        {editUsername && createPortal(<EditUsername closeBtnFunction={closeUsernameEditDialog}/>, document.body)}
-        {editPFP && createPortal(<EditPFP closeBtnFunction={closePFPEditDialog}/>, document.body)}
+        {editUsername && <EditUsername closeBtnFunction={closeUsernameEditDialog}/>}
+        {editPFP && <EditPFP closeBtnFunction={closePFPEditDialog}/>}
 
         <div className={styles.userDetailsContainer}>
           <div className={styles.profilePic}>
