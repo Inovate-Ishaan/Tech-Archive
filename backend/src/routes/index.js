@@ -5,6 +5,7 @@ const userRoutes = require('../modules/users/user.routes');
 const uploadRoutes = require('../modules/uploads/upload.routes');
 const feedRoutes = require('../modules/feed/feed.routes')
 const boomarkRoutes = require('../modules/bookmarks/bookmark.routes')
+const searchRoutes = require("../modules/search/search.routes")
 
 
 const router = Router();
@@ -15,6 +16,8 @@ router.use('/users', userRoutes);
 router.use('/uploads', uploadRoutes);
 router.use("/feed", feedRoutes);
 router.use("/bookmark",boomarkRoutes);
+router.use("/searches",searchRoutes)
+
 module.exports = router;
 
 

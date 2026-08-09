@@ -141,3 +141,22 @@ export async function bookmarker(id,bookmarked){
 
   return data;
 }
+
+export async function SearchingPosts(q,page=1,limit=6) {
+  const params = new URLSearchParams({
+      q: query,
+      page: page.toString(),
+      limit: limit.toString()
+  });
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/searches/search?${params.toString()}`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    }
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+
+  return data;
+}
