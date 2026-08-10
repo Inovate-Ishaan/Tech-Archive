@@ -32,9 +32,12 @@ import SearchBarSmall from "./searchBarSmall.jsx";
 import SideMenuToggle from "../sideMenu/sideMenuToggle.jsx";
 import { Link } from "react-router-dom";
 import Sort from "./sort/sort.jsx";
+import { getMyProfile, getUserProfile } from "../../utils/api.js";
+import { useNavigate } from "react-router-dom";
 
-export default function NavWithSearch({ className, sideMenuVisible, setSideMenuVisible, selectedOption, withPostButton="true", sticky="true"}) {
+export default function NavWithSearch({ className, sideMenuVisible, setSideMenuVisible, sortDialogOpen, setSortDialogOpen, selectedOption, withPostButton="true", sticky="true"}) {
 
+  const navigate = useNavigate();
   //render Post button or not
   const showPostButton = withPostButton;
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,8 +84,7 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
 
   //toggling of the side menu (hamburger)
   //state has been uplifted to feed.jsx or the parent compnent to enable darkening of the screen when menu is open
-  const isSideMenuVisible = sideMenuVisible;
-  const setIsSideMenuVisible = setSideMenuVisible;
+
 
   const showSideMenu = () => {
     setSideMenuVisible(true);
@@ -90,14 +92,19 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
   const hideSideMenu = () => {
     setSideMenuVisible(false)
   }
-
-  //sort dialog box state
-  const [sortDialogOpen, setSortDialogOpen] = useState(false);
-
+  
   const closeSortDialog = () => {
     sortDialogOpen ? setSortDialogOpen(false) : setSortDialogOpen(true);
   };
 
+
+  //profile icon click
+  async function handleProfileClick() {
+    const response = await getMyProfile();
+    const { username } = response.data;
+    navigate(`/profile/me`);
+  }
+  
   return (
     <>
       <div className={className}>
@@ -166,11 +173,11 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
                   Post
                 </Button></Link> }
 
-                <Link to={"/profile"}>
-                <span className={`material-symbols-outlined icon`}>
+                
+                <span className={`material-symbols-outlined icon`} onClick={handleProfileClick}>
                   account_circle
                 </span>
-                </Link>
+                
               </div>
             </>
           )}

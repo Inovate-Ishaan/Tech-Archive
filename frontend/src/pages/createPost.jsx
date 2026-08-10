@@ -188,13 +188,15 @@ export default function CreatePostPage() {
   //to darken the remaining page when the side menu toggle is open
   const [sideMenuToggleVisible, setSideMenuToggleVisible] = useState(false);
   //prevent scroll when the side menu is open
+  //sort dialog box state
+  const [sortDialogOpen, setSortDialogOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = sideMenuToggleVisible ? "hidden" : "auto";
+    document.body.style.overflow = (sideMenuToggleVisible || sortDialogOpen) ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [sideMenuToggleVisible]);
+  }, [sideMenuToggleVisible, sortDialogOpen]);
 
   //ALERT
   const [alert, setAlert] = useState(null);
@@ -227,6 +229,8 @@ export default function CreatePostPage() {
         selectedOption={"post"}
         withPostButton={false}
         sticky={false}
+        sortDialogOpen={sortDialogOpen}
+        setSortDialogOpen={setSortDialogOpen}
       />
 
       {/* ALERT */}

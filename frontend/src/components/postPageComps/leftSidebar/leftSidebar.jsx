@@ -1,6 +1,7 @@
 import styles from "./leftSidebar.module.css";
 import { Link } from "react-router-dom";
 import githubLogo from "../../../assets/logos/github.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function LeftSidebar({
   className,
@@ -9,6 +10,7 @@ export default function LeftSidebar({
   isCollab = false,
   author = "",
 }) {
+  const navigate = useNavigate();
   return (
     <>
       <div className={className}>
@@ -115,7 +117,7 @@ export default function LeftSidebar({
                 <p className={styles.desc}>This is a solo project</p>
                 <p className={styles.collabTitle}>Author</p>
 
-                <div className={styles.author}>
+                <div className={styles.author} onClick={() => {navigate(`/profile/${author.username}`);}}>
                   {author.avatar && (
                     <img
                       className={styles.profilePic}

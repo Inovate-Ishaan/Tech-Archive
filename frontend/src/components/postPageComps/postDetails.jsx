@@ -15,7 +15,7 @@ export default function PostDetails({
     bookmarked ? setBookmarked(false) : setBookmarked(true);
   }
 
-  const naviagate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -24,7 +24,7 @@ export default function PostDetails({
           <div
             className={styles.backToFeed}
             onClick={() => {
-              naviagate("/feed");
+              navigate("/feed");
             }}
           >
             <span className="material-symbols-outlined">arrow_back</span>
@@ -60,7 +60,7 @@ export default function PostDetails({
         <div className={styles.authorsContainer}>
           <span className={styles.authorLabel}>Author -</span>
           <div className={styles.authors}>
-            <div className={styles.author}>
+            <div className={styles.author} onClick={() => {navigate(`/profile/${author.username}`);}}>
               {/* Show profile picture if exits */}
               {author.avatar && (
                 <img

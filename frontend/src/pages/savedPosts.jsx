@@ -23,7 +23,11 @@ export default function SavedPostsPage() {
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState(null);
   const [alert, setAlert] = useState(null);
+  
+  //side menu visibility state
   const [sideMenuToggleVisible, setSideMenuToggleVisible] = useState(false);
+  //sort dialog box state
+  const [sortDialogOpen, setSortDialogOpen] = useState(false);
 
   /////////////////////////////
   // Alerts
@@ -164,14 +168,14 @@ export default function SavedPostsPage() {
   /////////////////////////////
 
   useEffect(() => {
-    document.body.style.overflow = sideMenuToggleVisible
+    document.body.style.overflow = (sideMenuToggleVisible || sortDialogOpen)
       ? "hidden"
       : "auto";
 
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [sideMenuToggleVisible]);
+  }, [sideMenuToggleVisible, sortDialogOpen]);
 
   /////////////////////////////
   // Render
@@ -201,6 +205,8 @@ export default function SavedPostsPage() {
         sideMenuVisible={sideMenuToggleVisible}
         setSideMenuVisible={setSideMenuToggleVisible}
         selectedOption="saved"
+        sortDialogOpen={sortDialogOpen}
+        setSortDialogOpen={setSortDialogOpen}
       />
 
       <div

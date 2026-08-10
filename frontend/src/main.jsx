@@ -26,7 +26,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/saved" element={<SavedPostsPage />} />
         <Route path="/post/:id" element={<PostPage />} />
         <Route path="/create-post" element={<CreatePostPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/:username" element={<ProfilePage />} />
         <Route path="/component-test" element={<ComponentTest />} />
       </Routes>
     </BrowserRouter>
