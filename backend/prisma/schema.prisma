@@ -29,6 +29,7 @@ model User {
   instituteId   String   @unique
   otps          Otp[]
   createdAt     DateTime @default(now())
+  edit_access   Boolean @default(false)
 }
 
 // Stores OTP for verification

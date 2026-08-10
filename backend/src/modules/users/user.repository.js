@@ -58,6 +58,7 @@ async function updateUser(id, data) {
       github: true,
       linkedin: true,
       website: true,
+      edit_access: true,
     },
   });
 }
