@@ -7,6 +7,7 @@
 .filterContainer{
     max-height: 450px;
     overflow-y: scroll;
+    margin-bottom: 80px;
 }
 
 .basicFilters, .tagFilters{
@@ -15,7 +16,7 @@
     padding: 20px 30px;
     display: flex;
     align-items: flex-start;
-    column-gap: 40px;
+    column-gap: 35px;
     flex-wrap: wrap;
     row-gap: 20px;
 }
@@ -66,4 +67,10 @@
     background-color: var(--border-containers);
     height: 1px;
     box-shadow: var(--shadow-box);
+}
+
+.applyBtn{
+    position: absolute;
+    bottom: 25px;
+    right: 35px;
 }

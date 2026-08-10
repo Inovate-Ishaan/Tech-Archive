@@ -23,7 +23,12 @@ export default function FeedPage() {
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState(null);
   const [alert, setAlert] = useState(null);
+  
+  //these have been uplifted to lock the scroll when they are open
+  //side menu visibility state
   const [sideMenuToggleVisible, setSideMenuToggleVisible] = useState(false);
+  //sort dialog box state
+  const [sortDialogOpen, setSortDialogOpen] = useState(false);
 
   /////////////////////////////
   // Alerts
@@ -164,14 +169,14 @@ export default function FeedPage() {
   /////////////////////////////
 
   useEffect(() => {
-    document.body.style.overflow = sideMenuToggleVisible
+    document.body.style.overflow = (sideMenuToggleVisible || sortDialogOpen)
       ? "hidden"
       : "auto";
 
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [sideMenuToggleVisible]);
+  }, [sideMenuToggleVisible, sortDialogOpen]);
 
   /////////////////////////////
   // Render
@@ -201,6 +206,8 @@ export default function FeedPage() {
         sideMenuVisible={sideMenuToggleVisible}
         setSideMenuVisible={setSideMenuToggleVisible}
         selectedOption="home"
+        sortDialogOpen={sortDialogOpen}
+        setSortDialogOpen={setSortDialogOpen}
       />
 
       <div

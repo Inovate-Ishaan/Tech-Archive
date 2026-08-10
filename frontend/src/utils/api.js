@@ -158,6 +158,20 @@ export async function bookmarker(id,bookmarked){
 
 // user profile APIs
 
+export async function getMyProfile() {
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/users/me`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+
+  return data;
+}
+
 export async function getUserProfile(username) {
   const token = localStorage.getItem('auth_token');
   const res = await fetch(`${API_BASE}/api/users/${username}`, {

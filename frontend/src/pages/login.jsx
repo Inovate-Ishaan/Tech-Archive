@@ -5,7 +5,7 @@ import Button from "../components/buttons/button";
 import welcomeGraphic from "../assets/graphics/welcome_aboard.svg";
 import Alert from "../components/alertPopUP/alertPopUp";
 import PasswordField from "../components/passwordField/passwordField";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import validator from "validator";
 import BtnLoader from "../components/loaders/btnLoader";
 import { signin } from "../utils/api";
@@ -21,10 +21,13 @@ export default function LoginPage() {
   const formNotEmpty = email.trim() && password.trim();
   const navigate = useNavigate();
 
+  const alertRef = useRef(null);
   const [alert, setAlert] = useState(null);
+
   function showAlert(type, msg) {
     setAlert({ type, msg });
-    setTimeout(() => setAlert(null), 3000);
+    clearTimeout(alertRef.current);
+    alertRef.current = setTimeout(() => setAlert(null), 3000);
   }
   const closeAlert = () => setAlert(null);
 
