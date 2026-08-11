@@ -3,9 +3,10 @@ const authRoutes = require('../modules/auth/auth.routes');
 const postRoutes = require('../modules/posts/post.routes');
 const userRoutes = require('../modules/users/user.routes');
 const uploadRoutes = require('../modules/uploads/upload.routes');
-const feedRoutes = require('../modules/feed/feed.routes')
-const boomarkRoutes = require('../modules/bookmarks/bookmark.routes')
-const searchRoutes = require("../modules/search/search.routes")
+const feedRoutes = require('../modules/feed/feed.routes');
+const boomarkRoutes = require('../modules/bookmarks/bookmark.routes');
+const searchRoutes = require("../modules/search/search.routes");
+const tagRoutes = require("../modules/tags/tag.routes")
 
 
 const router = Router();
@@ -16,7 +17,8 @@ router.use('/users', userRoutes);
 router.use('/uploads', uploadRoutes);
 router.use("/feed", feedRoutes);
 router.use("/bookmark",boomarkRoutes);
-router.use("/searches",searchRoutes)
+router.use("/searches",searchRoutes);
+router.use("/tags", tagRoutes);
 
 module.exports = router;
 

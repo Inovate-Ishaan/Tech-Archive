@@ -160,3 +160,37 @@ export async function SearchingPosts(q,page=1,limit=6) {
 
   return data;
 }
+
+export async function getTags() {
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/tags}`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    }
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+
+  return data;
+}
+
+export async function SearchingPosts(selectedTags,page=1,limit=6) {
+  const params = new URLSearchParams();
+    params.append("page", page.toString());
+    params.append("limit", limit.toString());
+    if (selectedTags.length > 0) {
+        params.append("tags", selectedTags.join(","));
+    }
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/tags/tagz?${params.toString()}`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    }
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+
+  return data;
+}
