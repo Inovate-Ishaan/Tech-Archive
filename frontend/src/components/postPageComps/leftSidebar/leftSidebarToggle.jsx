@@ -3,7 +3,7 @@ import styles from "./leftSidebar.module.css";
 import { Link } from "react-router-dom";
 import githubLogo from "../../../assets/logos/github.svg";
 
-export default function LeftSidebar({className, selectedOption="overview", closeBtnFunction, githubUrl="", isCollab=false, author=""}) {
+export default function LeftSidebarToggle({className, selectedOption="overview", closeBtnFunction, githubUrl="", isCollab=false, author=""}) {
     return(
         <>
         <div className={className}>

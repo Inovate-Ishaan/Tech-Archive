@@ -226,6 +226,22 @@ fieldset {
     'opsz' 24;
   cursor: pointer;
   font-size: 36px;
+  transition: ease-in 0.1s ;
+}
+
+.smallIcon {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+  cursor: pointer;
+  font-size: 26px;
+  transition: ease-in 0.1s;
+}
+
+.icon:hover, .smallIcon:hover{
+  transform: scale(1.1);
 }
 
 .selected {

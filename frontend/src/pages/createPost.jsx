@@ -4,16 +4,20 @@ import Footer from "../components/footer/footer";
 import NavWithSearch from "../components/navAndSearchBar/navAndSearchBar";
 import styles from "./createPost.module.css";
 import postGraphic from "../assets/graphics/post_online.svg";
+import addSectionGraphic from "../assets/graphics/addSection.svg";
 import Button from "../components/buttons/button";
 import Tag from "../components/tag/tag";
 import Alert from "../components/alertPopUP/alertPopUp";
 import validator from "validator";
 import MdEditor from "../components/mdx_md_editor/mdx_md_editor";
+import LeftSidebarToggle from "../components/postPageComps/leftSidebar/leftSidebarToggle.jsx";
+import SectionsSidebar from "../components/createPostComponents/sectionsSidebar/sectionsSidebar.jsx";
+import FullScreenDialog from "../components/dialogBoxes/fullScreenDialog/fullScreenDialog.jsx";
 
 export default function CreatePostPage() {
   //FORM PART VISIBILITY STATES
-  const [part1Visible, setPart1Visible] = useState(true);
-  const [part2Visible, setPart2Visible] = useState(false);
+  const [part1Visible, setPart1Visible] = useState(false);
+  const [part2Visible, setPart2Visible] = useState(true);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -118,27 +122,27 @@ export default function CreatePostPage() {
     postData.append("githubUrl", formData.githubUrl);
     postData.append("tags", JSON.stringify(formData.tags));
     postData.append("thumbnail", selectedFile);
-  
 
     try {
       const resp = await uploadPost(postData);
-      if (!resp.ok){
-        showAlert("error", resp.statusText )
+      if (!resp.ok) {
+        showAlert("error", resp.statusText);
         return;
-      };
+      }
       showAlert("success", "Uploaded succesfully");
-    } catch(err) {
-      const msg = (err && err.error) || (err && err.msg) || "Post upload failed";
-      showAlert("error", msg)
+    } catch (err) {
+      const msg =
+        (err && err.error) || (err && err.msg) || "Post upload failed";
+      showAlert("error", msg);
     }
   }
 
   //Markdown editor ERROR handler
   function editorErrorHandler({ msg, source }) {
-    showAlert("error", "Error Parsing the README contents")
+    showAlert("error", "Error Parsing the README contents");
     console.log(`Msg: ${msg}`);
     console.log(`Source: ${source}`);
-  };
+  }
   ///////////////////////////////////////////////////////
   //NEXT BUTTON MANAGEMENT
   const formNotEmpty =
@@ -192,7 +196,8 @@ export default function CreatePostPage() {
   const [sortDialogOpen, setSortDialogOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = (sideMenuToggleVisible || sortDialogOpen) ? "hidden" : "auto";
+    document.body.style.overflow =
+      sideMenuToggleVisible || sortDialogOpen ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -220,18 +225,154 @@ export default function CreatePostPage() {
     setAlert(null);
   };
 
+  //////////////////////////////////////////
+  //SECTION MANAGEMENT//////////////////////
+  //////////////////////////////////////////
+
+  const [allSections, setAllSections] = useState([["Overview", "Overview"]]);
+  const [currentSection, setCurrentSection] = useState(1);
+  const [currentSectionName, setCurrentSectionName] = useState("");
+  const [currenSectionContent, setCurrentSectionContent] = useState("dddddddddd");
+
+  //handling sections sidebar logic
+  const [showLeftSidebar, setShowLeftSidebar] = useState(false);
+  const handleViewAllSectionsClick = () => {
+    setShowLeftSidebar(true);
+  };
+  const handleCloseLeftSidebar = () => {
+    setShowLeftSidebar(false);
+  };
+
+  ////////////////////////////////////////
+  //Section renaming logic (when double clicked on the displayed section name)
+  const [isRenaming, setIsRenaming] = useState(false);
+
+  useEffect(() => {
+    setCurrentSectionName(allSections[currentSection - 1][0]);
+    setCurrentSectionContent(allSections[currentSection - 1][1]);
+  }, [currentSection, isRenaming]);
+  const [newName, setNewName] = useState(""); //tracks the renaming but used just to fill the input bar with old section name, nothing else
+  useEffect(() => {
+    console.log(newName);
+  }, [newName]);
+
+  const renameInputRef = useRef(null);
+
+  useEffect(() => {
+    if (!isRenaming) return;
+
+    console.log("Inside the effect");
+    setNewName(currentSectionName); //set the new name to the old section name so the input value can be assigned to it
+    // focus the input bar
+    renameInputRef.current.focus();
+
+    const handleClick = (e) => {
+      if (!renameInputRef.current.contains(e.target)) {
+        //basically it is closing the edit name mode and saves the renamed section name
+        const updatedName = renameInputRef.current?.value?.trim() || "";
+
+        if (updatedName.length === 0) return;
+        console.log("NewName", updatedName);
+
+
+        const updatedSections = allSections;
+
+        updatedSections[currentSection - 1][0] = updatedName;
+        setAllSections(updatedSections);
+
+        setIsRenaming(false);
+        console.log("Inside the effects handleclick");
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [isRenaming, currentSection]);
+
+  function handleSectionRename(e) {
+    e.stopPropagation();
+    setIsRenaming(true);
+    console.log("Input should be visible");
+  }
+  ///////////////////////////////////////
+
+  /////////////////////////////////////
+  //Add section logic
+  const addSectionInputRef = useRef(null);
+
+  const [addSectionVisible, setAddSectionVisible] = useState(false);
+
+  function handleAddSectionsClick() {
+    setAddSectionVisible(true);
+  }
+
+  function handleAddSectionClose() {
+    setAddSectionVisible(false);
+  }
+
+  const [newSectionName, setNewSectionName] = useState("");
+
+  // handling clicking of Add button in the Add Section Dialog
+  function handleNewSectionAddClick() {
+    if (newSectionName in allSections) {
+      showAlert("info", "Section already exists");
+      setNewSectionName("");
+      addSectionInputRef.current.focus();
+      return;
+    }
+    if (newSectionName.trim().length <= 5) {
+      if (newSectionName.trim().length === 0) {
+        showAlert("info", "Provide a Section name");
+      } else {
+        showAlert("info", "Name too short");
+      }
+      setNewSectionName("");
+      addSectionInputRef.current.focus();
+      return;
+    }
+    setAllSections((prev) => ([...prev, [newSectionName, ""]]));
+    setNewSectionName("");
+    setAddSectionVisible(false);
+    showAlert("success", "Section added");
+  }
+
+  useEffect(() => {
+    console.log(allSections);
+  }, [allSections]);
+
+
+  //////////////////////////////////////////
+  //navigating between sections
+  function changeSection(sectionNum){
+    setCurrentSection(sectionNum);
+  };
+
   return (
     <>
       {/* Navigation Bar non-sticky*/}
       <NavWithSearch
+        className={styles.navigationBar}
+        sticky="true"
         sideMenuVisible={sideMenuToggleVisible}
         setSideMenuVisible={setSideMenuToggleVisible}
         selectedOption={"post"}
         withPostButton={false}
-        sticky={false}
         sortDialogOpen={sortDialogOpen}
         setSortDialogOpen={setSortDialogOpen}
       />
+
+      {showLeftSidebar && (
+        <SectionsSidebar
+          className={styles.sectionsSideBar}
+          selectedOption={currentSectionName}
+          sections={allSections}
+          changeSection={changeSection}
+          closeBtnFunction={handleCloseLeftSidebar}
+        />
+      )}
 
       {/* ALERT */}
       {alert && (
@@ -253,9 +394,11 @@ export default function CreatePostPage() {
           {/* THIS IS PART 1 OF THE POST FORM */}
           {part1Visible && (
             <div className={styles.formPart}>
-              <label className={`${"description"} ${styles.description}`}>
-                Project Details
-              </label>
+              <div className={styles.headerContainer}>
+                <label className={`${"description"} ${styles.subHeading}`}>
+                  Project Details
+                </label>
+              </div>
 
               <div className={styles.formContainer}>
                 {/* Form container */}
@@ -312,7 +455,7 @@ export default function CreatePostPage() {
                     </div>
                   )}
 
-              {/* Github Repo URL */}
+                  {/* Github Repo URL */}
                   <div className={styles.inputGroup}>
                     <label>GitHub repo URL</label>
                     <input
@@ -324,9 +467,8 @@ export default function CreatePostPage() {
                           ...formData,
                           githubUrl: e.target.value,
                         });
-                        setMarkdown("") //discard previous markdown on URL change
-                      }
-                      }
+                        setMarkdown(""); //discard previous markdown on URL change
+                      }}
                     ></input>
                   </div>
 
@@ -390,54 +532,141 @@ export default function CreatePostPage() {
           {/* THIS IS THE PART 2 OF THE POST FORM */}
 
           {part2Visible && (
-            <div className={styles.formPart}>
-              <label className={`${"description"} ${styles.description}`}>
-                Documentation Editor
-              </label>
+            <>
+              {addSectionVisible && (
+                <FullScreenDialog closeBtnFunction={handleAddSectionClose}>
+                  <div className={styles.title}>New Section</div>
+                  <div className={styles.itemsContainer}>
+                    <div className={styles.items}>
+                      <input
+                        ref={addSectionInputRef}
+                        value={newSectionName}
+                        type="text"
+                        placeholder="New Section"
+                        onChange={(e) => setNewSectionName(e.target.value)}
+                      ></input>
+                      <Button
+                        variant="secondaryBlack"
+                        onClick={handleNewSectionAddClick}
+                      >
+                        Add
+                      </Button>
+                    </div>
+                  </div>
+                  <img src={addSectionGraphic} className={styles.graphic}></img>
+                </FullScreenDialog>
+              )}
+              <div className={styles.formPart}>
+                <div className={styles.headerContainer}>
+                  <label className={`${"description"} ${styles.subHeading}`}>
+                    Documentation Editor
+                  </label>
 
-              <div className={styles.editorContainer}>
-                <MdEditor initialMD={markdown} editorRef={editorRef} handleEditorError={editorErrorHandler} />
+                  <div
+                    className={`${"description"} ${styles.viewAllSections}`}
+                    onClick={handleViewAllSectionsClick}
+                  >
+                    <span className="material-symbols-outlined">toc</span>
+                    <span>View all Sections</span>
+                  </div>
+
+                  <div className={styles.sectionNameAndAddSectionContainer}>
+                    <div
+                      className={`${"description"} ${styles.sectionsInfoContainer}`}
+                    >
+                      Section {currentSection}:
+                      {!isRenaming && (
+                        <>
+                          <div
+                            className={styles.sectionName}
+                            onDoubleClick={handleSectionRename}
+                            title="Double click to rename"
+                          >
+                            {currentSectionName}
+                          </div>
+                        </>
+                      )}
+                      {isRenaming && (
+                        <input
+                          type="text"
+                          className={styles.sectionRename}
+                          ref={renameInputRef}
+                          value={newName} // as soon as the div is clicked, newName takes the value of the current section name via the function handleSectionRename
+                          onChange={(e) => {
+                            setNewName(e.target.value);
+                          }} //this state does nothing, just for the value={} it is there
+                          placeholder="rename"
+                        ></input>
+                      )}
+                    </div>
+
+                    <Button
+                      variant="secondaryBlack"
+                      onClick={handleAddSectionsClick}
+                    >
+                      Add Section
+                    </Button>
+                  </div>
+                </div>
+
+                <div className={styles.editorContainer}>
+                  <MdEditor
+                    initialMD={currenSectionContent} //markdown to get the content of readme
+                    editorRef={editorRef}
+                    handleEditorError={editorErrorHandler}
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Post Button */}
+          {part2Visible && (
+            <div className={styles.postAndBackButtonContainer}>
+              <div className={styles.button}>
+                <Button
+                  variant="primaryWhiteLessPadding"
+                  status="active"
+                  onClick={() => {
+                    setPart1Visible(true);
+                    setPart2Visible(false);
+                  }}
+                >
+                  <span
+                    className={`${"material-symbols-outlined"} ${styles.backButton}`}
+                  >
+                    arrow_back
+                  </span>
+                </Button>
+              </div>
+
+              <div className={styles.button}>
+                <Button
+                  variant="primaryBlackLessPadding"
+                  status="active"
+                  onClick={handlePost}
+                >
+                  {submitting ? <BtnLoader /> : "Post"}
+                </Button>
               </div>
             </div>
           )}
 
-          {/* Post Button */}
-         {part2Visible && 
-         <div className={styles.postAndBackButtonContainer}>
-
-            <div className={styles.button}>
-            <Button
-              variant="primaryWhiteLessPadding"
-              status="active"
-              onClick={() => {setPart1Visible(true); setPart2Visible(false)}}>
-              <span className={`${"material-symbols-outlined"} ${styles.backButton}`}>arrow_back</span>
-              </Button>
-          </div> 
-
-         <div className={styles.button}>
-            <Button
-              variant="primaryBlackLessPadding"
-              status="active"
-              onClick={handlePost}
-            >
-              {submitting ? <BtnLoader /> : "Post"}
-            </Button>
-            </div>
-          </div>}
-
           {/* NEXT BUTTON */}
-         {part1Visible && <div className={styles.button}>
-            <Button
-              variant="primaryBlack"
-              status={formNotEmpty && !submitting ? "active" : "disabled"}
-              onClick={handleNext}
-            >
-              {submitting ? <BtnLoader /> : "Next"}
-            </Button>
-          </div> }
+          {part1Visible && (
+            <div className={styles.button}>
+              <Button
+                variant="primaryBlack"
+                status={formNotEmpty && !submitting ? "active" : "disabled"}
+                onClick={handleNext}
+              >
+                {submitting ? <BtnLoader /> : "Next"}
+              </Button>
+            </div>
+          )}
         </div>
 
-        <Footer /> 
+        <Footer />
       </div>
     </>
   );
