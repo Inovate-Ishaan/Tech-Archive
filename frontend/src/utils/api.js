@@ -156,6 +156,18 @@ export async function bookmarker(id,bookmarked){
   return data;
 }
 
+export async function SearchingPosts(q,page=1,limit=6) {
+  const params = new URLSearchParams({
+      q: query,
+      page: page.toString(),
+      limit: limit.toString()
+  });
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/searches/search?${params.toString()}`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    }
 // user profile APIs
 
 export async function getMyProfile() {
@@ -172,6 +184,13 @@ export async function getMyProfile() {
   return data;
 }
 
+export async function getTags() {
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/tags}`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    }
 export async function getUserProfile(username) {
   const token = localStorage.getItem('auth_token');
   const res = await fetch(`${API_BASE}/api/users/${username}`, {
@@ -186,6 +205,19 @@ export async function getUserProfile(username) {
   return data;
 }
 
+export async function SearchingPosts(selectedTags,page=1,limit=6) {
+  const params = new URLSearchParams();
+    params.append("page", page.toString());
+    params.append("limit", limit.toString());
+    if (selectedTags.length > 0) {
+        params.append("tags", selectedTags.join(","));
+    }
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/tags/tagz?${params.toString()}`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    }
 export async function updateUsername(username, newUsername) {
   const token = localStorage.getItem('auth_token');
   const res = await fetch(`${API_BASE}/api/users/${username}`, {
@@ -200,4 +232,5 @@ export async function updateUsername(username, newUsername) {
   if (!res.ok) throw data;
 
   return data;
+}
 }
