@@ -1,0 +1,36 @@
+.container{
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+    position: absolute;/*compensate for navbar */
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    overflow-y: auto;
+    z-index: 9999;
+    box-sizing: border-box;
+}
+
+.dialogBox{
+    background-color: var(--bg-offWhite);
+    max-width: 600px;
+    min-width: 340px;
+    width: 60vw;
+    height: 50vh;
+    min-height: 300px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: var(--shadow-box);
+    padding-bottom: 10px;
+}
+

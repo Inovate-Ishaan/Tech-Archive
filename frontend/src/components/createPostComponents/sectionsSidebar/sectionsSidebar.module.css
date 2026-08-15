@@ -1,0 +1,99 @@
+.container{
+    background-color: var(--bg-white);
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    padding-top: 60px;
+    border-right: 1px solid var(--border-containers) ;
+    box-sizing: border-box;
+    z-index: 999;
+}  
+
+.close{
+    position: absolute;
+    width: fit-content;
+    top:0px;
+    right: 5px;
+    padding: 4px;
+}
+.close:hover{
+    background-color: var(--hover-icon);
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.subsectionContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 0px;
+    border-right: 1px solid var(--bg-gray1);
+    padding: 300px auto auto 20px;
+    margin-top: 30px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+.subsectionLabel {
+    font-size: var(--text-body2);
+    font-weight: 600 ;
+}
+
+.subsectionOptionContainer{
+    margin-top: 25px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.option {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px 2px 2px 8px;
+    font-family: "Inter";
+    font-weight: 400;
+    font-size: var(--text-body3);
+    position: relative;
+}
+
+.option span{
+ position: absolute;
+ right: 10px;
+ color: var(--text-secondary);
+}
+
+.option span:hover{
+    color: var(--text-primary);
+}
+
+.hr{
+    border: 1px solid var(--border-containers);
+    width: 40%;
+    margin: 25px auto;
+}
+
+
+.selected {
+    font-weight: 600;
+    background-color: var(--accent-light);
+    border: 1px solid var(--border-containers);
+    border-right: 6px solid var(--accent);
+}
+
+.option:hover{
+    cursor: pointer;
+    background-color: var(--hover-icon);
+}
+
+@media (max-width:600px){
+    .container{
+        padding-top: 40px;
+    }
+    
+
+}

@@ -9,7 +9,7 @@ import BtnLoader from "../components/loaders/btnLoader.jsx";
 import { getPosts } from "../utils/api";
 import styles from "./feed.module.css";
 
-export default function FeedPage() {
+export default function SavedPostsPage() {
   const observerElementRef = useRef(null);
 
   const loadingRef = useRef(false);
@@ -24,7 +24,6 @@ export default function FeedPage() {
   const [error, setError] = useState(null);
   const [alert, setAlert] = useState(null);
   
-  //these have been uplifted to lock the scroll when they are open
   //side menu visibility state
   const [sideMenuToggleVisible, setSideMenuToggleVisible] = useState(false);
   //sort dialog box state
@@ -205,7 +204,7 @@ export default function FeedPage() {
         className={styles.navWithSearch}
         sideMenuVisible={sideMenuToggleVisible}
         setSideMenuVisible={setSideMenuToggleVisible}
-        selectedOption="home"
+        selectedOption="saved"
         sortDialogOpen={sortDialogOpen}
         setSortDialogOpen={setSortDialogOpen}
       />
@@ -217,7 +216,7 @@ export default function FeedPage() {
       >
         <SideMenuFixed
           className={styles.sideMenuFixed}
-          selectedOption="home"
+          selectedOption="saved"
         />
 
         <div className={styles.feed} ref={feedRef}>

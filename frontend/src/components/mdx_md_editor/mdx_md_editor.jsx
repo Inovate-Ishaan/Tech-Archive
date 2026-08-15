@@ -65,7 +65,7 @@ function MdEditor( {initialMD, editorRef, handleEditorError} ) {
         diffSourcePlugin({ viewMode: "source" }),
         imagePlugin({}),
         toolbarPlugin({
-          toolbarClassName: "toolbar",
+          toolbarClassName: `${"toolbar"}`,
           toolbarContents: () => (
             <>
               <DiffSourceToggleWrapper>

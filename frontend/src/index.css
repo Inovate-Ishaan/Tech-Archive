@@ -7,8 +7,10 @@
   --hover-on-black-text: #575757;
   --link : #2C27C3;
   --bg-white: #ffffff;
-  --bg-gray: #d9d9d970;
+  --bg-gray1: #d9d9d970;
+  --bg-gray2: #d9d9d9;
   --bg-offWhite: #f9f9f9;
+  --bg-offWhite-semiTransparent: #f9f9f9eb;
   --header-navbar-bg: rgb(246, 246, 246);
 
   /*For background distinctions in elements on white bg */
@@ -29,11 +31,12 @@
   --button-white-text: #000;
 
   --hover-icon: #ededed;
+  --hoverOnGrayBg: #d9d9d982;
   --shadow-box:
     rgba(0, 0, 0, 0.3) 0 0 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
   --shadow-box-bottom:
     rgba(0, 0, 0, 0.2) 0 3px 5px;
-  --shadow-text: 0 0 5px #ebebeb9b;
+  --shadow-text: 1px 4px 5px #d4d4d4cf;
 
   /*fonts*/
   --font-primary: "Montserrat", Tahoma, Verdana, sans-serif;
@@ -80,8 +83,9 @@
     --bg-white: rgb(29, 29, 29);
     --bg-white: #121212;
     --bg-offWhite: #232323;
-    --bg-gray: #7c7c7c;
-    --bg-gray: #181818;
+    --bg-offWhite-semiTransparent: #232323e8;
+    --bg-gray1: #7c7c7c;
+    --bg-gray2: #181818;
     --accent-light: #ff330028;
 
     --hover-icon: #323232;
@@ -146,6 +150,7 @@ p {
 input {
   outline: none;
   border: var(--input-border);
+  border-radius: 4px;
 }
 
 input,
@@ -221,6 +226,22 @@ fieldset {
     'opsz' 24;
   cursor: pointer;
   font-size: 36px;
+  transition: ease-in 0.1s ;
+}
+
+.smallIcon {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+  cursor: pointer;
+  font-size: 26px;
+  transition: ease-in 0.1s;
+}
+
+.icon:hover, .smallIcon:hover{
+  transform: scale(1.1);
 }
 
 .selected {
@@ -236,7 +257,7 @@ fieldset {
 }
 
 .darkenPage {
-  filter: blur(2px) brightness(60%);
+  filter: blur(2px) brightness(97%);
 }
 
 .description {
@@ -244,6 +265,20 @@ fieldset {
   color: var(--text-secondary);
   margin-bottom: 20px;
   margin-top: 0px;
+}
+
+/* close button styles for generic popups */
+.close{
+    position: absolute;
+    width: fit-content;
+    top:10px;
+    right: 10px;
+    padding: 4px;
+}
+.close:hover{
+    background-color: var(--hover-icon);
+    border-radius: 50px;
+    cursor: pointer;
 }
 
 

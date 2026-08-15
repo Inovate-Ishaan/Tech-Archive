@@ -1,5 +1,5 @@
 .parent {
-    background-color: var(--bg-gray);
+    background-color: var(--bg-gray1);
     margin : 0;
     min-height: 150px;
     display: flex;

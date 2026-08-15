@@ -29,6 +29,7 @@ model User {
   instituteId   String   @unique
   otps          Otp[]
   createdAt     DateTime @default(now())
+  edit_access   Boolean @default(false)
 }
 
 // Stores OTP for verification
@@ -86,5 +87,5 @@ model Bookmark {
   postId      String
   user        User     @relation(fields:[username], references:[username])
   post        Post     @relation(fields:[postId], references:[id])
-  @@unique([userId, postId])
+  @@unique([username, postId])
 }

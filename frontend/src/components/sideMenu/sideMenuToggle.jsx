@@ -24,15 +24,17 @@ export default function SideMenuToggle({ className, selectedOption, closeBtnFunc
         </div>
         </Link>
 
-        <div className={`${styles.option} ${selectedOption === "explore" ? "selected" : ""}`}>
+        {/* <div className={`${styles.option} ${selectedOption === "explore" ? "selected" : ""}`}>
         <span className={`material-symbols-outlined icon ${selectedOption === "explore" ? "filled" : ""}`}>category</span>
         <label className={styles.option_name}>Explore</label>
-        </div>
+        </div> */}
 
+        <Link to={"/saved"}>
         <div className={`${styles.option} ${selectedOption === "saved" ? "selected" : ""}`}>
         <span className={`material-symbols-outlined icon ${selectedOption === "saved" ? "filled" : ""}`}>bookmarks</span>
         <label className={styles.option_name}>Saved</label>
         </div>
+        </Link>
 
         <Link to={"/create-post"}>
         <div className={`${styles.option} ${selectedOption === "post" ? "selected" : ""}`}>
@@ -41,10 +43,12 @@ export default function SideMenuToggle({ className, selectedOption, closeBtnFunc
         </div>
         </Link>
 
+        <Link to={"/profile/me"}>
         <div className={`${styles.option} ${selectedOption === "you" ? "selected" : ""}`}>
         <span className={`material-symbols-outlined icon ${selectedOption === "you" ? "filled" : ""}`}>account_circle</span>
         <label className={styles.option_name}>You</label>
         </div>
+        </Link>
 
        </div>
        </div>

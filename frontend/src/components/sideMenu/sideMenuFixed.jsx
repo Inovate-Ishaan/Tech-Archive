@@ -13,25 +13,31 @@ export default function SideMenuFixed({ className, selectedOption }) {
         </div>
         </Link>
 
-        <div className={styles.option}>
+        {/* <div className={styles.option}>
         <span className={`material-symbols-outlined icon ${selectedOption === "explore" ? "filled" : ""}`}>category</span>
         <label className={styles.option_name}>Explore</label>
-        </div>
+        </div> */}
 
+        <Link to={"/saved"}>
         <div className={styles.option}>
         <span className={`material-symbols-outlined icon ${selectedOption === "saved" ? "filled" : ""}`}>bookmarks</span>
         <label className={styles.option_name}>Saved</label>
         </div>
+        </Link>
 
+        <Link to={"/create-post"}>
         <div className={styles.option}>
         <span className={`material-symbols-outlined icon ${selectedOption === "you" ? "filled" : ""}`}>add_2</span>
         <label className={styles.option_name}>Post Project</label>
         </div>
+        </Link>
 
+        <Link to={"/profile/me"}>
         <div className={styles.option}>
         <span className={`material-symbols-outlined icon ${selectedOption === "you" ? "filled" : ""}`}>account_circle</span>
         <label className={styles.option_name}>You</label>
         </div>
+        </Link>
 
        </div>
        </div>

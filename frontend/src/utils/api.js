@@ -126,9 +126,23 @@ export async function viewpost(id){
   return data;
 }
 
+export async function viewbookmarks(username,page){
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/bookmark/me/bookmarks?page=${page}&limit=24`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
+  });
+  const data = await res.json();
+  if (!res.ok) throw data;
+
+  return data;
+}
+
 export async function bookmarker(id,bookmarked){
   const token = localStorage.getItem('auth_token');
-  const res = await fetch(`${API_BASE}/api/${id}/bookmark`, {
+  const res = await fetch(`${API_BASE}/api/bookmark/${id}/bookmark`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -154,6 +168,15 @@ export async function SearchingPosts(q,page=1,limit=6) {
     headers: {
       ...(token ? {Authorization: `Bearer ${token}`} : {})
     }
+// user profile APIs
+
+export async function getMyProfile() {
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/users/me`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
   });
   const data = await res.json();
   if (!res.ok) throw data;
@@ -168,6 +191,13 @@ export async function getTags() {
     headers: {
       ...(token ? {Authorization: `Bearer ${token}`} : {})
     }
+export async function getUserProfile(username) {
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/users/${username}`, {
+    method: 'GET',
+    headers: {
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
   });
   const data = await res.json();
   if (!res.ok) throw data;
@@ -188,9 +218,19 @@ export async function SearchingPosts(selectedTags,page=1,limit=6) {
     headers: {
       ...(token ? {Authorization: `Bearer ${token}`} : {})
     }
+export async function updateUsername(username, newUsername) {
+  const token = localStorage.getItem('auth_token');
+  const res = await fetch(`${API_BASE}/api/users/${username}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? {Authorization: `Bearer ${token}`} : {})
+    },
+    body: JSON.stringify({ username: newUsername })
   });
   const data = await res.json();
   if (!res.ok) throw data;
 
   return data;
+}
 }

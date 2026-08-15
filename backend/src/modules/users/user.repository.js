@@ -27,6 +27,7 @@ async function findUserByUsername(username) {
     select: {
       id: true,
       username: true,
+      email: true,
       displayname: true,
       avatar: true,
       bio: true,
@@ -57,6 +58,7 @@ async function updateUser(id, data) {
       github: true,
       linkedin: true,
       website: true,
+      edit_access: true,
     },
   });
 }

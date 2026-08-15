@@ -1,0 +1,33 @@
+.pfpGallary {
+    width: 90%;
+    border: 2px solid var(--bg-offWhite);
+    height: fit-content;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    margin: 30px auto 0 auto;
+    max-height: 250px;
+    overflow-y: scroll;
+    padding: 16px;
+}
+
+.pfpCard {
+    max-width: 100px;
+    min-width: 90px;
+    aspect-ratio: 1;
+    border: 2px solid var(--border-containers);
+    margin: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.selected, .pfpCard:hover{
+    transform: scale(1.05);
+    border-color: var(--text-primary);
+    box-shadow: var(--shadow-box);
+}
+
+.avatar{
+    max-width: 100px;
+    aspect-ratio: 1;
+}

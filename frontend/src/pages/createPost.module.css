@@ -1,8 +1,18 @@
+.navigationBar{
+    z-index: 9999;
+}
+
 .parent {
     width : 100%;
     background-color: var(--bg-White);
+    margin-top: 65px;
 }
 
+@media (max-width:600px) {
+    .parent{
+        margin-top: 35px;
+    }
+}
 .bodyContainer {
     text-align: left;
     padding: 20px;
@@ -23,6 +33,13 @@
     max-width: 1200px;
 }
 
+.headerContainer{
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+}
+
 .formPart {
     width: 100%;
     display: flex;
@@ -30,9 +47,83 @@
     align-items: center;
 }
 
-.description {
+.subHeading {
     width: 100%;
     max-width: 1200px;
+    font-weight: 600;
+}
+
+.viewAllSections{
+    width: fit-content;
+}
+
+.sectionNameAndAddSectionContainer{
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+.sectionsInfoContainer {
+    margin-top: 15px;
+    display: flex;
+    gap:8px;
+    font-size: var(--text-body2);
+}
+
+/* the rename input box */
+.sectionRename{
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid var(--text-primary);
+    padding: 2px 6px;
+    margin: 0;
+    font-size: var(--text-body5);
+    font-family: "Inter";
+    background-color: inherit;
+    max-width: 160px;
+}
+
+.sectionRename:focus{
+    outline: none;
+    border-bottom: 2px solid var(--text-primary) ;
+}
+
+.sectionName{
+    transition: ease-in 0.1s;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 200px;
+}
+
+.sectionName:hover{
+    cursor: pointer;
+    font-weight: 450;
+    color: var(--text-primary);
+}
+
+.viewAllSections{
+    display: flex;
+    column-gap: 2px;
+    align-items: center;
+    display: flex;
+    column-gap: 12px;
+    align-items: center;
+    font-family: "Inter";
+    font-size: var(--text-body3);
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: ease-out 0.1s;
+}
+.viewAllSections:hover{
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+.sectionsSidebar{
+    position: relative;
+    z-index: 500;
 }
 
 .formContainer {
@@ -183,8 +274,8 @@
     overflow-x: scroll;
     height: 46px;
     box-sizing: border-box;
-    border: 1px solid var(--border);
-    border-radius: 1px;
+    border: 1px solid #00000056;
+    border-radius: 4px;
     padding: 0 10px;
 }
 
@@ -250,6 +341,62 @@
 
 .backButton{
     font-size: 48px;
+}
+
+
+/* Styles for Add Section Dialog Box */
+.title{
+    font-size: var(--text-h2);
+    font-weight: 700;
+    margin: 20px auto 15px auto;
+    text-shadow: var(--shadow-text);
+}
+
+.dialogBox input{
+    max-width: 400px;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid black ;
+    text-align: center;
+}
+
+.itemsContainer{
+    width: 90%; 
+    padding: 20px 30px;
+    border-radius: 8px;
+    background-color: var(--bg-offWhite-semiTransparent);
+    z-index: 100;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.items{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 100;
+}
+.graphic {
+    max-width: 300px;
+    position:absolute;
+    bottom: 0;
+    right: 0;
+}
+
+@media (max-width: 480px){
+    .title{
+    font-size: 26px;
+    font-weight: 700;
+    margin: 30px auto 20px auto;
+}
+
+.dialogBox{
+    min-width: 350px;
+    width: 90vw;
+    height: 30vh;
+}
 }
 
 @media (max-width: 768px) {
