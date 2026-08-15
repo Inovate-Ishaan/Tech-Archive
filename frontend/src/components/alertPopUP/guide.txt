@@ -3,7 +3,7 @@ Include this to the parent component
 
     //Alert logic
   const [alert, setAlert] = useState(null);
-  const timeoutRef =  useRef(null);
+  const alertRef =  useRef(null);
 
   function showAlert(type, msg) {
     setAlert({
@@ -11,9 +11,9 @@ Include this to the parent component
       msg,
     });
 
-    clearTimeout(timeoutRef.current);
+    clearTimeout(alertRef.current);
 
-    timeoutRef.current = setTimeout(() => {
+    alertRef.current = setTimeout(() => {
       setAlert(null);
     }, 3000);
   }

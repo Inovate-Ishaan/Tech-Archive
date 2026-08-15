@@ -86,6 +86,7 @@
 
 .disabled {
     cursor: not-allowed ;
+    color: var(--hover-on-white-text);
     /* color: #969696; */
 }
 

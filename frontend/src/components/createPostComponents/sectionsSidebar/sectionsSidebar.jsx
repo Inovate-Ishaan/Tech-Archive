@@ -2,7 +2,7 @@
 import styles from "./sectionsSidebar.module.css";
 import { Link } from "react-router-dom";
 
-export default function SectionsSidebar({className, sections, selectedOption="Overview", changeSection, closeBtnFunction}) {
+export default function SectionsSidebar({className, sections, selectedOption="Overview", changeSection, deleteSection, closeBtnFunction}) {
     return(
         <>
         <div className={className}>
@@ -23,9 +23,9 @@ export default function SectionsSidebar({className, sections, selectedOption="Ov
         <div className={styles.subsectionOptionContainer}>
 
         {sections.map((section, index) => (<div key={index} className={`${styles.option} ${selectedOption === section[0] ? styles.selected : ""}`}
-        onClick={() => {changeSection(index + 1); console.log(index)}}>
+        onClick={(e) => {e.stopPropagation(); changeSection(index + 1); console.log(index)}}>
         <label className={styles.option_name}>{section[0]}</label>
-        <span className="material-symbols-outlined smallIcon">delete</span>
+        {!(selectedOption === section[0]) && <span className="material-symbols-outlined smallIcon" onClick={(e) => {e.stopPropagation(); deleteSection(index + 1)}}>delete</span>}
         </div>))}
         
        </div>

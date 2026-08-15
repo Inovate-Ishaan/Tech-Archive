@@ -59,16 +59,22 @@
     font-weight: 400;
     font-size: var(--text-body3);
     position: relative;
+    background-color: var(--bg-white);
 }
 
+
+/* delete button */
 .option span{
  position: absolute;
  right: 10px;
  color: var(--text-secondary);
+ background-color: inherit;
+ border-radius: 20%;
+ backdrop-filter: blur(30px);
 }
 
 .option span:hover{
-    color: var(--text-primary);
+    background-color: var(--hover-icon);
 }
 
 .hr{

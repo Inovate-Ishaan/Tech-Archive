@@ -102,23 +102,21 @@ export default function CreatePostPage() {
   const [markdown, setMarkdown] = useState("");
 
   async function handlePost() {
-    const obtainedMD = editorRef.current.getMarkdown();
-    if (!(obtainedMD.length > 50)) {
-      showAlert("error", "Please provide more detailed documentation");
-      return;
-    }
 
-    if (obtainedMD.length > 50000) {
-      showAlert("error", "Document exceeds the character limit (50,000)");
-      return;
-    }
-
-    //inculcate the changes the user has made into the markdown state
-    setMarkdown(obtainedMD);
+    allSections.map((section, index) => {
+      if (section[1].length < 50) {
+        showAlert("error", `Please provide more content for ${section[0]}`);
+        return;
+      };
+      if (section[1].length > 50000) {
+         showAlert("error", `Character limit exceeded in ${section[0]}`);
+         return;
+      }
+    });
 
     const postData = new FormData();
     postData.append("title", formData.title);
-    postData.append("content", obtainedMD);
+    postData.append("content", allSections);
     postData.append("githubUrl", formData.githubUrl);
     postData.append("tags", JSON.stringify(formData.tags));
     postData.append("thumbnail", selectedFile);
@@ -205,7 +203,7 @@ export default function CreatePostPage() {
 
   //ALERT
   const [alert, setAlert] = useState(null);
-
+  const alertRef = useRef(null);
   function showAlert(type, msg) {
     setAlert({
       type,
@@ -215,8 +213,8 @@ export default function CreatePostPage() {
 
   useEffect(() => {
     if (!alert) return;
-
-    setTimeout(() => {
+    clearTimeout(alertRef.current);
+    alertRef.current = setTimeout(() => {
       setAlert(null);
     }, 3000);
   }, [alert]);
@@ -232,7 +230,8 @@ export default function CreatePostPage() {
   const [allSections, setAllSections] = useState([["Overview", "Overview"]]);
   const [currentSection, setCurrentSection] = useState(1);
   const [currentSectionName, setCurrentSectionName] = useState("");
-  const [currenSectionContent, setCurrentSectionContent] = useState("dddddddddd");
+  const [currenSectionContent, setCurrentSectionContent] =
+    useState("dddddddddd");
 
   //handling sections sidebar logic
   const [showLeftSidebar, setShowLeftSidebar] = useState(false);
@@ -273,7 +272,6 @@ export default function CreatePostPage() {
 
         if (updatedName.length === 0) return;
         console.log("NewName", updatedName);
-
 
         const updatedSections = allSections;
 
@@ -333,7 +331,7 @@ export default function CreatePostPage() {
       addSectionInputRef.current.focus();
       return;
     }
-    setAllSections((prev) => ([...prev, [newSectionName, ""]]));
+    setAllSections((prev) => [...prev, [newSectionName, ""]]);
     setNewSectionName("");
     setAddSectionVisible(false);
     showAlert("success", "Section added");
@@ -343,13 +341,58 @@ export default function CreatePostPage() {
     console.log(allSections);
   }, [allSections]);
 
-
   //////////////////////////////////////////
   //navigating between sections
-  function changeSection(sectionNum){
-    setCurrentSection(sectionNum);
-  };
+  function changeSection(sectionNum) {
+    //SAVE THE CONTENT in allSections for that section
+    const content = editorRef.current.getMarkdown();
+    setAllSections((prev) =>
+      prev.map((entry, index) => {
+        if (index !== currentSection - 1) {
+          return entry;
+        }
+        return [entry[0], content];
+      }),
+    );
 
+    let nextContent = "";
+    if (allSections[sectionNum - 1]) {
+      nextContent = allSections[sectionNum - 1][1];
+    }
+    //change the section
+    setCurrentSection(sectionNum);
+    //fill the editor with next section's content
+
+    console.log("Next content", nextContent);
+
+    if (nextContent.length === 0) {
+      editorRef.current.setMarkdown(
+        `## Write the content here...`,
+      );
+      return;
+    }
+    editorRef.current.setMarkdown(nextContent);
+  }
+
+  //delete sections
+  function deleteSection(sectionNum) {
+    if (allSections.length === 1) {
+      showAlert("info", "Atleast one section should exist");
+      return;
+    }
+    setAllSections((prev) =>
+      prev.filter((_, index) => index !== sectionNum - 1),
+    );
+  }
+
+  useEffect(() => {
+    console.log(
+      "All sections: ",
+      allSections,
+      "\nCurrentSection: ",
+      currentSectionName,
+    );
+  }, [allSections, currentSectionName]);
   return (
     <>
       {/* Navigation Bar non-sticky*/}
@@ -370,6 +413,7 @@ export default function CreatePostPage() {
           selectedOption={currentSectionName}
           sections={allSections}
           changeSection={changeSection}
+          deleteSection={deleteSection}
           closeBtnFunction={handleCloseLeftSidebar}
         />
       )}
@@ -610,46 +654,57 @@ export default function CreatePostPage() {
                 </div>
 
                 <div className={styles.editorContainer}>
-                  <MdEditor
-                    initialMD={currenSectionContent} //markdown to get the content of readme
-                    editorRef={editorRef}
-                    handleEditorError={editorErrorHandler}
-                  />
+                  <div className={styles.editor}>
+                    <MdEditor
+                      initialMD={markdown} //markdown to get the content of readme
+                      editorRef={editorRef}
+                      handleEditorError={editorErrorHandler}
+                    />
+                  </div>
+
+                  {/* Section Nav Buttons */}
+                  <div className={styles.navButtons}>
+                    {(currentSection > 1) && <Button variant="tertiaryWhite" onClick={() => {changeSection(currentSection - 1)}}>Previous</Button>}
+                    {!((allSections.length > 1) && (currentSection === allSections.length)) && <Button variant="tertiaryBlack" status={(currentSection < allSections.length) ? "active" : "disabled"} onClick={() => changeSection(currentSection + 1)}>Next Section</Button>}
+                  </div>
                 </div>
               </div>
             </>
           )}
 
-          {/* Post Button */}
+          {/* Buttons */}
           {part2Visible && (
-            <div className={styles.postAndBackButtonContainer}>
-              <div className={styles.button}>
-                <Button
-                  variant="primaryWhiteLessPadding"
-                  status="active"
-                  onClick={() => {
-                    setPart1Visible(true);
-                    setPart2Visible(false);
-                  }}
-                >
-                  <span
-                    className={`${"material-symbols-outlined"} ${styles.backButton}`}
+            <>
+              {/* Post and Back Button */}
+              <div className={styles.postAndBackButtonContainer}>
+                <div className={styles.button}>
+                  <Button
+                    variant="primaryWhiteLessPadding"
+                    status="active"
+                    onClick={() => {
+                      setPart1Visible(true);
+                      setPart2Visible(false);
+                    }}
                   >
-                    arrow_back
-                  </span>
-                </Button>
-              </div>
+                    <span
+                      className={`${"material-symbols-outlined"} ${styles.backButton}`}
+                    >
+                      arrow_back
+                    </span>
+                  </Button>
+                </div>
 
-              <div className={styles.button}>
-                <Button
-                  variant="primaryBlackLessPadding"
-                  status="active"
-                  onClick={handlePost}
-                >
-                  {submitting ? <BtnLoader /> : "Post"}
-                </Button>
+                <div className={styles.button}>
+                  <Button
+                    variant="primaryBlackLessPadding"
+                    status="active"
+                    onClick={handlePost}
+                  >
+                    {submitting ? <BtnLoader /> : "Post"}
+                  </Button>
+                </div>
               </div>
-            </div>
+            </>
           )}
 
           {/* NEXT BUTTON */}

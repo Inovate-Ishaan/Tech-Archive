@@ -318,20 +318,33 @@
 }
 
 /* THE TEXT EDITOR PART */
+.editorContainer{
+    max-width: 1200px;
+    width : 100%;
+    margin-bottom: 0;
+    margin-bottom: 3rem;
+    position: relative;
+}
 
-.editorContainer {
+.editor {
     border: 1px solid var(--border);
     background-color: var(--bg-offWhite);
     border-radius: 8px;
     box-sizing: border-box;
     box-shadow: var(--shadow-box);
-    max-width: 1200px;
-    width : 100%;
-    margin-bottom: 3rem;
     padding: 10px;
-    min-height: 75vh;
+    min-height: 65vh;
     max-height: 80vh;
     overflow-y: scroll;
+    position: relative;
+}
+
+.navButtons{
+    display: flex;
+    column-gap: 8px;
+    margin-top: 14px;
+    width: fit-content;
+    position: relative;
 }
 
 .postAndBackButtonContainer {

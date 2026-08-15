@@ -227,6 +227,7 @@ fieldset {
   cursor: pointer;
   font-size: 36px;
   transition: ease-in 0.1s ;
+  background-color: inherit;
 }
 
 .smallIcon {
@@ -238,6 +239,8 @@ fieldset {
   cursor: pointer;
   font-size: 26px;
   transition: ease-in 0.1s;
+  background-color: var(---bg-white);
+  box-sizing: border-box;
 }
 
 .icon:hover, .smallIcon:hover{

@@ -156,7 +156,7 @@ export async function bookmarker(id,bookmarked){
   return data;
 }
 
-export async function SearchingPosts(q,page=1,limit=6) {
+export async function SearchPosts(q,page=1,limit=6) {
   const params = new URLSearchParams({
       q: query,
       page: page.toString(),
@@ -167,7 +167,7 @@ export async function SearchingPosts(q,page=1,limit=6) {
     method: 'GET',
     headers: {
       ...(token ? {Authorization: `Bearer ${token}`} : {})
-    }
+    }})}
 // user profile APIs
 
 export async function getMyProfile() {
@@ -190,7 +190,8 @@ export async function getTags() {
     method: 'GET',
     headers: {
       ...(token ? {Authorization: `Bearer ${token}`} : {})
-    }
+    }})}
+
 export async function getUserProfile(username) {
   const token = localStorage.getItem('auth_token');
   const res = await fetch(`${API_BASE}/api/users/${username}`, {
@@ -205,7 +206,7 @@ export async function getUserProfile(username) {
   return data;
 }
 
-export async function SearchingPosts(selectedTags,page=1,limit=6) {
+export async function SearchPostsByTags(selectedTags,page=1,limit=6) {
   const params = new URLSearchParams();
     params.append("page", page.toString());
     params.append("limit", limit.toString());
@@ -217,7 +218,8 @@ export async function SearchingPosts(selectedTags,page=1,limit=6) {
     method: 'GET',
     headers: {
       ...(token ? {Authorization: `Bearer ${token}`} : {})
-    }
+    }})}
+
 export async function updateUsername(username, newUsername) {
   const token = localStorage.getItem('auth_token');
   const res = await fetch(`${API_BASE}/api/users/${username}`, {
@@ -233,4 +235,4 @@ export async function updateUsername(username, newUsername) {
 
   return data;
 }
-}
+
