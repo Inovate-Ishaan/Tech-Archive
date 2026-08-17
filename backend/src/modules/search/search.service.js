@@ -1,6 +1,6 @@
 const { prisma } = require("../../config/prisma");
 const SearchRepository = require("./search.repository")
-const { mapPostToFeedCard } = require("./feed.mapper");
+const { mapPostToFeedCard } = require("../feed/feed.mapper");
 
 const searchPosts = async (query, page = 1, limit = 6) => {
     query = query.trim();
