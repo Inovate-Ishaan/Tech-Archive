@@ -13,11 +13,12 @@ import MdEditor from "../components/mdx_md_editor/mdx_md_editor";
 import LeftSidebarToggle from "../components/postPageComps/leftSidebar/leftSidebarToggle.jsx";
 import SectionsSidebar from "../components/createPostComponents/sectionsSidebar/sectionsSidebar.jsx";
 import FullScreenDialog from "../components/dialogBoxes/fullScreenDialog/fullScreenDialog.jsx";
+import { getTags } from "../utils/api";
 
 export default function CreatePostPage() {
   //FORM PART VISIBILITY STATES
-  const [part1Visible, setPart1Visible] = useState(false);
-  const [part2Visible, setPart2Visible] = useState(true);
+  const [part1Visible, setPart1Visible] = useState(true);
+  const [part2Visible, setPart2Visible] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -52,16 +53,19 @@ export default function CreatePostPage() {
   };
 
   //TAG MANAGEMENT
-  const allTags = [
-    "ECE",
-    "CSE",
-    "Robotics",
-    "CAD",
-    "Mechanical",
-    "Research",
-    "Physics",
-    "Electrical",
-  ];
+  const [allTags, setAllTags] = useState([]);
+
+  async function getAllTags() {
+    const res = await getTags();
+    const data = res.data;
+    console.log(data);
+    setAllTags(data.map((tagArr) => tagArr.name));
+    console.log("AllTags", allTags);
+  }
+
+  useEffect(() => {
+    getAllTags();
+  }, []);
 
   const [showTagMenu, setShowTagMenu] = useState(false);
   const tagMenuRef = useRef(null);
@@ -102,15 +106,14 @@ export default function CreatePostPage() {
   const [markdown, setMarkdown] = useState("");
 
   async function handlePost() {
-
     allSections.map((section, index) => {
       if (section[1].length < 50) {
         showAlert("error", `Please provide more content for ${section[0]}`);
         return;
-      };
+      }
       if (section[1].length > 50000) {
-         showAlert("error", `Character limit exceeded in ${section[0]}`);
-         return;
+        showAlert("error", `Character limit exceeded in ${section[0]}`);
+        return;
       }
     });
 
@@ -231,7 +234,7 @@ export default function CreatePostPage() {
   const [currentSection, setCurrentSection] = useState(1);
   const [currentSectionName, setCurrentSectionName] = useState("");
   const [currenSectionContent, setCurrentSectionContent] =
-    useState("dddddddddd");
+    useState("");
 
   //handling sections sidebar logic
   const [showLeftSidebar, setShowLeftSidebar] = useState(false);
@@ -366,9 +369,7 @@ export default function CreatePostPage() {
     console.log("Next content", nextContent);
 
     if (nextContent.length === 0) {
-      editorRef.current.setMarkdown(
-        `## Write the content here...`,
-      );
+      editorRef.current.setMarkdown(`## Write the content here...`);
       return;
     }
     editorRef.current.setMarkdown(nextContent);
@@ -664,8 +665,32 @@ export default function CreatePostPage() {
 
                   {/* Section Nav Buttons */}
                   <div className={styles.navButtons}>
-                    {(currentSection > 1) && <Button variant="tertiaryWhite" onClick={() => {changeSection(currentSection - 1)}}>Previous</Button>}
-                    {!((allSections.length > 1) && (currentSection === allSections.length)) && <Button variant="tertiaryBlack" status={(currentSection < allSections.length) ? "active" : "disabled"} onClick={() => changeSection(currentSection + 1)}>Next Section</Button>}
+                    {currentSection > 1 && (
+                      <Button
+                        variant="tertiaryWhite"
+                        onClick={() => {
+                          changeSection(currentSection - 1);
+                        }}
+                      >
+                        Previous
+                      </Button>
+                    )}
+                    {!(
+                      allSections.length > 1 &&
+                      currentSection === allSections.length
+                    ) && (
+                      <Button
+                        variant="tertiaryBlack"
+                        status={
+                          currentSection < allSections.length
+                            ? "active"
+                            : "disabled"
+                        }
+                        onClick={() => changeSection(currentSection + 1)}
+                      >
+                        Next Section
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>

@@ -1,3 +1,4 @@
+import { getTags, SearchPostsByTags } from "../../../utils/api";
 import Button from "../../buttons/button";
 import FullScreenDialog from "../../dialogBoxes/fullScreenDialog/fullScreenDialog";
 import styles from "./sort.module.css";
@@ -25,7 +26,26 @@ export default function Sort({ closeSortDialog, applied = true }) {
     "In progress",
 
   ];
-  const tagFilters = ["ECE", "CSE", "Robotics", "CAD", "Research", "Mechanical"];
+  
+  const [tagFilters, setTagFilters] = useState([]);
+
+  async function getTagFilters() {
+    const res = await getTags();
+    const data = res.data;
+    console.log(data);
+    setTagFilters(data.map(tagArr => tagArr.name));
+    console.log("tagFilters", tagFilters);
+  }
+
+  useEffect(() => {
+    getTagFilters();
+  },[]);
+
+  async function handleApplyClick() {
+    const res = await SearchPostsByTags(appliedFilters);
+    const data = res.data;
+    console.log(data);
+  }
 
   return (
     <>
@@ -70,7 +90,6 @@ export default function Sort({ closeSortDialog, applied = true }) {
                   className="material-symbols-outlined"
                   onClick={(e) => {
                     removeFilter(e, f);
-                    console.log("removing");
                   }}
                 >
                   close
@@ -80,7 +99,7 @@ export default function Sort({ closeSortDialog, applied = true }) {
           ))}
         </div>
         </div>
-        <Button variant="secondaryBlack" className={styles.applyBtn}>Apply</Button>
+        <Button variant="secondaryBlack" className={styles.applyBtn} onClick={handleApplyClick}>Apply</Button>
       </FullScreenDialog>
     </>
   );

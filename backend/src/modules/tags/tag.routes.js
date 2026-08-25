@@ -6,7 +6,7 @@ const { authenticate } = require('../../middleware/auth.middleware');
 const tagController = require("./tag.controller");
 
 
-router.get("/",authenticate, tagController.getAllTags);
+router.get("/",tagController.getAllTags);
 router.get("/tagz",authenticate,tagController.getTagSpecificPosts);
 
 

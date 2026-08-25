@@ -478,7 +478,7 @@ async function main() {
     for (const post of selectedPosts){
       await prisma.bookmark.create({
           data: {
-            userId: user.id,
+            username: user.username,
             postId: post.id
           }
       });

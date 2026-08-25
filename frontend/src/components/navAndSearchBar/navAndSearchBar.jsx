@@ -119,6 +119,7 @@ export default function NavWithSearch({ className, sideMenuVisible, setSideMenuV
               clearSearchBar={clearSearchBar}
               isSearchBarVisible={isSearchBarVisible}
               hideSearchBar={handleLeftArrowClick}
+              setSortDialogOpen={setSortDialogOpen}
             />
           )}
 

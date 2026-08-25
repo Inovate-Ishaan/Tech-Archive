@@ -1,4 +1,4 @@
-const prisma = require("../../config/prisma");
+const { prisma } = require("../../config/prisma");
 
 
 const getAllTagsfromDB = async () => {
@@ -20,8 +20,7 @@ const getTagSpecificPostsFromDB = async (page, limit, tags = []) => {
     const where = {};
 
     if (tags.length > 0) {
-        const where = {
-            tags: {
+        where.tags = {
                 some: {
                     tags: {
                         slug: {
@@ -31,7 +30,7 @@ const getTagSpecificPostsFromDB = async (page, limit, tags = []) => {
                 }
             }
         };
-    }
+    
 
     const [posts, totalPosts] = await prisma.$transaction([
         prisma.post.findMany({

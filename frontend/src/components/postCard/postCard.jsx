@@ -1,7 +1,8 @@
 import styles from "./postCard.module.css";
 import thumbnail_placeholder from "../../assets/other_images/thumbnail_placeholder.jpeg";
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { bookmarker } from "../../utils/api";
 
 function PostCard({
   postID,
@@ -41,6 +42,16 @@ function PostCard({
     e.stopPropagation();
     isBookmarked ? setIsBookmarked(false) : setIsBookmarked(true);
   };
+
+  async function handleBookmark() {
+    const res = await bookmarker(postID, isBookmarked);
+    const msg = res.data;
+    console.log("Bookmarked", msg);
+  }
+
+  useEffect(() => {
+    handleBookmark();
+  }, [isBookmarked]);
 
   return (
     <>

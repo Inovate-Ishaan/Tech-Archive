@@ -8,7 +8,7 @@
 import styles from './searchBarSmall.module.css';
 import Button from '../buttons/button';
 
-export default function SearchBarSmall( {searchQuery, onChange, handleSearch, clearSearchBar, isSearchBarVisible, hideSearchBar} ) {
+export default function SearchBarSmall( {searchQuery, onChange, handleSearch, clearSearchBar, isSearchBarVisible, hideSearchBar, setSortDialogOpen} ) {
 
     const showCloseBtn = searchQuery.trim().length > 0 && isSearchBarVisible;
 
@@ -37,7 +37,7 @@ export default function SearchBarSmall( {searchQuery, onChange, handleSearch, cl
 
             {/*Sort button*/}
             <div className={styles.right}>
-                <span className={`material-symbols-outlined icon`}>sort</span>
+                <span className={`material-symbols-outlined icon`} onClick={(e) => {setSortDialogOpen(true)}}>sort</span>
             </div>
         </div>
         </>
