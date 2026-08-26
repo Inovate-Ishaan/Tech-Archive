@@ -5,7 +5,7 @@ const { HTTP_STATUS } = require('../../utils/constants');
 async function getMe(req, res, next) {
   try {
     const user = await userService.getProfile(req.user.id);
-    res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, user));
+    res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, { ...user, edit_access: true }));
   } catch (err) {
     next(err);
   }
@@ -23,7 +23,8 @@ async function updateMe(req, res, next) {
 async function getUserByUsername(req, res, next) {
   try {
     const user = await userService.getProfileByUsername(req.params.username);
-    res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, user));
+    const edit_access = req.user?.username === req.params.username;
+    res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, { ...user, edit_access }));
   } catch (err) {
     next(err);
   }

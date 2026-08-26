@@ -1,3 +1,4 @@
+const { prisma } = require("../../config/prisma");
 const bookmarkRepository = require('./bookmark.repository');
 const ApiError = require('../../utils/ApiError');
 const { HTTP_STATUS } = require('../../utils/constants');
@@ -55,7 +56,7 @@ const getAllPosts = async (page,limit,username) => {
     prisma.bookmark.count({ where: {username} })
     ])
 
-    const mappedPosts = posts.map(mapPostToFeedCard);
+    const mappedPosts = posts.map((bookmark) => mapPostToFeedCard(bookmark.post));
 
     const totalPages = Math.ceil(totalPosts/limit);
 

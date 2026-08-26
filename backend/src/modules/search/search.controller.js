@@ -2,7 +2,7 @@ const SearchService = require("./search.service");
 const { ApiResponse } = require('../../utils/ApiResponse');
 const { HTTP_STATUS } = require('../../utils/constants');
 
-const getsearchPosts = async (req, res) => {
+const getsearchPosts = async (req, res, next) => {
     try {
         const {q ,page = 1,limit = 6} = req.query;
 

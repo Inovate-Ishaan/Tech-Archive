@@ -1,7 +1,7 @@
 const { prisma } = require("../../config/prisma");
 
 async function findBookmark(username,postId) {
-    const bookmark = await prisma.bookmark.findUnique({
+    return prisma.bookmark.findUnique({
         where: {
             username_postId: {
                 username,

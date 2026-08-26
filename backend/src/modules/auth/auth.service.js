@@ -52,7 +52,7 @@ async function verifyOtp(email, code) {
   if (user) {
     await authRepository.markEmailVerified(user.id);
     if (user.password) {
-      const payload = { id: user.id, email: user.email, tokenVersion: user.tokenVersion };
+      const payload = { id: user.id, email: user.email, username: user.username, tokenVersion: user.tokenVersion };
       const token = signToken(payload);
       return {
         token,
@@ -124,7 +124,7 @@ async function signin(email, password) {
     throw new ApiError(HTTP_STATUS.UNAUTHORIZED, 'Incorrect password. Please try again.');
   }
 
-  const payload = { id: user.id, email: user.email, tokenVersion: user.tokenVersion };
+  const payload = { id: user.id, email: user.email, username: user.username, tokenVersion: user.tokenVersion };
   const token = signToken(payload);
   return {
     token,

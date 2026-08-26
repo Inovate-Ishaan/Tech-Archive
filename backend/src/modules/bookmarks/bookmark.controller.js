@@ -23,7 +23,8 @@ async function getBookmarks(req,res,next) {
             Math.max(parseInt(req.query.limit, 10) || 6, 1), 24
         );
 
-        const result = await bookmarkService.getAllPosts(page, limit);
+        const username = req.user.username;
+        const result = await bookmarkService.getAllPosts(page, limit, username);
         res.status(HTTP_STATUS.OK).json(new ApiResponse(HTTP_STATUS.OK, result));
     }catch(error){
         next(error);

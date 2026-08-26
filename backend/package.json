@@ -2,10 +2,10 @@
   "name": "tech-archive-backend",
   "version": "2.0.0",
   "description": "Tech Archive API - Modular Express backend with Prisma",
-  "main": "src/server.js",
+  "main": "src/utils/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
+    "start": "node src/utils/server.js",
+    "dev": "nodemon src/utils/server.js",
     "seed": "node prisma/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
